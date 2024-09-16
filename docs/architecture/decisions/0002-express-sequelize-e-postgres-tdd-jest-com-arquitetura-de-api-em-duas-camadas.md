@@ -27,19 +27,19 @@ _[Imagem retirada do artigo: The Testing Pyramid: Simplified for One and All](ht
 
 Este documento determina o fluxo de trabalho __Branch Based com Feature Branch__, design estrutural e a abordagem de testes para garantir um padrão e a estabilidade da aplicação.
 
-Dada sua simplicidade, Faz sentido utilizar __Arquitetura de Duas Camadas__
+Dada sua aparente simplicidade, Faz sentido utilizar iniciar por uma __Arquitetura de Duas Camadas__. Caso exista a necessidade e a complexidade aumentar, o projeto pode ser extendido para o uso de uma __Terceira Camada__.
 
 __Nodejs JavaScript no framework Express__ Foram escolhidos pela sua simplicidade e minha familiaridade com seu fluxo de desenvolvimento, utilizando __Jest__ para testes
 
 __Sequelize__ foi escolhido como ORM por facilitar a integração aos principais BDs.
 
-Utilizaremos __Integration Test__ e iniciamos a construção de nosso sistema através dele, no espírito do __TDD__. Para que haja forte integração ao GithubActions, que adotaremos como processo de __CI__. [Consulte este artigo para mais informações](https://novateus.com/blog/8-functional-testing-types-explained-with-examples/)
+Utilizaremos __Integration Test__ para iniciar a construção de nosso sistema através dele, no espírito do __TDD__. Para que haja forte integração ao GithubActions, que adotaremos como processo de __CI__. Não identifiquei a necessidade de testes unitários no momento, pois a complexidade do sistema está concentrada em suas consultas ao banco. No entanto, não descarto a possibilidade de utilizá-los no futuro, assim que houver necessidade.
 
 Também faz sentido adotar ferramentas de documentação e design de APIs, como o __Swagger__, devido ao seu amplo histórico de utilização e mantendo a consistência da API.
 
-As escolhas de tecnologia foram conservadoras visando garantir segurança e entrega, __TypeScript com NestJS e TypeORM__ foram considerados, mas como a maior experiencia do time se encontra nas sugestoes previamente escolhidas, decidimos seguir por elas. Em algum momento no futuro, outros desenvolvimentos devem utilizar a stack preterida.
+As escolhas de tecnologia foram conservadoras, visando garantir segurança e entrega. __TypeScript com NestJS e TypeORM__ foram considerados, mas como a maior experiência do time está nas tecnologias previamente escolhidas, decidimos seguir com elas. No futuro, outros desenvolvimentos podem utilizar a stack que foi preterida.
 
-Decidi também utilizar o [Github Projects](https://github.com/users/jtonynet/projects/6) como ferramenta para auxiliar na abordagem __Kanbam__ para conclusão das tarefas, visando alcançar um cenário próximo ao de um time de desenvolvimento real.
+Decidi também utilizar o [Github Projects](https://github.com/users/jtonynet/projects/6) como ferramenta para auxiliar na abordagem __Kanban__ para conclusão das tarefas, visando alcançar um cenário próximo ao de um time de desenvolvimento real.
 
 ## Consequências
 
