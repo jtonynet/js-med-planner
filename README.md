@@ -101,7 +101,7 @@ não pelo uso de ORM;
 
 _*A documentação original do desafio é mais abrangente, com sugestões de tela para o front e mais dados. Coloquei aqui os principais pontos sem citar o proponente._
 
-Faz sentido utilizar __Arquitetura de Duas Camadas__. Construido junto a uma visualização estilo __Kanbam__ no Github Project
+Faz sentido utilizar __Arquitetura de Duas Camadas__. Construido junto a uma visualização estilo __Kanban__ no Github Project. Caso exista a necessidade e a complexidade aumentar, o projeto pode ser extendido para o uso de uma terceira camada.
 
 Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no GitHub Actions
 
@@ -143,8 +143,101 @@ O cliente deve informar o UUID do recurso, seguindo as modernas práticas de des
 
 <a id="diagrams"></a>
 ### 📊 Diagramas do Sistema
+_Diagramas Mermaid podem apresentar problemas de visualizacao em aplicativos mobile_
 
-__TODO__
+<!-- 
+    diagrams by:
+    https://mermaid.js.org/
+-->
+
+**ER:**
+
+```mermaid
+erDiagram 
+    patient {
+        int id
+        UUID uuid
+        string name
+        string phone
+        string email
+        date birth_date
+        float gender
+        float height
+    }
+    appointment {
+        int id
+        UUID uuid
+        int patient_id
+        int doctor_id
+        string description
+        datetime start_time
+        datetime end_time
+    }
+    doctor {
+        int id
+        UUID uuid
+        string name
+        string email
+    }
+    observation{
+        int id
+        UUID uuid
+        int appointment_id
+        string message
+    }
+
+    patient ||--o{ appointment : has
+    doctor ||--o{ appointment : has
+    appointment ||--o{ observation : has
+```
+
+<br/>
+
+**Diagrama de Sistema:**
+
+```mermaid
+graph LR
+    subgraph Doctor Flow
+      ADMIN(["👤 Doctor"])
+
+      ADMIN --> CREATE_PATIENT("💻 Create Patient")
+      ADMIN --> RETRIEVE_PATIENT_LIST("💻 Retrieve Patient List")
+      ADMIN --> RETRIEVE_PATIENT("💻 Retrieve Patient")
+      ADMIN --> UPDATE_PATIENT("💻 Update Patient")
+    end
+
+    subgraph Two Tier Architecture -
+      subgraph Handlers
+        API_CREATE_PATIENT("🖥️ Create Patient")
+        API_GET_PATIENTS("🖥️ Get Patient")
+        API_GET_PATIENT("🖥️ Get Patient by UUID")
+        API_UPDATE_PATIENT("🖥️ Update Patient by UUID")
+      end
+
+      subgraph Entities
+        ENTITY_PATIENT("📄 Patient")
+      end
+
+      subgraph DATABASE
+        MED_PLANNER_DB[("🗄️ PostgreSQL <br/> med-planner-db")]
+      end 
+    end
+  
+  CREATE_PATIENT -->|http POST| API_CREATE_PATIENT
+  RETRIEVE_PATIENT_LIST -->|http GET| API_GET_PATIENTS
+  RETRIEVE_PATIENT -->|http GET| API_GET_PATIENT
+  UPDATE_PATIENT -->|http PATCH| API_UPDATE_PATIENT
+
+  API_CREATE_PATIENT-->ENTITY_PATIENT
+  API_GET_PATIENTS-->ENTITY_PATIENT
+  API_GET_PATIENT-->ENTITY_PATIENT
+  API_UPDATE_PATIENT-->ENTITY_PATIENT 
+
+
+  ENTITY_PATIENT-->MED_PLANNER_DB
+```
+_*Diagrama INICIAL geral com baixo nível de fidelidade_
+
 
 <br/>
 
