@@ -194,7 +194,7 @@ __TODO__
 ### 🧠 ADR - Architecture Decision Records
 
 - [0001: Registro de Decisões de Arquitetura (ADR)](./docs/architecture/decisions/0001-registro-de-decisoes-de-arquitetura.md)
-- [0002: Express, Sequelize e Postgress em API TDD Jest com arquitetura de Duas camadas](./docs/architecture/decisions/0002-express-sequelize-e-postgress-tdd-jest-com-arquitetura-de-api-em-duas-camadas.md)
+- [0002: Express, Sequelize e Postgres em API TDD Jest com arquitetura de Duas camadas](./docs/architecture/decisions/0002-express-sequelize-e-postgres-tdd-jest-com-arquitetura-de-api-em-duas-camadas.md)
 
 <br/>
 
