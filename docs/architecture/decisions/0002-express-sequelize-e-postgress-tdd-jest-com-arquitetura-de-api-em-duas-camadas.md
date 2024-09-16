@@ -39,7 +39,7 @@ Também faz sentido adotar ferramentas de documentação e design de APIs, como 
 
 As escolhas de tecnologia foram conservadoras visando garantir segurança e entrega, __TypeScript com NestJS e TypeORM__ foram considerados, mas como a maior experiencia do time se encontra nas sugestoes previamente escolhidas, decidimos seguir por elas. Em algum momento no futuro, outros desenvolvimentos devem utilizar a stack preterida.
 
-Decidi também utilizar o [Github Projects](.) como ferramenta para auxiliar na abordagem __Kanbam__ para conclusão das tarefas, visando alcançar um cenário próximo ao de um time de desenvolvimento real.
+Decidi também utilizar o [Github Projects](https://github.com/users/jtonynet/projects/6) como ferramenta para auxiliar na abordagem __Kanbam__ para conclusão das tarefas, visando alcançar um cenário próximo ao de um time de desenvolvimento real.
 
 ## Consequências
 
