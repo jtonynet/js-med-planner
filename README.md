@@ -16,7 +16,7 @@
 [<img src="./docs/assets/images/icons/passport.svg" width="25px" height="25px" alt="Passport Logo" title="Passport">](https://www.passportjs.org/) [<img src="./docs/assets/images/icons/prometheus.svg" width="25px" height="25px" alt="Prometheus Logo" title="Prometheus">](https://prometheus.io/) [<img src="./docs/assets/images/icons/grafana.svg" width="25px" height="25px" alt="Grafana Logo" title="Grafana">](https://grafana.com/)
 -->
 
-![Badge Status](https://img.shields.io/badge/STATUS-EM_DESENVOLVIMENTO-green) [![Github Project](https://img.shields.io/badge/PROJECT%20VIEW%20KANBAM-GITHUB-green?logo=github&logoColor=white)](https://github.com/users/jtonynet/projects/6) <!-- ![Badge GitHubActions](https://github.com/jtonynet/go-products-api/actions/workflows/main.yml/badge.svg?branch=main) -->
+[![Badge Status](https://img.shields.io/badge/STATUS-EM_DESENVOLVIMENTO-green)](#header) [![Github Project](https://img.shields.io/badge/PROJECT%20VIEW%20KANBAM-GITHUB-green?logo=github&logoColor=white)](https://github.com/users/jtonynet/projects/6) <!-- ![Badge GitHubActions](https://github.com/jtonynet/go-products-api/actions/workflows/main.yml/badge.svg?branch=main) -->
 
 ---
 
@@ -49,6 +49,8 @@ __[Med Planner Challenge](#header)__<br/>
 
 <a id="about"></a>
 ### 📖 Sobre
+
+Acompanhe as tarefas pelo [__Kanban__](https://github.com/users/jtonynet/projects/6)
 
 Este repositório foi criado com a intenção de propor uma possível solução para o seguinte desafio:
 
@@ -112,7 +114,7 @@ Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no Git
 <a id="run"></a>
 ### 💻 Rodando o Projeto
 
-<a id="run-locally"></a>
+<a id="run-containerized"></a>
 #### Rodando Conteinerizado
 
 Rode os comandos `docker compose` (de acordo com sua versão do docker compose) no diretório raiz do projeto:
@@ -130,7 +132,7 @@ API:
 Com o node 20.17.0 instalado, vá para o diretório `rest-api` e execute os comandos:
 
 ```bash
-/js-med-planner/rest-api$ npm run install
+/js-med-planner/rest-api$ npm install
 /js-med-planner/rest-api$ npm run dev
 ```
 
@@ -274,7 +276,7 @@ _*Diagrama INICIAL geral com baixo nível de fidelidade_
 <a id="tests"></a>
 ### ✅ Testes
 
-Com o projeto da rest-api [adequadamente instalado]() em seu ambiente local, vá para o diretório do mesmo e execute o comando de testes:
+Com o projeto da rest-api [adequadamente instalado](#run-locally) em seu ambiente local, vá para o diretório do mesmo e execute o comando de testes:
 
 ```bash
 /js-med-planner/rest-api$ npm run test
