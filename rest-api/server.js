@@ -1,16 +1,7 @@
-import http from "http";
+import app from "./src/app.js";
 
 const PORT = 3000;
 
-const routes = {
-    ":/": "its works"
-}
-
-const server = http.createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end(routes[req.url]);
-});
-
-server.listen(PORT, () => {
-    console.log("live and die!");
+app.listen(PORT, () => {
+    console.log(`Server listen on port ${PORT}`);
 });

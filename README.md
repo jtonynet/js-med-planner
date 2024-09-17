@@ -112,7 +112,18 @@ Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no Git
 <a id="run"></a>
 ### 💻 Rodando o Projeto
 
-__TODO__
+__TODO: DOCKER__
+
+<a id="run-locally"></a>
+#### Rodando Local
+
+API:
+Com o node 20.17.0 instalado, vá para o diretório `rest-api` e execute os comandos:
+
+```bash
+/js-med-planner/rest-api$ npm run install
+/js-med-planner/rest-api$ npm run dev
+```
 
 <br/>
 
@@ -161,8 +172,9 @@ erDiagram
         string phone
         string email
         date birth_date
-        float gender
+        string gender
         float height
+        float weight
     }
     appointment {
         int id
@@ -253,7 +265,11 @@ _*Diagrama INICIAL geral com baixo nível de fidelidade_
 <a id="tests"></a>
 ### ✅ Testes
 
-__TODO__
+Com o projeto da rest-api [adequadamente instalado]() em seu ambiente local, vá para o diretório do mesmo e execute o comando de testes:
+
+```bash
+/js-med-planner/rest-api$ npm run test
+```
 
 <br/>
 
