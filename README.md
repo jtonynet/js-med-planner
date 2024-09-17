@@ -312,15 +312,14 @@ Para obter mais informações, consulte o [Histórico de Versões](./CHANGELOG.m
 ### 🧰 Ferramentas
 
 - Linguagem:
-  - [NodeJS](https://nodejs.org/en)
+  - [NodeJS v20.17.0](https://nodejs.org/en)
   - [NVM](https://github.com/nvm-sh/nvm)
 
 - Framework & Libs:
-  - [Express](https://expressjs.com/)
+  - [Express 4.21.0](https://expressjs.com/)
   - [Jest](https://jestjs.io/pt-BR/)
-  - [Sequelize](https://sequelize.org/)
+  - [Sequelize 6.37.3](https://sequelize.org/)
   - [.env](https://www.npmjs.com/package/dotenv)
-  <!-- [Zap log](https://github.com/uber-go/zap)  -->
 
 - Infra & Technologias
   - [Docker v24.0.6](https://www.docker.com/)
