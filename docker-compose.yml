@@ -1,0 +1,40 @@
+version: '3.7'
+name: med-planner
+
+networks:
+  med-planner-network:
+    driver: bridge
+
+volumes:
+  postgres-med-planner-data:
+    external: false
+
+services:
+  postgres-med-planner:
+    image: postgres:16.0-alpine
+    container_name: postgres-med-planner
+    hostname: postgres-med-planner
+    environment:
+      POSTGRES_USER: api_user
+      POSTGRES_PASSWORD: api_pass
+      POSTGRES_DB: med_planner_db
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-med-planner-data:/var/lib/postgresql/data
+    networks:
+      - med-planner-network
+
+  rest-api:
+    build:
+      context: ./rest-api
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres-med-planner
+    container_name: rest-api
+    hostname: rest-api
+    ports:
+      - "8080:3000"
+    tty: true
+    networks:
+      - med-planner-network

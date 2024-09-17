@@ -112,7 +112,27 @@ Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no Git
 <a id="run"></a>
 ### 💻 Rodando o Projeto
 
-__TODO__
+<a id="run-locally"></a>
+#### Rodando Conteinerizado
+
+Rode os comandos `docker compose` (de acordo com sua versão do docker compose) no diretório raiz do projeto:
+```
+/js-med-planner$ docker compose build
+/js-med-planner$ docker compose up
+```
+Acesse a rota: `http://localhost:8080/patients`
+
+
+<a id="run-locally"></a>
+#### Rodando Local
+
+API:
+Com o node 20.17.0 instalado, vá para o diretório `rest-api` e execute os comandos:
+
+```bash
+/js-med-planner/rest-api$ npm run install
+/js-med-planner/rest-api$ npm run dev
+```
 
 <br/>
 
@@ -161,8 +181,9 @@ erDiagram
         string phone
         string email
         date birth_date
-        float gender
+        string gender
         float height
+        float weight
     }
     appointment {
         int id
@@ -253,7 +274,11 @@ _*Diagrama INICIAL geral com baixo nível de fidelidade_
 <a id="tests"></a>
 ### ✅ Testes
 
-__TODO__
+Com o projeto da rest-api [adequadamente instalado]() em seu ambiente local, vá para o diretório do mesmo e execute o comando de testes:
+
+```bash
+/js-med-planner/rest-api$ npm run test
+```
 
 <br/>
 
@@ -312,15 +337,14 @@ Para obter mais informações, consulte o [Histórico de Versões](./CHANGELOG.m
 ### 🧰 Ferramentas
 
 - Linguagem:
-  - [NodeJS](https://nodejs.org/en)
+  - [NodeJS v20.17.0](https://nodejs.org/en)
   - [NVM](https://github.com/nvm-sh/nvm)
 
 - Framework & Libs:
-  - [Express](https://expressjs.com/)
+  - [Express 4.21.0](https://expressjs.com/)
   - [Jest](https://jestjs.io/pt-BR/)
-  - [Sequelize](https://sequelize.org/)
+  - [Sequelize 6.37.3](https://sequelize.org/)
   - [.env](https://www.npmjs.com/package/dotenv)
-  <!-- [Zap log](https://github.com/uber-go/zap)  -->
 
 - Infra & Technologias
   - [Docker v24.0.6](https://www.docker.com/)
