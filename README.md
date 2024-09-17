@@ -112,7 +112,16 @@ Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no Git
 <a id="run"></a>
 ### 💻 Rodando o Projeto
 
-__TODO: DOCKER__
+<a id="run-locally"></a>
+#### Rodando Conteinerizado
+
+Rode os comandos `docker compose` (de acordo com sua versão do docker compose) no diretório raiz do projeto:
+```
+/js-med-planner$ docker compose build
+/js-med-planner$ docker compose up
+```
+Acesse a rota: `http://localhost:8080/patients`
+
 
 <a id="run-locally"></a>
 #### Rodando Local
