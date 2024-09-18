@@ -12,6 +12,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+## [0.0.4] - 2024-18-09
+### Added
+
+- [Conforme Issue 10](https://github.com/jtonynet/js-med-planner/issues/10):
+  - Rota obter Paciente por uuid e teste de integração minimo da mesma
+  - Rota editar Pacientes e teste de integração minimo da mesma
+  - melhorias na suite de testes
+  - melhorias no README.md
+
+
 ## [0.0.3] - 2024-18-09
 ### Added
 
@@ -47,7 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Iniciado o [Projeto](https://github.com/users/jtonynet/projects/3) com o commit inicial. Documentação base: Readme Rico, [Diagramas Mermaid](https://github.com/jtonynet/go-products-api/tree/main#diagrams), ADRs: [0001: Registro de Decisões de Arquitetura (ADR)](./docs/architecture/decisions/registro-de-decisoes-de-arquitetura.md) e [0002: Express, Sequelize e Postgress em API TDD Jest com arquitetura de Duas camadas](./docs/architecture/decisions/0002-express-sequelize-e-postgress-tdd-jest-com-arquitetura-de-api-em-duas-camadas.md).
 - Sabemos o que fazer, graças às definições do arquivo __README.md__. Sabemos como fazer graças aos __ADRs__ e documentações vinculadas. Devemos nos organizar em estrutura __Kanban__, guiados pelo modelo Agile, em nosso __Github Project__, e dar o devido prosseguimento às tarefas.
 
-
+[0.0.4]: https://github.com/jtonynet/js-med-planner/compare/v0.0.3...v0.0.4
 [0.0.3]: https://github.com/jtonynet/js-med-planner/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/jtonynet/js-med-planner/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/jtonynet/js-med-planner/compare/v0.0.0...v0.0.1
