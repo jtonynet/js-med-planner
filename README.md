@@ -122,9 +122,9 @@ Rode os comandos `docker compose` (de acordo com sua versão do docker compose) 
 /js-med-planner$ docker compose build
 /js-med-planner$ docker compose up postgres-med-planner backend-rest
 ```
+
 <!-- Acesse a rota: `http://localhost:8080/patients` -->
 
-<br/>
 <br/>
 
 <a id="run-locally"></a>
@@ -136,13 +136,15 @@ Com o node 20.17.0 instalado, suba apenas a base de dados com o comando:
 ```
 /js-med-planner$ docker compose up postgres-med-planner
 ```
-ou se conecte a uma database valida, entao vá para o diretório `backend-rest` e execute os comandos:
+ou se conecte a uma database válida, então vá para o diretório `backend-rest` e execute os comandos:
 
 ```bash
 /js-med-planner/backend-rest$ npm install
 /js-med-planner/backend-rest$ npm run dev
 ```
+<br/>
 
+#### ⏳ TODO: migrations e seeds
 
 <br/>
 
@@ -283,6 +285,7 @@ _*Diagrama INICIAL geral com baixo nível de fidelidade_
 
 <a id="tests"></a>
 ### ✅ Testes
+_*TDD inicialmente com teste de integração pois trata-se de um CRUD. Verificado sucesso do fluxo no "caminho feliz", implementarei os corner cases (validações) com seus respectivos testes_
 
 Com o projeto da backend-rest [adequadamente instalado](#run-locally) em seu ambiente local, levante o banco de testes com
 
@@ -295,6 +298,14 @@ então vá para o diretório do mesmo e execute o comando de testes:
 ```bash
 /js-med-planner/backend-rest$ npm run test
 ```
+
+<img src="./docs/assets/images/screen_captures/integration_tests_db.jpeg">
+
+Cada vez que o comando for procedido, a database de testes sera recriada no test-postgres-med-planner assegurando uma execução limpa
+
+<img src="./docs/assets/images/screen_captures/integration_tests_run.jpeg">
+
+Saída esperada pelo comando
 
 <br/>
 
