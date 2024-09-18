@@ -28,8 +28,8 @@ describe('POST in /patients', () => {
         email: patientEmail,
         birth_date: '1990-05-15',
         gender: "male",
-        height: 1.75,
-        weight: 72.50
+        height: '1.75',
+        weight: '72.50'
       })
       .expect(201);
 
@@ -63,7 +63,11 @@ describe('PATCH /patients/:uuid', () => {
   test.each([
     ['name', { name: 'Paula Prado' }],
     ['phone', { phone: '+5521999998888' }],
-  ])('Deve alterar o campo %s', async (key, param) => {
+    ['birth_date', { birth_date: '1980-05-15' }],
+    ['gender', { gender: 'other' }],
+    ['height', { height: '1.80' }],
+    ['weight', { weight: '55.00' }]
+  ])('Should update field %s', async (key, param) => {
     const requisicao = { request };
     const spy = jest.spyOn(requisicao, 'request');
 
@@ -73,7 +77,11 @@ describe('PATCH /patients/:uuid', () => {
       .expect(200);
 
     const updatedPatient = await patients.findOne({ where: { uuid: patientUUID } });
-    expect(updatedPatient[key]).toEqual(param[key]);
+
+    let valueOfKeyParam
+    expect(updatedPatient[key]).toEqual(String(param[key]));
+
+
     expect(spy).toHaveBeenCalled();
   });
 });
