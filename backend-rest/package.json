@@ -1,12 +1,12 @@
 {
   "name": "js-med-planner-rest-api",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "API responsável pelos dados do Med Planner Challenge",
   "main": "index.js",
-  "type": "module",
+  "nodeVersion": "20.17.0",
   "scripts": {
     "dev": "nodemon server.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose",
+    "test": "sequelize db:drop --env test && sequelize db:create --env test && sequelize db:migrate --env test && node node_modules/jest/bin/jest.js --verbose",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -15,10 +15,12 @@
     "API",
     "backend"
   ],
-  "author": "",
+  "author": "learningenuity@gmail.com",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.3",
     "express": "^4.21.0",
+    "pg": "^8.13.0",
     "sequelize": "^6.37.3"
   },
   "devDependencies": {
