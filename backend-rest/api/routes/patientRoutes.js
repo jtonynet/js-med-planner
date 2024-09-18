@@ -8,5 +8,6 @@ router
   .get('/patients', PatientController.retrieveList)
   .get('/patients/:uuid', PatientController.retrieveByUUID)
   .patch('/patients/:uuid', PatientController.updateByUUID)
+  .delete('/patients/:uuid', PatientController.deleteByUUID)
 
 module.exports = router

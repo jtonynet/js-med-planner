@@ -92,6 +92,32 @@ class PatientController {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error updating patient' });
     }
   }
+
+  static async deleteByUUID(req, res) {
+    const { uuid: uuidParam } = req.params
+
+    try {
+      const patient = await patients.findOne({
+        where: {
+          uuid: uuidParam,
+        },
+      });
+
+      if (!patient) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+          message: 'Patient not found',
+        });
+      }
+
+      await patient.destroy();
+
+      res.status(StatusCodes.NO_CONTENT).end();
+
+    } catch (error) {
+      // TODO: log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error deleting patient' });
+    }
+  }
 }
 
 module.exports = PatientController

@@ -1,7 +1,7 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+const crypto = require('crypto');
+
 module.exports = (sequelize, DataTypes) => {
   class patients extends Model {
     /**
@@ -21,14 +21,14 @@ module.exports = (sequelize, DataTypes) => {
       unique: true
     },
     name: {
-      type: DataTypes.STRING(254),
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     phone: {
       type: DataTypes.STRING(25)
     },
     email: {
-      type: DataTypes.STRING(150),
+      type: DataTypes.STRING(255),
       allowNull: false,
       unique: true
     },
@@ -54,5 +54,27 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true,
     modelName: 'patients',
   });
+
+  patients.addHook('beforeDestroy', async (patient, options) => {
+    // hashField compliant with LGPD
+    const hashField = (field) => {
+      return crypto.createHash('sha256').update(field).digest('hex');
+    };
+
+    // TODO: move to constants values of patient 
+    const decimalMinimun = '00.01';
+    const dateOfBrazilianDiscovery = '1500-04-22'; //anonymize purpouses
+
+    patient.name = hashField(patient.name);
+    patient.email = hashField(patient.email);
+    patient.phone = null;
+    patient.gender = 'unspecified';
+    patient.birth_date = dateOfBrazilianDiscovery;
+    patient.height = decimalMinimun;
+    patient.weight = decimalMinimun;
+
+    await patient.save({ transaction: options.transaction });
+  });
+
   return patients;
 };
