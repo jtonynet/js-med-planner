@@ -12,7 +12,8 @@ module.exports = {
       uuid: {
         allowNull: false,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUID
+        defaultValue: Sequelize.UUID,
+        unique: true
       },
       name: {
         allowNull: false,
@@ -23,7 +24,8 @@ module.exports = {
       },
       email: {
         allowNull: false,
-        type: Sequelize.STRING(150)
+        type: Sequelize.STRING(150),
+        unique: true
       },
       birth_date: {
         allowNull: false,
