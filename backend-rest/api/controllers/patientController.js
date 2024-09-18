@@ -35,12 +35,12 @@ class PatientController {
   }
 
   static async retrievePatientByUUID(req, res) {
-    const { uniqueId } = req.params
+    const { uuid: uuidParam } = req.params
 
     try {
       const patient = await patients.findOne({
         where: {
-          uuid: uniqueId,
+          uuid: uuidParam,
         },
         attributes: [
           'uuid', 'name', 'phone',

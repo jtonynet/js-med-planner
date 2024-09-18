@@ -1,6 +1,7 @@
 const request = require('supertest')
 const { describe, it, beforeAll, afterAll } = require('@jest/globals')
 const app = require('../../app.js');
+const { patients } = require('../../models');
 
 let server;
 
@@ -23,7 +24,7 @@ describe('POST in /patients', () => {
       .send({
         uuid: patientUUID,
         name: 'Pedro Prado',
-        phone: '+5511912345678',
+        phone: '+551100000000',
         email: patientEmail,
         birth_date: '1990-05-15',
         gender: "male",
@@ -47,7 +48,7 @@ describe('GET in /patients', () => {
   });
 });
 
-describe('GET in /patients/id', () => {
+describe('GET in /patients/uuid', () => {
   it('Should return one patient by UUID', async () => {
     const response = await request(app)
       .get(`/patients/${patientUUID}`)
@@ -55,5 +56,24 @@ describe('GET in /patients/id', () => {
       .expect('content-type', /json/)
       .expect(200);
     expect(response.body.email).toEqual(patientEmail);
+  });
+});
+
+describe('PATCH /patients/:uuid', () => {
+  test.each([
+    ['name', { name: 'Paula Prado' }],
+    ['phone', { phone: '+5521999998888' }],
+  ])('Deve alterar o campo %s', async (key, param) => {
+    const requisicao = { request };
+    const spy = jest.spyOn(requisicao, 'request');
+
+    await requisicao.request(app)
+      .patch(`/patients/${patientUUID}`)
+      .send(param)
+      .expect(200);
+
+    const updatedPatient = await patients.findOne({ where: { uuid: patientUUID } });
+    expect(updatedPatient[key]).toEqual(param[key]);
+    expect(spy).toHaveBeenCalled();
   });
 });
