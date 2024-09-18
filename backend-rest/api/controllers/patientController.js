@@ -1,3 +1,4 @@
+const { StatusCodes } = require('http-status-codes');
 const { patients } = require('../models');
 
 class PatientController {
@@ -13,17 +14,17 @@ class PatientController {
         birth_date, gender, height, weight
       });
 
-      res.status(201).json(newPatient);
+      res.status(StatusCodes.CREATED).json(newPatient);
 
     } catch (error) {
-      res.status(500).json({ message: 'Error creating patient' });
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error creating patient' });
     }
   }
 
   static async retrievePatientsList(req, res) {
     const patientsList = await patients.findAll()
 
-    res.status(200).json(patientsList)
+    res.status(StatusCodes.OK).json(patientsList);
   }
 }
 
