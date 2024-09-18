@@ -1,14 +1,15 @@
 const request = require('supertest')
-const { describe, expect, it } = require('@jest/globals')
+const { describe, it, beforeAll, afterAll } = require('@jest/globals')
 const app = require('../../app.js');
 
 let server;
-beforeEach(() => {
+
+beforeAll(async () => {
   const port = 3000;
   server = app.listen(port);
 });
 
-afterEach(() => {
+afterAll(async () => {
   server.close();
 });
 
@@ -19,7 +20,7 @@ describe('POST in /patients', () => {
       .send({
         uuid: 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9',
         name: 'Araujo Hipocondriaco',
-        phone: '+55 11 91234-5678',
+        phone: '+5511912345678',
         email: 'araujo@xmail.com',
         birth_date: '1990-05-15',
         gender: "male",
@@ -27,5 +28,7 @@ describe('POST in /patients', () => {
         weight: 72.50
       })
       .expect(201);
+
+    expect(response.body.email).toEqual('araujo@xmail.com');
   });
 });

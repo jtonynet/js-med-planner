@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.STRING(254)
       },
       phone: {
-        type: Sequelize.STRING(15)
+        type: Sequelize.STRING(25)
       },
       email: {
         allowNull: false,
@@ -55,7 +55,7 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('patients');
   }
 };
