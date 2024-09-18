@@ -55,7 +55,6 @@ function findByUUID(patients, uuid) {
   return patients.find(patient => patient.uuid === uuid);
 }
 
-
 describe('POST in /patients', () => {
   test.each([
     [0, patientsToCreate[0]],
@@ -78,6 +77,8 @@ describe('GET in /patients', () => {
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
+
+    expect(response.body.length).toEqual(patientsToCreate.length)
 
     patientToTest = findByUUID(response.body, uuidPatientToUpdateAndDelete)
     expect(patientToTest.email).toEqual(patientToUpdateAndDelete.email);
@@ -104,7 +105,7 @@ describe('PATCH /patients/:uuid', () => {
     ['gender', { gender: patientParamsToUpdate.gender }],
     ['height', { height: patientParamsToUpdate.height }],
     ['weight', { weight: patientParamsToUpdate.weight }]
-  ])('Should update field %s', async (key, param) => {
+  ])('Should update field %s at one patient by UUID', async (key, param) => {
     const requisicao = { request };
     const spy = jest.spyOn(requisicao, 'request');
 
@@ -122,3 +123,4 @@ describe('PATCH /patients/:uuid', () => {
     expect(spy).toHaveBeenCalled();
   });
 });
+
