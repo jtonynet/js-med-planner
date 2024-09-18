@@ -29,6 +29,7 @@ class PatientController {
         'email', 'birth_date', 'gender',
         'height', 'weight'
       ],
+      order: [['createdAt', 'DESC']],
     })
 
     res.status(StatusCodes.OK).json(patientsList);

@@ -15,27 +15,59 @@ afterAll(async () => {
   server.close();
 });
 
+const uuidPatientToUpdateAndDelete = 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9'
+
 const patientsToCreate = [
   {
-    uuid: 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9',
+    uuid: uuidPatientToUpdateAndDelete,
     name: 'Pedro Prado',
     phone: '+551100000000',
     email: 'pedro@xmail.com',
     birth_date: '1990-05-15',
-    gender: "male",
+    gender: 'male',
     height: '1.75',
     weight: '72.50'
+  },
+  {
+    uuid: '69be741b-3bf4-41a2-9b44-0e8b655a54dc',
+    name: 'Felipe Feltrin',
+    phone: '+552199999999',
+    email: 'felipef@xmail.com',
+    birth_date: '1970-12-25',
+    gender: 'male',
+    height: '1.60',
+    weight: '80.00'
   }
 ]
 
+patientToUpdateAndDelete = patientsToCreate[0]
+
+const patientParamsToUpdate = {
+  name: 'Paula Prado',
+  phone: '+5521999998888',
+  birth_date: '1980-05-15',
+  gender: 'other',
+  height: '1.80',
+  weight: '55.00'
+}
+
+function findByUUID(patients, uuid) {
+  return patients.find(patient => patient.uuid === uuid);
+}
+
+
 describe('POST in /patients', () => {
-  it('Should create a patient', async () => {
+  test.each([
+    [0, patientsToCreate[0]],
+    [1, patientsToCreate[1]],
+  ])('Should create a patient', async (key, patient) => {
     const response = await request(app)
       .post('/patients')
-      .send(patientsToCreate[0])
+      .send(patient)
       .expect(StatusCodes.CREATED);
 
-    expect(response.body.email).toEqual(patientsToCreate[0].email);
+    expect(response.body.email).toEqual(patientsToCreate[key].email);
+
   });
 });
 
@@ -46,43 +78,46 @@ describe('GET in /patients', () => {
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
-    expect(response.body[0].email).toEqual(patientsToCreate[0].email);
+
+    patientToTest = findByUUID(response.body, uuidPatientToUpdateAndDelete)
+    expect(patientToTest.email).toEqual(patientToUpdateAndDelete.email);
   });
 });
 
 describe('GET in /patients/uuid', () => {
   it('Should return one patient by UUID', async () => {
     const response = await request(app)
-      .get(`/patients/${patientsToCreate[0].uuid}`)
+      .get(`/patients/${uuidPatientToUpdateAndDelete}`)
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
-    expect(response.body.email).toEqual(patientsToCreate[0].email);
+    expect(response.body.email).toEqual(patientToUpdateAndDelete.email);
   });
 });
 
+
 describe('PATCH /patients/:uuid', () => {
   test.each([
-    ['name', { name: 'Paula Prado' }],
-    ['phone', { phone: '+5521999998888' }],
-    ['birth_date', { birth_date: '1980-05-15' }],
-    ['gender', { gender: 'other' }],
-    ['height', { height: '1.80' }],
-    ['weight', { weight: '55.00' }]
+    ['name', { name: patientParamsToUpdate.name }],
+    ['phone', { phone: patientParamsToUpdate.phone }],
+    ['birth_date', { birth_date: patientParamsToUpdate.birth_date }],
+    ['gender', { gender: patientParamsToUpdate.gender }],
+    ['height', { height: patientParamsToUpdate.height }],
+    ['weight', { weight: patientParamsToUpdate.weight }]
   ])('Should update field %s', async (key, param) => {
     const requisicao = { request };
     const spy = jest.spyOn(requisicao, 'request');
 
     await requisicao.request(app)
-      .patch(`/patients/${patientsToCreate[0].uuid}`)
+      .patch(`/patients/${uuidPatientToUpdateAndDelete}`)
       .send(param)
       .expect(StatusCodes.OK);
 
-    const updatedPatient = await patients.findOne({ where: { uuid: patientsToCreate[0].uuid } });
+    const updatedPatient = await patients.findOne({
+      where: { uuid: uuidPatientToUpdateAndDelete }
+    });
 
-    let valueOfKeyParam
     expect(updatedPatient[key]).toEqual(String(param[key]));
-
 
     expect(spy).toHaveBeenCalled();
   });
