@@ -46,3 +46,14 @@ describe('GET in /patients', () => {
     expect(response.body[0].email).toEqual(patientEmail);
   });
 });
+
+describe('GET in /patients/id', () => {
+  it('Should return one patient by UUID', async () => {
+    const response = await request(app)
+      .get(`/patients/${patientUUID}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(200);
+    expect(response.body.email).toEqual(patientEmail);
+  });
+});
