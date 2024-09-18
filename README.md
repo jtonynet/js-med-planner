@@ -34,7 +34,7 @@
 __[Med Planner Challenge](#header)__<br/>
   1.  ⤴️ [Índice](#index)
   2.  📖 [Sobre](#about)
-  3.  📱 [Rodando o Projeto](#run)
+  3.  💻 [Rodando o Projeto](#run)
   4.  📰 [Documentação da API](#api-docs)
   5.  📊 [Diagramas](#diagrams)
   6.  ✅ [Testes](#tests)
@@ -54,7 +54,7 @@ Acompanhe as tarefas pelo [__Kanban__](https://github.com/users/jtonynet/project
 
 Este repositório foi criado com a intenção de propor uma possível solução para o seguinte desafio:
 
-> 👨‍📱 __Case Dev Backend:__
+> 👨‍🌐 __Case Dev Backend:__
 > 
 > Construir o backend para um sistema de prontuário eletrônico onde o médico pode
 cadastrar as informações do paciente como nome, telefone, data de nascimento, sexo,
@@ -112,7 +112,7 @@ Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no Git
 ---
 
 <a id="run"></a>
-### 📱 Rodando o Projeto
+### 🌐 Rodando o Projeto
 
 <a id="run-containerized"></a>
 #### 🐋 Conteinerizado
@@ -234,12 +234,12 @@ graph LR
     subgraph Doctor Flow
       DOCTOR(["👩‍⚕️ Authorized Doctor"])
 
-      DOCTOR --> CREATE_PATIENT("📱 Create Patient")
-      DOCTOR --> RETRIEVE_PATIENT_LIST("📱 Retrieve Patient List")
-      DOCTOR --> RETRIEVE_PATIENT("📱 Retrieve Patient")
-      DOCTOR --> UPDATE_PATIENT("📱 Update Patient")
-      DOCTOR --> UPDATE_PATIENT("📱 Update Patient")
-      DOCTOR --> DELETE_PATIENT("📱 Delete Patient")
+      DOCTOR --> CREATE_PATIENT("🌐 Create Patient")
+      DOCTOR --> RETRIEVE_PATIENT_LIST("🌐 Retrieve Patient List")
+      DOCTOR --> RETRIEVE_PATIENT("🌐 Retrieve Patient")
+      DOCTOR --> UPDATE_PATIENT("🌐 Update Patient")
+      DOCTOR --> UPDATE_PATIENT("🌐 Update Patient")
+      DOCTOR --> DELETE_PATIENT("🌐 Delete Patient")
     end
 
     subgraph Two Tier Architecture
