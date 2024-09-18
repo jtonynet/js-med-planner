@@ -1,3 +1,4 @@
+const { StatusCodes } = require('http-status-codes');
 const request = require('supertest')
 const { describe, it, beforeAll, afterAll } = require('@jest/globals')
 const app = require('../../app.js');
@@ -14,26 +15,27 @@ afterAll(async () => {
   server.close();
 });
 
-const patientEmail = 'pedro@xmail.com'
-const patientUUID = 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9'
+const patientsToCreate = [
+  {
+    uuid: 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9',
+    name: 'Pedro Prado',
+    phone: '+551100000000',
+    email: 'pedro@xmail.com',
+    birth_date: '1990-05-15',
+    gender: "male",
+    height: '1.75',
+    weight: '72.50'
+  }
+]
 
 describe('POST in /patients', () => {
   it('Should create a patient', async () => {
     const response = await request(app)
       .post('/patients')
-      .send({
-        uuid: patientUUID,
-        name: 'Pedro Prado',
-        phone: '+551100000000',
-        email: patientEmail,
-        birth_date: '1990-05-15',
-        gender: "male",
-        height: '1.75',
-        weight: '72.50'
-      })
-      .expect(201);
+      .send(patientsToCreate[0])
+      .expect(StatusCodes.CREATED);
 
-    expect(response.body.email).toEqual(patientEmail);
+    expect(response.body.email).toEqual(patientsToCreate[0].email);
   });
 });
 
@@ -43,19 +45,19 @@ describe('GET in /patients', () => {
       .get('/patients')
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
-      .expect(200);
-    expect(response.body[0].email).toEqual(patientEmail);
+      .expect(StatusCodes.OK);
+    expect(response.body[0].email).toEqual(patientsToCreate[0].email);
   });
 });
 
 describe('GET in /patients/uuid', () => {
   it('Should return one patient by UUID', async () => {
     const response = await request(app)
-      .get(`/patients/${patientUUID}`)
+      .get(`/patients/${patientsToCreate[0].uuid}`)
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
-      .expect(200);
-    expect(response.body.email).toEqual(patientEmail);
+      .expect(StatusCodes.OK);
+    expect(response.body.email).toEqual(patientsToCreate[0].email);
   });
 });
 
@@ -72,11 +74,11 @@ describe('PATCH /patients/:uuid', () => {
     const spy = jest.spyOn(requisicao, 'request');
 
     await requisicao.request(app)
-      .patch(`/patients/${patientUUID}`)
+      .patch(`/patients/${patientsToCreate[0].uuid}`)
       .send(param)
-      .expect(200);
+      .expect(StatusCodes.OK);
 
-    const updatedPatient = await patients.findOne({ where: { uuid: patientUUID } });
+    const updatedPatient = await patients.findOne({ where: { uuid: patientsToCreate[0].uuid } });
 
     let valueOfKeyParam
     expect(updatedPatient[key]).toEqual(String(param[key]));
