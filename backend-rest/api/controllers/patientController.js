@@ -21,7 +21,9 @@ class PatientController {
   }
 
   static async retrievePatientsList(req, res) {
-    res.status(501).send('not implemented')
+    const patientsList = await patients.findAll()
+
+    res.status(200).json(patientsList)
   }
 }
 
