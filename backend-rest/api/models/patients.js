@@ -1,0 +1,56 @@
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class patients extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  patients.init({
+    uuid: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false
+    },
+    name: {
+      type: DataTypes.STRING(254),
+      allowNull: false
+    },
+    phone: {
+      type: DataTypes.STRING(15)
+    },
+    email: {
+      type: DataTypes.STRING(150),
+      allowNull: false
+    },
+    birth_date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    gender: {
+      type: DataTypes.ENUM('male', 'female', 'other'),
+      allowNull: false
+    },
+    height: {
+      type: DataTypes.DECIMAL(5, 2),
+      allowNull: false
+    },
+    weight: {
+      type: DataTypes.DECIMAL(5, 2),
+      allowNull: false
+    }
+  }, {
+    sequelize,
+    timestamps: true,
+    paranoid: true,
+    modelName: 'patients',
+  });
+  return patients;
+};
