@@ -61,9 +61,9 @@ module.exports = (sequelize, DataTypes) => {
       return crypto.createHash('sha256').update(field).digest('hex');
     };
 
-    // TODO: move to constants values of patient 
+    // TODO: move to constants values of patient. Anonymize purpouses
     const decimalMinimun = '00.01';
-    const dateOfBrazilianDiscovery = '1500-04-22'; //anonymize purpouses
+    const dateOfBrazilianDiscovery = '1500-04-22';
 
     patient.name = hashField(patient.name);
     patient.email = hashField(patient.email);
