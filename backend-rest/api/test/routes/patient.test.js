@@ -13,7 +13,7 @@ afterAll(async () => {
   server.close();
 });
 
-const patientEmail = 'araujo@xmail.com'
+const patientEmail = 'pedro@xmail.com'
 const patientUUID = 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9'
 
 describe('POST in /patients', () => {
@@ -22,7 +22,7 @@ describe('POST in /patients', () => {
       .post('/patients')
       .send({
         uuid: patientUUID,
-        name: 'Araujo Hipocondriaco',
+        name: 'Pedro Prado',
         phone: '+5511912345678',
         email: patientEmail,
         birth_date: '1990-05-15',
