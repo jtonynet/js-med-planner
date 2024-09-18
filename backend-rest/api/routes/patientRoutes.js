@@ -4,9 +4,9 @@ const PatientController = require('../controllers/patientController')
 const router = Router()
 
 router
-  .post('/patients', PatientController.createPatient)
-  .get('/patients', PatientController.retrievePatientsList)
-  .get('/patients/:uuid', PatientController.retrievePatientByUUID)
-  .patch('/patients/:uuid', PatientController.updatePatientByUUID)
+  .post('/patients', PatientController.create)
+  .get('/patients', PatientController.retrieveList)
+  .get('/patients/:uuid', PatientController.retrieveByUUID)
+  .patch('/patients/:uuid', PatientController.updateByUUID)
 
 module.exports = router

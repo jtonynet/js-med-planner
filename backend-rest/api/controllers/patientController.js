@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const { patients } = require('../models');
 
 class PatientController {
-  static async createPatient(req, res) {
+  static async create(req, res) {
     try {
       const {
         uuid, name, phone, email,
@@ -22,7 +22,7 @@ class PatientController {
     }
   }
 
-  static async retrievePatientsList(req, res) {
+  static async retrieveList(req, res) {
     const patientsList = await patients.findAll({
       attributes: [
         'uuid', 'name', 'phone',
@@ -34,7 +34,7 @@ class PatientController {
     res.status(StatusCodes.OK).json(patientsList);
   }
 
-  static async retrievePatientByUUID(req, res) {
+  static async retrieveByUUID(req, res) {
     const { uuid: uuidParam } = req.params
 
     try {
@@ -57,7 +57,7 @@ class PatientController {
 
   }
 
-  static async updatePatientByUUID(req, res) {
+  static async updateByUUID(req, res) {
     const { uuid: uuidParam } = req.params
 
     try {
