@@ -33,7 +33,7 @@ module.exports = {
       },
       gender: {
         allowNull: false,
-        type: Sequelize.ENUM('male', 'female', 'other')
+        type: Sequelize.ENUM('male', 'female', 'other', 'none', 'unspecified')
       },
       height: {
         allowNull: false,

@@ -118,9 +118,29 @@ describe('PATCH /patients/:uuid', () => {
       where: { uuid: uuidPatientToUpdateAndDelete }
     });
 
+    expect(updatedPatient.deletedAt).toBeNull();
     expect(updatedPatient[key]).toEqual(String(param[key]));
 
     expect(spy).toHaveBeenCalled();
   });
 });
 
+describe('DELETE in /patients/:uuid', () => {
+  it('Should soft delete and anonymize patient LGPD data by UUID', async () => {
+    const response = await request(app)
+      .delete(`/patients/${uuidPatientToUpdateAndDelete}`)
+      .expect(StatusCodes.NO_CONTENT);
+
+    const deletedPatient = await patients.findOne({
+      where: { uuid: uuidPatientToUpdateAndDelete },
+      paranoid: false,
+    });
+
+    expect(deletedPatient.deletedAt).not.toBeNull();
+
+    expect(deletedPatient.name).not.toEqual(patientToUpdateAndDelete.name);
+    expect(deletedPatient.email).not.toEqual(patientToUpdateAndDelete.email);
+    expect(deletedPatient.phone).toBeNull();
+    expect(deletedPatient.gender).toEqual('unspecified');
+  });
+});
