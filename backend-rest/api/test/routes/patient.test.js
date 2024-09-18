@@ -143,9 +143,9 @@ describe('DELETE in /patients/:uuid', () => {
 
     expect(deletedPatient.deletedAt).not.toBeNull();
 
-    // TODO: move to constants values of patient 
+    // TODO: move to constants values of patient. Anonymize purpouses
     const decimalMinimun = '00.01';
-    const dateOfBrazilianDiscovery = '1500-04-22'; //anonymize purpouses
+    const dateOfBrazilianDiscovery = '1500-04-22';
 
     expect(deletedPatient.name).not.toEqual(patientToUpdateAndDelete.name);
     expect(deletedPatient.email).not.toEqual(patientToUpdateAndDelete.email);
