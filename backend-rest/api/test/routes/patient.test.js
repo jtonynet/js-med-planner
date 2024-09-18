@@ -13,15 +13,18 @@ afterAll(async () => {
   server.close();
 });
 
+const patientEmail = 'araujo@xmail.com'
+const patientUUID = 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9'
+
 describe('POST in /patients', () => {
   it('Should create a patient', async () => {
     const response = await request(app)
       .post('/patients')
       .send({
-        uuid: 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9',
+        uuid: patientUUID,
         name: 'Araujo Hipocondriaco',
         phone: '+5511912345678',
-        email: 'araujo@xmail.com',
+        email: patientEmail,
         birth_date: '1990-05-15',
         gender: "male",
         height: 1.75,
@@ -29,6 +32,17 @@ describe('POST in /patients', () => {
       })
       .expect(201);
 
-    expect(response.body.email).toEqual('araujo@xmail.com');
+    expect(response.body.email).toEqual(patientEmail);
+  });
+});
+
+describe('GET in /patients', () => {
+  it('Should return a list of patients', async () => {
+    const response = await request(app)
+      .get('/patients')
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(200);
+    expect(response.body[0].email).toEqual(patientEmail);
   });
 });
