@@ -4,4 +4,4 @@ tmp
 /out-tsc
 
 # dependencies
-/rest-api/node_modules
+/backend-rest/node_modules

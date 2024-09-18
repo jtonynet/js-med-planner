@@ -405,3 +405,7 @@ __TODO__
 [⤴️ de volta ao índice](#index)
 
 ---
+
+<!-- 
+sudo kill -9 $(lsof -t -i:3000)
+-->

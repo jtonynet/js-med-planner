@@ -1,8 +1,6 @@
-import request from 'supertest';
-import {
-  describe, expect, it,
-} from '@jest/globals';
-import app from '../../app.js';
+const request = require('supertest')
+const { describe, expect, it } = require('@jest/globals')
+const app = require('../../app.js');
 
 let server;
 beforeEach(() => {

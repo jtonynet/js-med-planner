@@ -25,14 +25,14 @@ services:
     networks:
       - med-planner-network
 
-  rest-api:
+  backend-rest:
     build:
-      context: ./rest-api
+      context: ./backend-rest
       dockerfile: Dockerfile
     depends_on:
       - postgres-med-planner
-    container_name: rest-api
-    hostname: rest-api
+    container_name: backend-rest
+    hostname: backend-rest
     ports:
       - "8080:3000"
     tty: true

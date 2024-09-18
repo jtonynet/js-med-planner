@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "api_user",
+    "password": "api_pass",
+    "database": "med_planner_db",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
