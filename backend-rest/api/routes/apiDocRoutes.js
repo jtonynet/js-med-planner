@@ -6,21 +6,38 @@ const path = require('path');
 const router = Router()
 
 const swaggerOptions = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'MedPlanner Rest API',
-            version: '0.0.6',
-            description: 'API documentation',
-        },
-        servers: [
-            {
-                url: 'http://localhost:3000',
-                description: 'Local Development server',
-            },
-        ],
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'MedPlanner Rest API',
+      version: '0.0.6',
+      description: 'API documentation',
     },
-    apis: [path.join(__dirname, './patientRoutes.js')],
+    servers: [
+      {
+        url: 'http://localhost:3000',
+        description: 'Local Development server',
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
+  },
+  apis: [
+    path.join(__dirname, './authRoutes.js'),
+    path.join(__dirname, './patientRoutes.js')
+  ],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);

@@ -10,7 +10,11 @@ router.use(authenticate)
  * @swagger
  * /patients:
  *   get:
- *     summary: Retrieve a list of patients
+ *     summary: Retrieve Patient List
+ *     security:
+ *       - bearerAuth: []
+ *     tags: 
+ *       - Patients
  *     responses:
  *       200:
  *         description: A list of patients
