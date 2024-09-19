@@ -10,7 +10,7 @@
     https://devicon.dev/
     https://simpleicons.org/
 -->
-[<img src="./docs/assets/images/icons/nodedotjs.svg" width="25px" height="25px" title="Node.js" alt="Node.js">](https://nodejs.org/en) [<img src="./docs/assets/images/icons/npm.svg" width="25px" height="25px" alt="npm" title="npm">](https://www.npmjs.com/) [<img src="./docs/assets/images/icons/dotenv.svg" width="25px" height="25px" alt="DotEnv Logo" title="DotEnv">](https://www.npmjs.com/package/dotenv) [<img src="./docs/assets/images/icons/eslint.svg" width="25px" height="25px" alt="Eslint" title="Eslint">](https://eslint.org/) [<img src="./docs/assets/images/icons/express.svg" width="25px" height="25px" title="Express" alt="Express">](https://expressjs.com/) [<img src="./docs/assets/images/icons/sequelize.svg" width="25px" height="25px" title="Sequelize" alt="Sequelize">](https://sequelize.com/) [<img src="./docs/assets/images/icons/jest.svg" width="25px" height="25px" alt="Jest" title="Jest">](https://jestjs.io/) [<img src="./docs/assets/images/icons/docker.svg" width="25px" height="25px" alt="Docker" title="Docker">](https://www.docker.com/) [<img src="./docs/assets/images/icons/github.svg" width="25px" height="25px" alt="GitHub" title="GitHub">](https://github.com/jtonynet) [<img src="./docs/assets/images/icons/visualstudiocode.svg" width="25px" height="25px" alt="vscode" title="vscode">](https://code.visualstudio.com/) [<img src="./docs/assets/images/icons/postman.svg" width="25px" height="25px" alt="Postman Logo" title="Postman">](https://www.postman.com/) [<img src="./docs/assets/images/icons/postgresql.svg" width="25px" height="25px" alt="PostgreSQL Logo" title="PostgreSQL">](https://www.postgresql.org/) [<img src="./docs/assets/images/icons/swagger.svg" width="25px" height="25px" alt="Swagger Logo" title="Swagger">](https://swagger.io/) [<img src="./docs/assets/images/icons/githubactions.svg" width="25px" height="25px" alt="GithubActions Logo" title="GithubActions">](https://docs.github.com/en/actions) [<img src="./docs/assets/images/icons/mermaidjs.svg" width="25px" height="25px" alt="MermaidJS Logo" title="MermaidJS">](https://mermaid.js.org/)
+[<img src="./docs/assets/images/icons/nodedotjs.svg" width="25px" height="25px" title="Node.js" alt="Node.js">](https://nodejs.org/en) [<img src="./docs/assets/images/icons/npm.svg" width="25px" height="25px" alt="npm" title="npm">](https://www.npmjs.com/) <!--[<img src="./docs/assets/images/icons/dotenv.svg" width="25px" height="25px" alt="DotEnv Logo" title="DotEnv">](https://www.npmjs.com/package/dotenv)--> [<img src="./docs/assets/images/icons/eslint.svg" width="25px" height="25px" alt="Eslint" title="Eslint">](https://eslint.org/) [<img src="./docs/assets/images/icons/express.svg" width="25px" height="25px" title="Express" alt="Express">](https://expressjs.com/) [<img src="./docs/assets/images/icons/sequelize.svg" width="25px" height="25px" title="Sequelize" alt="Sequelize">](https://sequelize.com/) [<img src="./docs/assets/images/icons/jest.svg" width="25px" height="25px" alt="Jest" title="Jest">](https://jestjs.io/) [<img src="./docs/assets/images/icons/jsonwebtoken.svg" width="25px" height="25px" alt="JsonWebToken" title="JsonWebToken">](https://jwt.io/) [<img src="./docs/assets/images/icons/docker.svg" width="25px" height="25px" alt="Docker" title="Docker">](https://www.docker.com/) [<img src="./docs/assets/images/icons/github.svg" width="25px" height="25px" alt="GitHub" title="GitHub">](https://github.com/jtonynet) [<img src="./docs/assets/images/icons/visualstudiocode.svg" width="25px" height="25px" alt="vscode" title="vscode">](https://code.visualstudio.com/) [<img src="./docs/assets/images/icons/postman.svg" width="25px" height="25px" alt="Postman Logo" title="Postman">](https://www.postman.com/) [<img src="./docs/assets/images/icons/postgresql.svg" width="25px" height="25px" alt="PostgreSQL Logo" title="PostgreSQL">](https://www.postgresql.org/) [<img src="./docs/assets/images/icons/swagger.svg" width="25px" height="25px" alt="Swagger Logo" title="Swagger">](https://swagger.io/) [<img src="./docs/assets/images/icons/githubactions.svg" width="25px" height="25px" alt="GithubActions Logo" title="GithubActions">](https://docs.github.com/en/actions) [<img src="./docs/assets/images/icons/mermaidjs.svg" width="25px" height="25px" alt="MermaidJS Logo" title="MermaidJS">](https://mermaid.js.org/)
 
 <!-- 
 [<img src="./docs/assets/images/icons/amazonaws.svg" width="25px" height="25px" alt="Amazon AWS Logo" title="Amazon AWS">](https://aws.amazon.com/pt/) [<img src="./docs/assets/images/icons/passport.svg" width="25px" height="25px" alt="Passport Logo" title="Passport">](https://www.passportjs.org/) [<img src="./docs/assets/images/icons/prometheus.svg" width="25px" height="25px" alt="Prometheus Logo" title="Prometheus">](https://prometheus.io/) [<img src="./docs/assets/images/icons/grafana.svg" width="25px" height="25px" alt="Grafana Logo" title="Grafana">](https://grafana.com/)
@@ -54,7 +54,7 @@ Acompanhe as tarefas pelo [__Kanban__](https://github.com/users/jtonynet/project
 
 Este repositório foi criado com a intenção de propor uma possível solução para o seguinte desafio:
 
-> 👨‍💻 __Case Dev Backend:__
+> 👨‍🌐 __Case Dev Backend:__
 > 
 > Construir o backend para um sistema de prontuário eletrônico onde o médico pode
 cadastrar as informações do paciente como nome, telefone, data de nascimento, sexo,
@@ -112,7 +112,7 @@ Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no Git
 ---
 
 <a id="run"></a>
-### 💻 Rodando o Projeto
+### 🌐 Rodando o Projeto
 
 <a id="run-containerized"></a>
 #### 🐋 Conteinerizado
@@ -193,9 +193,9 @@ erDiagram
         string phone
         string email
         date birth_date
-        string gender
-        float height
-        float weight
+        enum gender
+        decimal height
+        decimal weight
     }
     appointment {
         int id
@@ -211,6 +211,7 @@ erDiagram
         UUID uuid
         string name
         string email
+        string password
     }
     observation{
         int id
@@ -231,23 +232,26 @@ erDiagram
 ```mermaid
 graph LR
     subgraph Doctor Flow
-      ADMIN(["👤 Doctor"])
+      DOCTOR(["👩‍⚕️ Authorized Doctor"])
 
-      ADMIN --> CREATE_PATIENT("💻 Create Patient")
-      ADMIN --> RETRIEVE_PATIENT_LIST("💻 Retrieve Patient List")
-      ADMIN --> RETRIEVE_PATIENT("💻 Retrieve Patient")
-      ADMIN --> UPDATE_PATIENT("💻 Update Patient")
+      DOCTOR --> CREATE_PATIENT("🌐 Create Patient")
+      DOCTOR --> RETRIEVE_PATIENT_LIST("🌐 Retrieve Patient List")
+      DOCTOR --> RETRIEVE_PATIENT("🌐 Retrieve Patient")
+      DOCTOR --> UPDATE_PATIENT("🌐 Update Patient")
+      DOCTOR --> UPDATE_PATIENT("🌐 Update Patient")
+      DOCTOR --> DELETE_PATIENT("🌐 Delete Patient")
     end
 
-    subgraph Two Tier Architecture -
-      subgraph Handlers
+    subgraph Two Tier Architecture
+      subgraph Controllers
         API_CREATE_PATIENT("🖥️ Create Patient")
-        API_GET_PATIENTS("🖥️ Get Patient")
+        API_GET_PATIENTS("🖥️ Retrieve Patient")
         API_GET_PATIENT("🖥️ Get Patient by UUID")
         API_UPDATE_PATIENT("🖥️ Update Patient by UUID")
+        API_DELETE_PATIENT("🖥️ Delete Patient by UUID")
       end
 
-      subgraph Entities
+      subgraph Models
         ENTITY_PATIENT("📄 Patient")
       end
 
@@ -260,11 +264,13 @@ graph LR
   RETRIEVE_PATIENT_LIST -->|http GET| API_GET_PATIENTS
   RETRIEVE_PATIENT -->|http GET| API_GET_PATIENT
   UPDATE_PATIENT -->|http PATCH| API_UPDATE_PATIENT
+  DELETE_PATIENT -->|http DELETE| API_DELETE_PATIENT
 
   API_CREATE_PATIENT-->ENTITY_PATIENT
   API_GET_PATIENTS-->ENTITY_PATIENT
   API_GET_PATIENT-->ENTITY_PATIENT
   API_UPDATE_PATIENT-->ENTITY_PATIENT 
+  API_DELETE_PATIENT-->ENTITY_PATIENT
 
 
   ENTITY_PATIENT-->MED_PLANNER_DB
@@ -301,7 +307,7 @@ então vá para o diretório do mesmo e execute o comando de testes:
 
 <img src="./docs/assets/images/screen_captures/integration_tests_db.jpeg">
 
-Cada vez que o comando for procedido, a database de testes sera recriada no test-postgres-med-planner assegurando uma execução limpa
+Cada vez que o comando for procedido, a database de testes será recriada no test-postgres-med-planner assegurando uma execução limpa
 
 <img src="./docs/assets/images/screen_captures/integration_tests_run.jpeg">
 
@@ -436,12 +442,13 @@ Teste concorrendo com a app, derrubar porta 300
 sudo kill -9 $(lsof -t -i:3000)
 
 Criando Modelos com o cli do sequelize
+
+```bash
 sequelize model:create --name patients --attributes uuid:uuid,name:string,phone:string,email:string,birth_date:date,gender:string,height:float,weight:float
+```
 
-sequelize db:migrate
-
-reconstruindo o banco com migrations
-sequelize db:drop
-sequelize db:create
-sequelize db:migrate
+```bash
+sequelize model:create --name doctors --attributes uuid:uuid,name:string,email:string,password:string
+sequelize seed:create --name create-initial-doctor
+```
 -->
