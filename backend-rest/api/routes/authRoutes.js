@@ -7,7 +7,7 @@ const router = Router()
  * @swagger
  * /auth/login:
  *   post:
- *     summary: Login and receive a Bearer token
+ *     summary: Login and receive a Bearer
  *     tags:
  *       - Auth
  *     requestBody:
@@ -15,8 +15,16 @@ const router = Router()
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/request.Auth'
- *                 
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 required: true
+ *                 example: "house@md.com"
+ *               password:
+ *                 type: string
+ *                 required: true
+ *                 example: "lupos"
  *     responses:
  *       200:
  *         description: Successful login, returns a Bearer token
@@ -30,6 +38,8 @@ const router = Router()
  *       500:
  *         description: Internal server error
  */
+router.post('/auth/login', AuthController.login);
+
 router.post('/auth/login', AuthController.login)
 
 module.exports = router

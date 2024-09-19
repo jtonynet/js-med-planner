@@ -14,7 +14,16 @@ class PatientController {
         birth_date, gender, height, weight
       });
 
-      res.status(StatusCodes.CREATED).json(newPatient);
+      res.status(StatusCodes.CREATED).json({
+        uuid: newPatient.uuid,
+        name: newPatient.name,
+        phone: newPatient.phone,
+        email: newPatient.email,
+        birth_date: newPatient.birth_date,
+        gender: newPatient.gender,
+        height: newPatient.height,
+        weight: newPatient.weight,
+      });
 
     } catch (error) {
       // log(error)
@@ -85,7 +94,16 @@ class PatientController {
 
       await patient.update(updatedFields);
 
-      res.status(StatusCodes.OK).json(patient);
+      res.status(StatusCodes.OK).json({
+        uuid: patient.uuid,
+        name: patient.name,
+        phone: patient.phone,
+        email: patient.email,
+        birth_date: patient.birth_date,
+        gender: patient.gender,
+        height: patient.height,
+        weight: patient.weight,
+      });
 
     } catch (error) {
       // TODO: log(error)
