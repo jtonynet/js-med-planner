@@ -54,7 +54,7 @@ Acompanhe as tarefas pelo [__Kanban__](https://github.com/users/jtonynet/project
 
 Este repositório foi criado com a intenção de propor uma possível solução para o seguinte desafio:
 
-> 👨‍🌐 __Case Dev Backend:__
+> 👨‍💻 __Case Dev Backend:__
 > 
 > Construir o backend para um sistema de prontuário eletrônico onde o médico pode
 cadastrar as informações do paciente como nome, telefone, data de nascimento, sexo,
@@ -112,7 +112,7 @@ Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no Git
 ---
 
 <a id="run"></a>
-### 🌐 Rodando o Projeto
+### 💻 Rodando o Projeto
 
 <a id="run-containerized"></a>
 #### 🐋 Conteinerizado
@@ -175,7 +175,7 @@ O cliente deve informar o UUID do recurso, seguindo as modernas práticas de des
 
 <a id="diagrams"></a>
 ### 📊 Diagramas do Sistema
-_Diagramas Mermaid podem apresentar problemas de visualizacao em aplicativos mobile_
+_Diagramas Mermaid podem apresentar problemas de visualização em aplicativos mobile_
 
 <!-- 
     diagrams by:
@@ -225,6 +225,7 @@ erDiagram
     appointment ||--o{ observation : has
 ```
 
+   1. A abordagem da tabela `doctor` com o campo `password` foi aplicada apenas para ter uma autenticação minima nos endpoints dos recursos desde o inicio. Caso alcance todos os requisitos obrigatórios do desafio e tenha tempo disponível, pretendo implementar `user` com `roles` adequadas
 <br/>
 
 **Diagrama de Sistema:**

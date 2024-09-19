@@ -24,6 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
+    /*
+      TODO:
+      The `password`field was applied solely to have minimal authentication 
+      for the resource endpoints from the start. If I meet all the mandatory 
+      requirements of the challenge and have available time, I plan to implement 
+      a user with appropriate roles. 
+    */
     password: {
       type: DataTypes.STRING(255),
       allowNull: false
