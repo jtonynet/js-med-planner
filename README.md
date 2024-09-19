@@ -448,6 +448,7 @@ sequelize model:create --name patients --attributes uuid:uuid,name:string,phone:
 ```
 
 ```bash
-sequelize model:create --name doctors --attributes uuid:uuid,name:string,email:string,pass:string
+sequelize model:create --name doctors --attributes uuid:uuid,name:string,email:string,password:string
+sequelize seed:create --name create-initial-doctor
 ```
 -->
