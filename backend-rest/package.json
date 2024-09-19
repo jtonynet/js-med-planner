@@ -6,7 +6,7 @@
   "nodeVersion": "20.17.0",
   "scripts": {
     "dev": "nodemon server.js",
-    "test": "sequelize db:drop --env test && sequelize db:create --env test && sequelize db:migrate --env test && node node_modules/jest/bin/jest.js --verbose --detectOpenHandles",
+    "test": "sequelize db:drop --env test && sequelize db:create --env test && sequelize db:migrate --env test  && sequelize db:seed:all--env test && node node_modules/jest/bin/jest.js --verbose --detectOpenHandles",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "db:clean": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all"
