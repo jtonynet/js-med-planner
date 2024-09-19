@@ -23,20 +23,9 @@ router.use(authenticate)
  *             schema:
  *               type: array
  *               items:
- *                 type: object
- *                 properties:
- *                   uuid:
- *                     type: string
- *                     example: "69be741b-3bf4-41a2-9b44-0e8b655a54dd"
- *                   name:
- *                     type: string
- *                     example: "Pedro Prado"
- *                   email:
- *                     type: string
- *                     example: "pedro@xmail.com"
+ *                 $ref: '#/components/schemas/response.Patient'
  */
 router.get('/patients', PatientController.retrieveList)
-
 
 router
   .post('/patients', PatientController.create)
