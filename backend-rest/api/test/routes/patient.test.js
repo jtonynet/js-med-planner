@@ -5,10 +5,20 @@ const app = require('../../app.js');
 const { patients } = require('../../models');
 
 let server;
+let bearerToken;
 
 beforeAll(async () => {
   const port = 3000;
   server = app.listen(port);
+
+  const response = await request(app)
+    .post('/auth/login')
+    .send({
+      "email": "house@md.com",
+      "password": "lupos"
+    });
+
+  bearerToken = response.text;
 });
 
 afterAll(async () => {
@@ -63,7 +73,7 @@ function findByUUID(patients, uuid) {
   return patients.find(patient => patient.uuid === uuid);
 }
 
-describe('POST in /patients', () => {
+describe('POST Authenticated Bearer in /patients', () => {
   test.each([
     [0, patientsToCreate[0]],
     [1, patientsToCreate[1]],
@@ -71,6 +81,7 @@ describe('POST in /patients', () => {
   ])('Should create a patient', async (key, patient) => {
     const response = await request(app)
       .post('/patients')
+      .set('Authorization', `Bearer ${bearerToken}`)
       .send(patient)
       .expect(StatusCodes.CREATED);
 
@@ -79,10 +90,12 @@ describe('POST in /patients', () => {
   });
 });
 
-describe('GET in /patients', () => {
+
+describe('GET Authenticated Bearer in /patients', () => {
   it('Should return a list of patients with length equal a three', async () => {
     const response = await request(app)
       .get('/patients')
+      .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
@@ -94,10 +107,12 @@ describe('GET in /patients', () => {
   });
 });
 
-describe('GET in /patients/uuid', () => {
+
+describe('GET Authenticated Bearer in /patients/uuid', () => {
   it('Should return one patient by UUID', async () => {
     const response = await request(app)
       .get(`/patients/${patientToUpdateAndDelete.uuid}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
@@ -105,8 +120,7 @@ describe('GET in /patients/uuid', () => {
   });
 });
 
-
-describe('PATCH /patients/:uuid', () => {
+describe('PATCH Authenticated Bearer /patients/:uuid', () => {
   test.each([
     ['name', { name: patientParamsToUpdate.name }],
     ['phone', { phone: patientParamsToUpdate.phone }],
@@ -117,6 +131,7 @@ describe('PATCH /patients/:uuid', () => {
   ])('Should update field %s at one patient by UUID', async (key, param) => {
     await request(app)
       .patch(`/patients/${patientToUpdateAndDelete.uuid}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
       .send(param)
       .expect(StatusCodes.OK);
 
@@ -130,10 +145,11 @@ describe('PATCH /patients/:uuid', () => {
 });
 
 
-describe('DELETE in /patients/:uuid', () => {
+describe('DELETE Authenticated Bearer in /patients/:uuid', () => {
   it('Should SOFT delete (paranoid) and anonymize patient LGPD data by UUID', async () => {
     await request(app)
       .delete(`/patients/${patientToUpdateAndDelete.uuid}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
       .expect(StatusCodes.NO_CONTENT);
 
     const deletedPatient = await patients.findOne({
@@ -159,6 +175,7 @@ describe('DELETE in /patients/:uuid', () => {
   it('Should return a list of patients with length equal a two', async () => {
     const response = await request(app)
       .get('/patients')
+      .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
@@ -166,4 +183,3 @@ describe('DELETE in /patients/:uuid', () => {
     expect(response.body.length).toEqual(2) // IMHO Magic number is valid just in case, semantic test suit
   });
 });
-

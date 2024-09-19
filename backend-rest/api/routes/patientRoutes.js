@@ -1,7 +1,10 @@
 const { Router } = require('express')
 const PatientController = require('../controllers/patientController')
+const authenticate = require('../middlewares/authenticate')
 
 const router = Router()
+
+router.use(authenticate)
 
 router
   .post('/patients', PatientController.create)

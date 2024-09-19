@@ -1,13 +1,11 @@
 const bodyParser = require('body-parser')
-
-const patient = require('./patientRoutes')
 const auth = require('./authRoutes')
-// const doctor = require('./doctorRoutes') UNDOCUMENTED
+const patient = require('./patientRoutes')
 
 module.exports = app => {
   app.use(
     bodyParser.json(),
-    patient,
-    auth
+    auth,
+    patient
   )
 }
