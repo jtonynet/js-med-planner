@@ -56,12 +56,20 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   patients.addHook('beforeDestroy', async (patient, options) => {
-    // hashField compliant with LGPD
+    /*
+      TODO:
+      https://en.wikipedia.org/wiki/Crypto-shredding
+      The current use of hashField is LGPD compliant and provides minimal anonymization, 
+      satisfying the desired requirements. However, a more robust solution would involve 
+      crypto-shredding for string fields and using approximate ranges for dates and numeric values.
+
+      Crypto-shredding will address the issue of sensitive data in backup databases.
+      Plan to study and implement this in the future for enhanced data protection.
+    */
     const hashField = (field) => {
       return crypto.createHash('sha256').update(field).digest('hex');
     };
 
-    // TODO: move to constants values of patient. Anonymize purpouses
     const decimalMinimun = '00.01';
     const dateOfBrazilianDiscovery = '1500-04-22';
 
