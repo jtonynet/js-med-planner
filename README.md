@@ -160,7 +160,7 @@ ou se conecte a uma database válida, então vá para o diretório `backend-rest
 
 Com a aplicação em execução, a rota de documentação Swagger fica disponível em http://localhost:3000/docs/
 
-O endpoint `auth/login` prove um token `Bearer` que deve ser obtido e utilizado no `Authorize` do swagger para que as requisições possam ser procedidas adequadamente.
+O endpoint `auth/login` provê um token `Bearer` que deve ser obtido e utilizado no `Authorize` do swagger para que as requisições possam ser procedidas adequadamente.
 
 O cliente deve informar o UUID do recurso para criação. Para validações, você pode utilizar um [site gerador de UUIDs](https://www.uuidgenerator.net/).
 
