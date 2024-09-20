@@ -156,19 +156,23 @@ ou se conecte a uma database válida, então vá para o diretório `backend-rest
 <a id="api-docs"></a>
 ### 📰  Documentação da API
 
-__TODO__
+####  <img src="./docs/assets/images/icons/swagger.svg" width="20px" height="20px" alt="Swagger" title="Swagger">  Swagger
+
+Com a aplicação em execução, a rota de documentação Swagger fica disponível em http://localhost:3000/docs/
+
+O cliente deve informar o UUID do recurso, seguindo as modernas práticas de desenvolvimento. Para validações, você pode utilizar um [site gerador de UUIDs](https://www.uuidgenerator.net/).
+
+<img src="./docs/assets/images/screen_captures/swagger_medplanner_rest_api.png">
 
 <br/>
 
-<!-- 
-Com a aplicação em execução, a rota de documentação Swagger fica disponível em http://localhost:8080/swagger/index.html#/ .
+####  <img src="./docs/assets/images/icons/postman.svg" width="20px" height="20px" alt="Swagger" title="Swagger">  Postman
 
-Acesse-a para realizar validações, caso prefira ao usar o Postman. Utilizar o Swagger-API também é uma boa maneira de tornar a aplicação aderente às boas práticas e ao design de API.
+Dentro da pasta [./scripts/postman](./scripts/postman/rjs-med-planner.postman_collection.json) encontra-se o arquivo JSON básico que pode ser importado no seu <i>Postman</i> para auxiliar em testes manuais e desenvolvimento.</summary>
 
-O cliente deve informar o UUID do recurso, seguindo as modernas práticas de desenvolvimento. Para validações, você pode utilizar um [site gerador de UUIDs](https://www.uuidgenerator.net/). Outras restrições e características dos recursos que podem ser criados, obtidos, listados e deletados podem ser visualizadas na seção 'Models' do Swagger.
+<img src="./docs/assets/images/screen_captures/postman_medplanner_rest_api.png">
 
-####  <img src="./docs/assets/images/icons/swagger.svg" width="20px" height="20px" alt="Swagger" title="Swagger"/> Swagger docs
--->
+<br/>
 
 [⤴️ de volta ao índice](#index)
 

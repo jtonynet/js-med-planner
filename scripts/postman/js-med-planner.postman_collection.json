@@ -1,0 +1,175 @@
+{
+	"info": {
+		"_postman_id": "afb588d4-45d7-4fca-9011-8576cc5bf0de",
+		"name": "js-med-planner",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30919179"
+	},
+	"item": [
+		{
+			"name": "patients",
+			"item": [
+				{
+					"name": "Create Patient",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"uuid\": \"db7a27cc-69c4-46eb-ad0d-3166972bfbc9\",\n  \"name\": \"Roberto Rodriguez 2\",\n  \"phone\": \"+55 11 91234-5678\",\n  \"email\": \"robertor2@xmail.com\",\n  \"birth_date\": \"1990-05-15\",\n  \"gender\": \"male\",\n  \"height\": 1.75,\n  \"weight\": 72.50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/patients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Patient List",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMjFkZDFjNDYtYTZjMi00NGI5LWEzYTktZDNmYTA0MzhhMTJkIiwiZW1haWwiOiJob3VzZUBtZC5jb20iLCJpYXQiOjE3MjY3MTQ4NzksImV4cCI6MTcyNjgwMTI3OX0.ee3BRt-mZ5PwRfoxsY6heQtRVs7e7ezSAARR7EeeZro",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/patients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Patient by uuid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/patients/db7a27cc-69c4-46eb-ad0d-3166972bfbc9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"patients",
+								"db7a27cc-69c4-46eb-ad0d-3166972bfbc9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Patient by uuid",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/patients/db7a27cc-69c4-46eb-ad0d-3166972bfbc9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"patients",
+								"db7a27cc-69c4-46eb-ad0d-3166972bfbc9"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "doctors",
+			"item": [
+				{
+					"name": "Create Doctor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"uuid\": \"123fbe28-f945-4da9-ba24-af31f6d9139d\",\n  \"name\": \"Dr. Ivo Pitangui \",\n  \"email\": \"ivo@md.com\",\n  \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/doctors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"doctors"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Login and Retrieve Bearer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"house@md.com\",\n    \"password\": \"lupos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
