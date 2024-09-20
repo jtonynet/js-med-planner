@@ -1,10 +1,10 @@
-const { Router } = require('express')
-const PatientController = require('../controllers/patientController')
-const authenticate = require('../middlewares/authenticate')
+const { Router } = require('express');
+const PatientController = require('../controllers/patientController');
+const authenticate = require('../middlewares/authenticate');
 
-const router = Router()
+const router = Router();
 
-router.use(authenticate)
+router.use(authenticate);
 
 /**
  * @swagger
@@ -29,7 +29,7 @@ router.use(authenticate)
  *             schema:
  *               $ref: '#/components/schemas/response.Patient'
  */
-router.post('/patients', PatientController.create)
+router.post('/patients', PatientController.create);
 
 /**
  * @swagger
@@ -50,7 +50,7 @@ router.post('/patients', PatientController.create)
  *               items:
  *                 $ref: '#/components/schemas/response.Patient'
  */
-router.get('/patients', PatientController.retrieveList)
+router.get('/patients', PatientController.retrieveList);
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ router.get('/patients', PatientController.retrieveList)
  *             schema:
  *               $ref: '#/components/schemas/response.Patient'
  */
-router.get('/patients/:uuid', PatientController.retrieveByUUID)
+router.get('/patients/:uuid', PatientController.retrieveByUUID);
 
 /**
  * @swagger
@@ -114,7 +114,7 @@ router.get('/patients/:uuid', PatientController.retrieveByUUID)
  *       404:
  *         description: Patient not found
  */
-router.patch('/patients/:uuid', PatientController.updateByUUID)
+router.patch('/patients/:uuid', PatientController.updateByUUID);
 
 /**
  * @swagger
@@ -142,6 +142,6 @@ router.patch('/patients/:uuid', PatientController.updateByUUID)
  *       500:
  *         description: Internal server error
  */
-router.delete('/patients/:uuid', PatientController.deleteByUUID)
+router.delete('/patients/:uuid', PatientController.deleteByUUID);
 
-module.exports = router
+module.exports = router;
