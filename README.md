@@ -102,9 +102,9 @@ não pelo uso de ORM;
 >   - Deploy automatizado via pipeline (gitlab-ci, bitbucket pipeline, github actions, etc).
 
 
-_*A documentação original do desafio é mais abrangente, com sugestões de tela para o front e mais dados. Coloquei aqui os principais pontos sem citar o proponente._
+_*A documentação original do desafio é mais abrangente, com sugestões de tela para o front e mais dados._
 
-Faz sentido utilizar __Arquitetura de Duas Camadas__. Construido junto a uma visualização estilo __Kanban__ no Github Project. Caso exista a necessidade e a complexidade aumentar, o projeto pode ser extendido para o uso de uma terceira camada.
+Faz sentido utilizar __Arquitetura de Duas Camadas__. Caso a complexidade aumente, podemos extender para o uso de uma terceira camada (`services`).
 
 Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no GitHub Actions
 
@@ -160,7 +160,9 @@ ou se conecte a uma database válida, então vá para o diretório `backend-rest
 
 Com a aplicação em execução, a rota de documentação Swagger fica disponível em http://localhost:3000/docs/
 
-O cliente deve informar o UUID do recurso, seguindo as modernas práticas de desenvolvimento. Para validações, você pode utilizar um [site gerador de UUIDs](https://www.uuidgenerator.net/).
+O endpoint `auth/login` prove um token `Bearer` que deve ser obtido e utilizado no `Authorize` do swagger para que as requisições possam ser procedidas adequadamente.
+
+O cliente deve informar o UUID do recurso para criação. Para validações, você pode utilizar um [site gerador de UUIDs](https://www.uuidgenerator.net/).
 
 <img src="./docs/assets/images/screen_captures/swagger_medplanner_rest_api.png">
 
@@ -168,7 +170,7 @@ O cliente deve informar o UUID do recurso, seguindo as modernas práticas de des
 
 ####  <img src="./docs/assets/images/icons/postman.svg" width="20px" height="20px" alt="Swagger" title="Swagger">  Postman
 
-Dentro da pasta [./scripts/postman](./scripts/postman/rjs-med-planner.postman_collection.json) encontra-se o arquivo JSON básico que pode ser importado no seu <i>Postman</i> para auxiliar em testes manuais e desenvolvimento.</summary>
+Dentro da pasta [./scripts/postman](./scripts/postman/rjs-med-planner.postman_collection.json) encontra-se o arquivo JSON básico que pode ser importado no seu `Postman` para auxiliar em testes manuais e desenvolvimento.</summary>
 
 <img src="./docs/assets/images/screen_captures/postman_medplanner_rest_api.png">
 
