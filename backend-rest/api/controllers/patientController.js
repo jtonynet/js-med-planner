@@ -4,8 +4,8 @@ const { patients } = require('../models');
 class PatientController {
   static async create(req, res) {
     try {
-      const { uuid, name: patientName, phone, email, birth_date, gender, height, weight } = req.body;
-      const patientData = { uuid, name: patientName, phone, email, birth_date, gender, height, weight };
+      const { uuid, name: patientName, phone, email, birthDate, gender, height, weight } = req.body;
+      const patientData = { uuid, name: patientName, phone, email, birthDate, gender, height, weight };
 
       const newPatient = patients.build(patientData)
 
@@ -27,7 +27,7 @@ class PatientController {
 
   static async retrieveList(req, res) {
     const patientsList = await patients.findAll({
-      attributes: ['uuid', 'name', 'phone', 'email', 'birth_date', 'gender', 'height', 'weight'],
+      attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
       order: [['createdAt', 'DESC']],
     })
 
@@ -42,7 +42,7 @@ class PatientController {
         where: {
           uuid: uuidParam,
         },
-        attributes: ['uuid', 'name', 'phone', 'email', 'birth_date', 'gender', 'height', 'weight'],
+        attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
       })
 
       res.status(StatusCodes.OK).json(patient);
@@ -72,7 +72,7 @@ class PatientController {
       }
 
       const updatedFields = {};
-      const allowedFields = ['name', 'phone', 'birth_date', 'gender', 'height', 'weight'];
+      const allowedFields = ['name', 'phone', 'birthDate', 'gender', 'height', 'weight'];
 
       allowedFields.forEach(field => {
         if (req.body[field] !== undefined) {
@@ -130,7 +130,7 @@ class PatientController {
       name: patient.name,
       phone: patient.phone,
       email: patient.email,
-      birth_date: patient.birth_date,
+      birthDate: patient.birthDate,
       gender: patient.gender,
       height: patient.height,
       weight: patient.weight,

@@ -33,7 +33,7 @@
  *           type: string
  *           required: true
  *           example: "pedro@xmail.com"
- *         birth_date:
+ *         birthDate:
  *           type: string date
  *           required: true 
  *           example: "1990-05-15"
@@ -61,7 +61,7 @@
  *         phone:
  *           type: string
  *           example: +5521999998888
- *         birth_date:
+ *         birthDate:
  *           type: string
  *           format: date
  *           example: 1980-05-15
@@ -94,7 +94,7 @@
  *         email:
  *           type: string
  *           example: "pedro@xmail.com"
- *         birth_date:
+ *         birthDate:
  *           type: string
  *           example: "1990-05-15"
  *         gender:
