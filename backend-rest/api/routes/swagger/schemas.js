@@ -40,6 +40,11 @@
  *         gender:
  *           type: string
  *           required: true
+ *           enum: 
+ *             - male
+ *             - female
+ *             - other
+ *             - none
  *           example: "male"
  *         height:
  *           type: number
@@ -67,16 +72,19 @@
  *           example: 1980-05-15
  *         gender:
  *           type: string
- *           example: other
+ *           enum: 
+ *             - male
+ *             - female
+ *             - other
+ *             - none
+ *           example: "male"
  *         height:
  *           type: number
  *           format: float
- *           required: true
  *           example: 1.80
  *         weight:
  *           type: number
  *           format: float
- *           required: true
  *           example: 55.50
  * 
  *     response.Patient:

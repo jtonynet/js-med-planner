@@ -37,6 +37,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       field: 'birth_date'
     },
+    /*
+      TODO:
+      The best approach here would be to create a gender table, but using an 
+      enum at this moment reduces complexity and makes the intent explicit.
+      Keeping it simple. KISS.
+    */
     gender: {
       type: DataTypes.ENUM('male', 'female', 'other', 'none', 'unspecified'),
       allowNull: false
