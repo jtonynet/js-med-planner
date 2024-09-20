@@ -31,7 +31,7 @@ const patientsToCreate = [
     name: 'Pedro Prado',
     phone: '+551100000000',
     email: 'pedro@xmail.com',
-    birth_date: '1990-05-15',
+    birthDate: '1990-05-15',
     gender: 'male',
     height: '1.75',
     weight: '72.50'
@@ -41,7 +41,7 @@ const patientsToCreate = [
     name: 'Felipe Feltrin',
     phone: '+552199999999',
     email: 'felipef@xmail.com',
-    birth_date: '1970-12-25',
+    birthDate: '1970-12-25',
     gender: 'male',
     height: '1.60',
     weight: '80.00'
@@ -51,7 +51,7 @@ const patientsToCreate = [
     name: 'Carolina Karla',
     phone: '+5521420420420',
     email: 'carolinak@xmail.com',
-    birth_date: '1995-12-25',
+    birthDate: '1995-12-25',
     gender: 'female',
     height: '1.65',
     weight: '50'
@@ -63,7 +63,7 @@ patientToUpdateAndDelete = patientsToCreate[0]
 const patientParamsToUpdate = {
   name: 'Paula Prado',
   phone: '+5521999998888',
-  birth_date: '1980-05-15',
+  birthDate: '1980-05-15',
   gender: 'other',
   height: '1.80',
   weight: '55.00'
@@ -90,7 +90,6 @@ describe('POST Authenticated Bearer in /patients', () => {
   });
 });
 
-
 describe('GET Authenticated Bearer in /patients', () => {
   it('Should return a list of patients with length equal a three', async () => {
     const response = await request(app)
@@ -106,7 +105,6 @@ describe('GET Authenticated Bearer in /patients', () => {
     expect(patientToTest.email).toEqual(patientToUpdateAndDelete.email);
   });
 });
-
 
 describe('GET Authenticated Bearer in /patients/uuid', () => {
   it('Should return one patient by UUID', async () => {
@@ -124,7 +122,7 @@ describe('PATCH Authenticated Bearer /patients/:uuid', () => {
   test.each([
     ['name', { name: patientParamsToUpdate.name }],
     ['phone', { phone: patientParamsToUpdate.phone }],
-    ['birth_date', { birth_date: patientParamsToUpdate.birth_date }],
+    ['birthDate', { birthDate: patientParamsToUpdate.birthDate }],
     ['gender', { gender: patientParamsToUpdate.gender }],
     ['height', { height: patientParamsToUpdate.height }],
     ['weight', { weight: patientParamsToUpdate.weight }]
@@ -143,7 +141,6 @@ describe('PATCH Authenticated Bearer /patients/:uuid', () => {
     expect(updatedPatient[key]).toEqual(String(param[key]));
   });
 });
-
 
 describe('DELETE Authenticated Bearer in /patients/:uuid', () => {
   it('Should SOFT delete (paranoid) and anonymize patient LGPD data by UUID', async () => {
@@ -167,7 +164,7 @@ describe('DELETE Authenticated Bearer in /patients/:uuid', () => {
     expect(deletedPatient.email).not.toEqual(patientToUpdateAndDelete.email);
     expect(deletedPatient.phone).toBeNull();
     expect(deletedPatient.gender).toEqual('unspecified');
-    expect(deletedPatient.birth_date).toEqual(dateOfBrazilianDiscovery);
+    expect(deletedPatient.birthDate).toEqual(dateOfBrazilianDiscovery);
     expect(deletedPatient.height).not.toEqual(decimalMinimun);
     expect(deletedPatient.weight).not.toEqual(decimalMinimun);
   });

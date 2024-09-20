@@ -32,10 +32,17 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
-    birth_date: {
+    birthDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false
+      allowNull: false,
+      field: 'birth_date'
     },
+    /*
+      TODO:
+      The best approach here would be to create a gender table, but using an 
+      enum at this moment reduces complexity and makes the intent explicit.
+      Keeping it simple. KISS.
+    */
     gender: {
       type: DataTypes.ENUM('male', 'female', 'other', 'none', 'unspecified'),
       allowNull: false
@@ -77,7 +84,7 @@ module.exports = (sequelize, DataTypes) => {
     patient.email = hashField(patient.email);
     patient.phone = null;
     patient.gender = 'unspecified';
-    patient.birth_date = dateOfBrazilianDiscovery;
+    patient.birthDate = dateOfBrazilianDiscovery;
     patient.height = decimalMinimun;
     patient.weight = decimalMinimun;
 

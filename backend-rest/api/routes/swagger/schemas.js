@@ -33,13 +33,18 @@
  *           type: string
  *           required: true
  *           example: "pedro@xmail.com"
- *         birth_date:
+ *         birthDate:
  *           type: string date
  *           required: true 
  *           example: "1990-05-15"
  *         gender:
  *           type: string
  *           required: true
+ *           enum: 
+ *             - male
+ *             - female
+ *             - other
+ *             - none
  *           example: "male"
  *         height:
  *           type: number
@@ -61,22 +66,25 @@
  *         phone:
  *           type: string
  *           example: +5521999998888
- *         birth_date:
+ *         birthDate:
  *           type: string
  *           format: date
  *           example: 1980-05-15
  *         gender:
  *           type: string
- *           example: other
+ *           enum: 
+ *             - male
+ *             - female
+ *             - other
+ *             - none
+ *           example: "male"
  *         height:
  *           type: number
  *           format: float
- *           required: true
  *           example: 1.80
  *         weight:
  *           type: number
  *           format: float
- *           required: true
  *           example: 55.50
  * 
  *     response.Patient:
@@ -94,7 +102,7 @@
  *         email:
  *           type: string
  *           example: "pedro@xmail.com"
- *         birth_date:
+ *         birthDate:
  *           type: string
  *           example: "1990-05-15"
  *         gender:

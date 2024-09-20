@@ -246,7 +246,6 @@ graph LR
       DOCTOR --> RETRIEVE_PATIENT_LIST("🌐 Retrieve Patient List")
       DOCTOR --> RETRIEVE_PATIENT("🌐 Retrieve Patient")
       DOCTOR --> UPDATE_PATIENT("🌐 Update Patient")
-      DOCTOR --> UPDATE_PATIENT("🌐 Update Patient")
       DOCTOR --> DELETE_PATIENT("🌐 Delete Patient")
     end
 

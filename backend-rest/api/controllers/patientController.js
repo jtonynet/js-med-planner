@@ -4,40 +4,30 @@ const { patients } = require('../models');
 class PatientController {
   static async create(req, res) {
     try {
-      const {
-        uuid, name, phone, email,
-        birth_date, gender, height, weight
-      } = req.body;
+      const { uuid, name: patientName, phone, email, birthDate, gender, height, weight } = req.body;
+      const patientData = { uuid, name: patientName, phone, email, birthDate, gender, height, weight };
 
-      const newPatient = await patients.create({
-        uuid, name, phone, email,
-        birth_date, gender, height, weight
-      });
+      const newPatient = patients.build(patientData)
 
-      res.status(StatusCodes.CREATED).json({
-        uuid: newPatient.uuid,
-        name: newPatient.name,
-        phone: newPatient.phone,
-        email: newPatient.email,
-        birth_date: newPatient.birth_date,
-        gender: newPatient.gender,
-        height: newPatient.height,
-        weight: newPatient.weight,
-      });
+      // TODO: validate
+
+      await newPatient.save();
+
+      res.status(StatusCodes.CREATED).json(
+        PatientController.sanitizePatientData(newPatient)
+      );
 
     } catch (error) {
-      // log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error creating patient' });
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Error creating patient'
+      });
     }
   }
 
   static async retrieveList(req, res) {
     const patientsList = await patients.findAll({
-      attributes: [
-        'uuid', 'name', 'phone',
-        'email', 'birth_date', 'gender',
-        'height', 'weight'
-      ],
+      attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
       order: [['createdAt', 'DESC']],
     })
 
@@ -52,17 +42,15 @@ class PatientController {
         where: {
           uuid: uuidParam,
         },
-        attributes: [
-          'uuid', 'name', 'phone',
-          'email', 'birth_date', 'gender',
-          'height', 'weight'
-        ],
+        attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
       })
 
       res.status(StatusCodes.OK).json(patient);
     } catch (error) {
-      // log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error retrieve patient' });
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Error retrieve patient'
+      });
     }
 
   }
@@ -84,7 +72,7 @@ class PatientController {
       }
 
       const updatedFields = {};
-      const allowedFields = ['name', 'phone', 'birth_date', 'gender', 'height', 'weight'];
+      const allowedFields = ['name', 'phone', 'birthDate', 'gender', 'height', 'weight'];
 
       allowedFields.forEach(field => {
         if (req.body[field] !== undefined) {
@@ -92,22 +80,19 @@ class PatientController {
         }
       });
 
+      // TODO: validate
+
       await patient.update(updatedFields);
 
-      res.status(StatusCodes.OK).json({
-        uuid: patient.uuid,
-        name: patient.name,
-        phone: patient.phone,
-        email: patient.email,
-        birth_date: patient.birth_date,
-        gender: patient.gender,
-        height: patient.height,
-        weight: patient.weight,
-      });
+      res.status(StatusCodes.OK).json(
+        PatientController.sanitizePatientData(patient)
+      );
 
     } catch (error) {
-      // TODO: log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error updating patient' });
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Error updating patient'
+      });
     }
   }
 
@@ -132,10 +117,25 @@ class PatientController {
       res.status(StatusCodes.NO_CONTENT).end();
 
     } catch (error) {
-      // TODO: log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Error deleting patient' });
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Error deleting patient'
+      });
     }
+  }
+
+  static sanitizePatientData(patient) {
+    return {
+      uuid: patient.uuid,
+      name: patient.name,
+      phone: patient.phone,
+      email: patient.email,
+      birthDate: patient.birthDate,
+      gender: patient.gender,
+      height: patient.height,
+      weight: patient.weight,
+    };
   }
 }
 
-module.exports = PatientController
+module.exports = PatientController;

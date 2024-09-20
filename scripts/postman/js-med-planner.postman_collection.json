@@ -13,10 +13,16 @@
 					"name": "Create Patient",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMjFkZDFjNDYtYTZjMi00NGI5LWEzYTktZDNmYTA0MzhhMTJkIiwiZW1haWwiOiJob3VzZUBtZC5jb20iLCJpYXQiOjE3MjY3OTY0MTUsImV4cCI6MTcyNjg4MjgxNX0.zVgXCkaUZsTT4zMpKxOfIRTIhP0xNoRZ8xZAKAjwa_o",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"uuid\": \"db7a27cc-69c4-46eb-ad0d-3166972bfbc9\",\n  \"name\": \"Roberto Rodriguez 2\",\n  \"phone\": \"+55 11 91234-5678\",\n  \"email\": \"robertor2@xmail.com\",\n  \"birth_date\": \"1990-05-15\",\n  \"gender\": \"male\",\n  \"height\": 1.75,\n  \"weight\": 72.50\n}",
+							"raw": "{\n  \"uuid\": \"db7a27cc-69c4-46eb-ad0d-3166972bfbc9\",\n  \"name\": \"Roberto Rodriguez\",\n  \"phone\": \"+55 11 91234-5678\",\n  \"email\": \"robertor2@xmail.com\",\n  \"birthDate\": \"1990-05-15\",\n  \"gender\": \"male\",\n  \"height\": 1.75,\n  \"weight\": 72.50\n}",
 							"options": {
 								"raw": {
 									"language": "json"
