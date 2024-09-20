@@ -9,8 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate() {
-      // define association here
+    static associate(models) {
+      doctors.hasMany(models.appointments, {
+        foreignKey: 'doctor_id',
+        as: 'appointments'
+      });
     }
   }
   doctors.init({
@@ -41,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     indexes: [
       {
         unique: true,
-        fields: ['uuid'] // Cria um índice único para uuid
+        fields: ['uuid']
       }
     ]
   });
