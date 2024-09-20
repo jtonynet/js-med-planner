@@ -40,6 +40,4 @@ const router = Router();
  */
 router.post('/auth/login', AuthController.login);
 
-router.post('/auth/login', AuthController.login);
-
 module.exports = router;

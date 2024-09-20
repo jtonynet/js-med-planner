@@ -90,7 +90,6 @@ describe('POST Authenticated Bearer in /patients', () => {
   });
 });
 
-
 describe('GET Authenticated Bearer in /patients', () => {
   it('Should return a list of patients with length equal a three', async () => {
     const response = await request(app)
@@ -106,7 +105,6 @@ describe('GET Authenticated Bearer in /patients', () => {
     expect(patientToTest.email).toEqual(patientToUpdateAndDelete.email);
   });
 });
-
 
 describe('GET Authenticated Bearer in /patients/uuid', () => {
   it('Should return one patient by UUID', async () => {
@@ -143,7 +141,6 @@ describe('PATCH Authenticated Bearer /patients/:uuid', () => {
     expect(updatedPatient[key]).toEqual(String(param[key]));
   });
 });
-
 
 describe('DELETE Authenticated Bearer in /patients/:uuid', () => {
   it('Should SOFT delete (paranoid) and anonymize patient LGPD data by UUID', async () => {
