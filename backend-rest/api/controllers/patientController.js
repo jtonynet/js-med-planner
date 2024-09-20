@@ -9,10 +9,12 @@ class PatientController {
 
       const newPatient = patients.build(patientData)
 
+      // TODO: validate
+
       await newPatient.save();
 
       res.status(StatusCodes.CREATED).json(
-        PatientController.toResponse(newPatient)
+        PatientController.sanitizePatientData(newPatient)
       );
 
     } catch (error) {
@@ -78,10 +80,12 @@ class PatientController {
         }
       });
 
+      // TODO: validate
+
       await patient.update(updatedFields);
 
       res.status(StatusCodes.OK).json(
-        PatientController.toResponse(patient)
+        PatientController.sanitizePatientData(patient)
       );
 
     } catch (error) {
@@ -120,7 +124,7 @@ class PatientController {
     }
   }
 
-  static toResponse(patient) {
+  static sanitizePatientData(patient) {
     return {
       uuid: patient.uuid,
       name: patient.name,
@@ -134,4 +138,4 @@ class PatientController {
   }
 }
 
-module.exports = PatientController
+module.exports = PatientController;

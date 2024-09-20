@@ -1,7 +1,7 @@
-const { Router } = require('express')
-const AuthController = require('../controllers/authController')
+const { Router } = require('express');
+const AuthController = require('../controllers/authController');
 
-const router = Router()
+const router = Router();
 
 /**
  * @swagger
@@ -40,6 +40,6 @@ const router = Router()
  */
 router.post('/auth/login', AuthController.login);
 
-router.post('/auth/login', AuthController.login)
+router.post('/auth/login', AuthController.login);
 
-module.exports = router
+module.exports = router;
