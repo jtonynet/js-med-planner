@@ -87,6 +87,28 @@ const appointmentsToCreate = [
   }
 ];
 
+const patientToConflictAppointment = patientsToCreate[patientsToCreate.length - 1];
+
+const apointmentToConflict = {
+  "uuid": "6bffa654-8a96-4097-b2e7-a243f92e2672",
+  "description": "Agendamento Difícil de encaixar",
+};
+
+const conflictCreateDates = [
+  {
+    "startTime": "2025-12-20 08:40:00",
+    "endTime": "2025-12-20 09:40:00"
+  },
+  {
+    "startTime": "2025-12-20 10:25:00",
+    "endTime": "2025-12-20 11:25:00"
+  },
+  {
+    "startTime": "2025-12-20 15:25:00",
+    "endTime": "2025-12-20 16:25:00"
+  },
+];
+
 async function seedPatients() {
   await patients.bulkCreate(patientsToCreate, { ignoreDuplicates: false });
 }
@@ -117,14 +139,29 @@ describe('POST Authenticated in /appointments/uuid/appointments', () => {
     [1, patientsToCreate[1].uuid, appointmentsToCreate],
     [2, patientsToCreate[2].uuid, appointmentsToCreate],
     [3, patientsToCreate[3].uuid, appointmentsToCreate]
-  ])('Should create a appointment %s by patient UUID %s', async (key, patientUUID, appointmentsList) => {
+  ])('Should create a appointment %s by patient UUID %s', async (key, patientUUID, appointmentsToCreate) => {
     const response = await request(app)
       .post(`/patients/${patientUUID}/appointments`)
       .set('Authorization', `Bearer ${bearerToken}`)
-      .send(appointmentsList[key])
+      .send(appointmentsToCreate[key])
       .expect(StatusCodes.CREATED);
 
-    expect(response.body.description).toEqual(appointmentsList[key].description);
+    expect(response.body.description).toEqual(appointmentsToCreate[key].description);
+  });
+
+  test.each([
+    [0, patientToConflictAppointment.uuid, apointmentToConflict, conflictCreateDates],
+    [1, patientToConflictAppointment.uuid, apointmentToConflict, conflictCreateDates],
+    [2, patientToConflictAppointment.uuid, apointmentToConflict, conflictCreateDates]
+  ])('Should conflict date time appointment %s on create by patient UUID %s', async (key, patientUUID, apointmentToConflict, conflictCreateDates) => {
+    const response = await request(app)
+      .post(`/patients/${patientUUID}/appointments`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send({
+        ...apointmentToConflict,
+        ...conflictCreateDates[key]
+      })
+      .expect(StatusCodes.CONFLICT);
   });
 });
 
