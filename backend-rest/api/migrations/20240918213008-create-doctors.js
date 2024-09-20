@@ -41,6 +41,11 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+
+    await queryInterface.addIndex('doctors', ['uuid'], {
+      unique: true,
+      name: 'unique_doctors_uuid_index'
+    });
   },
   async down(queryInterface) {
     await queryInterface.dropTable('doctors');

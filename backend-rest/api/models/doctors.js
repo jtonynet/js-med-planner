@@ -38,6 +38,12 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'doctors',
+    indexes: [
+      {
+        unique: true,
+        fields: ['uuid'] // Cria um índice único para uuid
+      }
+    ]
   });
   return doctors;
 };
