@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       patients.hasMany(models.appointments, {
-        foreignKey: 'patient_id',
+        foreignKey: 'patientId',
         as: 'appointments'
       });
     }
@@ -37,8 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     birthDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false,
-      field: 'birth_date'
+      allowNull: false
     },
     /*
       TODO:

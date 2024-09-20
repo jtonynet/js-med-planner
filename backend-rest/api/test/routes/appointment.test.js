@@ -63,15 +63,15 @@ afterAll(async () => {
   server.close();
 });
 
-describe('POST Authenticated in /appointments', () => {
-  it('Should create a appointments', async () => {
+describe('POST Authenticated in /appointments/uuid/appointments', () => {
+  it('Should create a appointments by patient UUID', async () => {
     const response = await request(app)
-      .post(`/appointments/${patientsToCreate[0].uuid}`)
+      .post(`/patients/${patientsToCreate[0].uuid}/appointments`)
       .set('Authorization', `Bearer ${bearerToken}`)
       .send(appointmentsToCreate[0])
       .expect(StatusCodes.CREATED);
 
-    expect(response.body.email).toEqual(appointmentsToCreate[0].description);
+    expect(response.body.description).toEqual(appointmentsToCreate[0].description);
   });
 });
 

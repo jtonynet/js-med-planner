@@ -460,7 +460,7 @@ sequelize seed:create --name create-initial-doctor
 
 sequelize model:create --name appointments --attributes uuid:uuid,patient_id:int,doctor_id:int,description:string,start_time:date,end_time:date
 ```
-
+//patient.test.js
 
 -->
 

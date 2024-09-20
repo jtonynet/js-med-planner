@@ -15,14 +15,14 @@ module.exports = {
         defaultValue: Sequelize.UUID,
         unique: true
       },
-      patient_id: {
+      patientId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'patients',
           key: 'id',
         }
       },
-      doctor_id: {
+      doctorId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'doctors',
@@ -32,10 +32,10 @@ module.exports = {
       description: {
         type: Sequelize.STRING(500)
       },
-      start_time: {
+      startTime: {
         type: Sequelize.DATE
       },
-      end_time: {
+      endTime: {
         type: Sequelize.DATE
       },
       createdAt: {
@@ -44,6 +44,10 @@ module.exports = {
       },
       updatedAt: {
         allowNull: false,
+        type: Sequelize.DATE
+      },
+      deletedAt: {
+        allowNull: true,
         type: Sequelize.DATE
       }
     });

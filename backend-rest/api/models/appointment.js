@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       appointments.belongsTo(models.patients, {
-        foreignKey: 'patient_id',
+        foreignKey: 'patientId',
         as: 'patient',
       });
 
       appointments.belongsTo(models.doctors, {
-        foreignKey: 'doctor_id',
+        foreignKey: 'doctorId',
         as: 'doctor',
       });
     }
@@ -28,17 +28,19 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true
     },
-    patient_id: {
+    patientId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      field: 'patientId',
       references: {
         model: 'patients',
         key: 'id',
       }
     },
-    doctor_id: {
+    doctorId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      field: 'doctorId',
       references: {
         model: 'doctors',
         key: 'id',
@@ -50,13 +52,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     startTime: {
       type: DataTypes.DATE,
-      allowNull: false,
-      field: 'start_time'
+      allowNull: false
     },
     endTime: {
       type: DataTypes.DATE,
-      allowNull: false,
-      field: 'end_time'
+      allowNull: false
     }
   }, {
     sequelize,
