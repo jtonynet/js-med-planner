@@ -73,7 +73,7 @@ function findByUUID(patients, uuid) {
   return patients.find(patient => patient.uuid === uuid);
 }
 
-describe('POST Authenticated Bearer in /patients', () => {
+describe('POST Authenticated in /patients', () => {
   test.each([
     [0, patientsToCreate[0]],
     [1, patientsToCreate[1]],
@@ -90,7 +90,7 @@ describe('POST Authenticated Bearer in /patients', () => {
   });
 });
 
-describe('GET Authenticated Bearer in /patients', () => {
+describe('GET Authenticated in /patients', () => {
   it('Should return a list of patients with length equal a three', async () => {
     const response = await request(app)
       .get('/patients')
@@ -106,7 +106,7 @@ describe('GET Authenticated Bearer in /patients', () => {
   });
 });
 
-describe('GET Authenticated Bearer in /patients/uuid', () => {
+describe('GET Authenticated in /patients/uuid', () => {
   it('Should return one patient by UUID', async () => {
     const response = await request(app)
       .get(`/patients/${patientToUpdateAndDelete.uuid}`)
@@ -118,7 +118,7 @@ describe('GET Authenticated Bearer in /patients/uuid', () => {
   });
 });
 
-describe('PATCH Authenticated Bearer /patients/:uuid', () => {
+describe('PATCH Authenticated /patients/:uuid', () => {
   test.each([
     ['name', { name: patientParamsToUpdate.name }],
     ['phone', { phone: patientParamsToUpdate.phone }],
@@ -142,7 +142,7 @@ describe('PATCH Authenticated Bearer /patients/:uuid', () => {
   });
 });
 
-describe('DELETE Authenticated Bearer in /patients/:uuid', () => {
+describe('DELETE Authenticated in /patients/:uuid', () => {
   it('Should SOFT delete (paranoid) and anonymize patient LGPD data by UUID', async () => {
     await request(app)
       .delete(`/patients/${patientToUpdateAndDelete.uuid}`)
