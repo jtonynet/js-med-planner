@@ -165,4 +165,14 @@ describe('POST Authenticated in /appointments/uuid/appointments', () => {
   });
 });
 
+describe('GET Authenticated in /appointments/uuid/appointments', () => {
+  it('Should return a list of appointments with length equal a one', async () => {
+    const response = await request(app)
+      .get(`/patients/${patientUUID}/appointments`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.OK);
+  });
+});
 
