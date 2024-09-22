@@ -27,7 +27,7 @@ module.exports = {
         type: Sequelize.STRING(255),
         unique: true
       },
-      birth_date: {
+      birthDate: {
         allowNull: false,
         type: Sequelize.DATEONLY
       },
@@ -55,6 +55,11 @@ module.exports = {
         allowNull: true,
         type: Sequelize.DATE
       }
+    });
+
+    await queryInterface.addIndex('patients', ['uuid'], {
+      unique: true,
+      name: 'unique_patients_uuid_index'
     });
   },
   async down(queryInterface) {

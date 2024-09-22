@@ -10,7 +10,7 @@ const swaggerOptions = {
     openapi: '3.0.0',
     info: {
       title: 'MedPlanner Rest API',
-      version: '0.0.7',
+      version: '0.0.8',
       description: 'API documentation',
     },
     servers: [
@@ -37,6 +37,7 @@ const swaggerOptions = {
   apis: [
     path.join(__dirname, './authRoutes.js'),
     path.join(__dirname, './patientRoutes.js'),
+    path.join(__dirname, './apointmentRoutes.js'),
     path.join(__dirname, './swagger/schemas.js'),
   ],
 };

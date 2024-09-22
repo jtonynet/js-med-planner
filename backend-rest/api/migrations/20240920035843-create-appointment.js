@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('doctors', {
+    await queryInterface.createTable('appointments', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,18 +15,28 @@ module.exports = {
         defaultValue: Sequelize.UUID,
         unique: true
       },
-      name: {
-        allowNull: false,
-        type: Sequelize.STRING(255)
+      patientId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'patients',
+          key: 'id',
+        }
       },
-      email: {
-        allowNull: false,
-        type: Sequelize.STRING(255),
-        unique: true
+      doctorId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'doctors',
+          key: 'id',
+        },
       },
-      password: {
-        allowNull: false,
-        type: Sequelize.STRING(255),
+      description: {
+        type: Sequelize.STRING(500)
+      },
+      startTime: {
+        type: Sequelize.DATE
+      },
+      endTime: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -42,12 +52,12 @@ module.exports = {
       }
     });
 
-    await queryInterface.addIndex('doctors', ['uuid'], {
+    await queryInterface.addIndex('appointments', ['uuid'], {
       unique: true,
-      name: 'unique_doctors_uuid_index'
+      name: 'unique_appointments_uuid_index'
     });
   },
-  async down(queryInterface) {
-    await queryInterface.dropTable('doctors');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('appointments');
   }
 };

@@ -9,8 +9,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate() {
-      // define association here
+    static associate(models) {
+      patients.hasMany(models.appointments, {
+        foreignKey: 'patientId',
+        as: 'appointments'
+      });
     }
   }
   patients.init({
@@ -34,8 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     birthDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false,
-      field: 'birth_date'
+      allowNull: false
     },
     /*
       TODO:
@@ -60,6 +62,12 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     paranoid: true,
     modelName: 'patients',
+    indexes: [
+      {
+        unique: true,
+        fields: ['uuid']
+      }
+    ]
   });
 
   patients.addHook('beforeDestroy', async (patient, options) => {

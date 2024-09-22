@@ -56,7 +56,7 @@ router.get('/patients', PatientController.retrieveList);
  * @swagger
  * /patients/{uuid}:
  *   get:
- *     summary: Retrieve Patient by uuid
+ *     summary: Retrieve Patient by UUID
  *     security:
  *       - bearerAuth: []
  *     tags: 
@@ -120,7 +120,7 @@ router.patch('/patients/:uuid', PatientController.updateByUUID);
  * @swagger
  * /patients/{uuid}:
  *   delete:
- *     summary: Delete a Patient by UUID
+ *     summary: Delete Patient by UUID
  *     security:
  *       - bearerAuth: []
  *     tags: 
