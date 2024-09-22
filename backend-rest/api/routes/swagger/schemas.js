@@ -114,4 +114,40 @@
  *         weight:
  *           type: string
  *           example: "72.50"
+ * 
+ *     request.Appointment:
+ *       type: object
+ *       properties:
+ *         uuid:
+ *           type: string uuid
+ *           required: true
+ *           example: "ccd71acf-7be4-42dc-b562-a7807d70c173"
+ *         description:
+ *           type: string
+ *           required: true
+ *           example: "Primeira consulta da manhã"
+ *         startTime:
+ *           type: string date
+ *           required: true 
+ *           example: "2028-12-20 16:30:00"
+ *         endTime:
+ *           type: string date
+ *           required: true 
+ *           example: "2028-12-20 16:30:00"
+ * 
+  *     response.Appointment:
+ *       type: object
+ *       properties:
+ *         uuid:
+ *           type: string uuid
+ *           example: "ccd71acf-7be4-42dc-b562-a7807d70c173"
+ *         description:
+ *           type: string
+ *           example: "Primeira consulta da manhã"
+ *         startTime:
+ *           type: string date
+ *           example: "2028-12-20 16:30:00"
+  *         endTime:
+ *           type: string date
+ *           example: "2028-12-20 16:30:00"
  */

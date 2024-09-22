@@ -32,7 +32,7 @@ class AppointmentController {
         >      Eu como médico, quero que o sistema valide a minha agenda, 
         >      não deixando eu cadastrar mais de um paciente na mesma hora.
 
-        1. ExtractMethod / ServiceMethod / Repository candidate
+        1. ExtractMethod to model / ServiceMethod / Repository candidate
 
         2. This query became awful and unnecessarily complex using 
         the ORM features, so I decided to keep it raw in the code.
