@@ -4,7 +4,8 @@
     "password": "api_pass",
     "database": "med_planner_db",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "timezone": "America/Sao_Paulo"
   },
   "test": {
     "username": "api_user_test",
@@ -12,6 +13,8 @@
     "database": "med_planner_db_test",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "port": 5433
+    "port": 5433,
+    "timezone": "America/Sao_Paulo",
+    "logging": false
   }
 }

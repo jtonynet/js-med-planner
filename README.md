@@ -108,6 +108,13 @@ Faz sentido utilizar __Arquitetura de Duas Camadas__. Caso a complexidade aument
 
 Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no GitHub Actions
 
+
+Sobre:
+>   - Eu como médico, quero que o sistema valide a minha agenda, não deixando
+eu cadastrar mais de um paciente na mesma hora.
+
+Deve existir ao menos 1 minuto de diferença entre o cadastro de um paciente e outro.
+
 [⤴️ de volta ao índice](#index)
 
 ---
@@ -461,6 +468,25 @@ sequelize seed:create --name create-initial-doctor
 sequelize model:create --name appointments --attributes uuid:uuid,patient_id:int,doctor_id:int,description:string,start_time:date,end_time:date
 ```
 //patient.test.js
+
+
+
+//LIMPANDO DOCKER
+
+docker stop $(docker ps -aq)  # Para todos os contêineres em execução
+docker rm $(docker ps -aq)    # Remove todos os contêineres
+
+docker rmi $(docker images -q) --force
+
+docker volume rm $(docker volume ls -q) --force
+
+docker network prune -f
+
+docker system prune -a --volumes
+
+
+
+
 
 -->
 

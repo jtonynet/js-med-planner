@@ -76,14 +76,14 @@ const appointmentsToCreate = [
   {
     "uuid": "f6832835-2397-41be-9963-e94333afa876",
     "description": "Primeira consulta da Tarde",
-    "startTime": "2025-12-20 14:30:00",
-    "endTime": "2025-12-20 15:30:00"
+    "startTime": "2025-12-20 13:30:00",
+    "endTime": "2025-12-20 14:30:00"
   },
   {
     "uuid": "bd567c6d-9aae-49eb-baa3-ceea87cae473",
-    "description": "Primeira consulta da Tarde",
-    "startTime": "2025-12-20 13:30:00",
-    "endTime": "2025-12-20 14:30:00"
+    "description": "Segunda consulta da Tarde",
+    "startTime": "2025-12-20 15:30:00",
+    "endTime": "2025-12-20 16:30:00"
   }
 ];
 
