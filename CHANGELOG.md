@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.8] - 2024-22-09
 ### Added
 
-- [Conforme Issue 20](https://github.com/jtonynet/js-med-planner/issues/16):
+- [Conforme Issue 20](https://github.com/jtonynet/js-med-planner/issues/20):
   - model, route e controller `appointment` criados
   - TDD rota de criacao do recurso `appointment`
   - Atualizado Swagger
