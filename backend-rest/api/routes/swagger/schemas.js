@@ -125,7 +125,7 @@
  *         description:
  *           type: string
  *           required: true
- *           example: "Primeira consulta da manhã"
+ *           example: "Primeira consulta da Tarde"
  *         startTime:
  *           type: string date
  *           required: true 
@@ -133,7 +133,20 @@
  *         endTime:
  *           type: string date
  *           required: true 
- *           example: "2028-12-20 16:30:00"
+ *           example: "2028-12-20 17:30:00"
+ * 
+  *     request.AppointmentUpdate:
+ *       type: object
+ *       properties:
+ *         description:
+ *           type: string
+ *           example: "Remarcando primeira consulta da tarde"
+ *         startTime:
+ *           required: true 
+ *           example: "2028-12-20 17:00:00"
+ *         endTime:
+ *           required: true 
+ *           example: "2028-12-20 18:00:00"
  * 
  *     response.Appointment:
  *       type: object

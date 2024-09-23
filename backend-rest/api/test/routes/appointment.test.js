@@ -82,8 +82,8 @@ const appointmentsToCreate = [
   {
     "uuid": "bd567c6d-9aae-49eb-baa3-ceea87cae473",
     "description": "Segunda consulta da Tarde",
-    "startTime": "2025-12-20 15:30:00",
-    "endTime": "2025-12-20 16:30:00"
+    "startTime": "2025-12-20 15:20:00",
+    "endTime": "2025-12-20 16:20:00"
   }
 ];
 
@@ -104,10 +104,31 @@ const conflictCreateDates = [
     "endTime": "2025-12-20 11:25:00"
   },
   {
-    "startTime": "2025-12-20 15:25:00",
-    "endTime": "2025-12-20 16:25:00"
+    "startTime": "2025-12-20 12:10:00",
+    "endTime": "2025-12-20 13:10:00"
   },
 ];
+
+const conflictUpdateDates = [
+  {
+    "startTime": "2025-12-20 12:40:00",
+    "endTime": "2025-12-20 13:40:00"
+  },
+  {
+    "startTime": "2025-12-20 14:25:00",
+    "endTime": "2025-12-20 15:25:00"
+  },
+  {
+    "startTime": "2025-12-20 16:10:00",
+    "endTime": "2025-12-20 17:10:00"
+  },
+];
+
+const createDateOk = {
+  "startTime": "2025-12-20 16:30:00",
+  "endTime": "2025-12-20 17:30:00"
+}
+
 
 async function seedPatients() {
   await patients.bulkCreate(patientsToCreate, { ignoreDuplicates: false });
@@ -177,6 +198,38 @@ describe('POST Authenticated conflict date time in /appointments/uuid/appointmen
         ...apointmentToConflict,
         ...conflictCreateDates[key]
       })
+      .expect(StatusCodes.CONFLICT);
+  });
+});
+
+describe('PATCH Authenticated conflict date time in /appointments/uuid', () => {
+  it(`Should create a appointment  by patient UUID ${patientToConflictAppointment.uuid}`, async () => {
+    const response = await request(app)
+      .post(`/patients/${patientToConflictAppointment.uuid}/appointments`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send({
+        ...apointmentToConflict,
+        ...createDateOk
+      })
+      .expect(StatusCodes.CREATED);
+
+    expect(response.body.description).toEqual(apointmentToConflict.description);
+  });
+
+  test.each([
+    [0, apointmentToConflict.uuid, apointmentToConflict, conflictUpdateDates],
+    [1, apointmentToConflict.uuid, apointmentToConflict, conflictUpdateDates],
+    [2, apointmentToConflict.uuid, apointmentToConflict, conflictUpdateDates]
+  ])('Should conflict date time appointment %s on update by UUID %s', async (key, apointmentUUID, apointmentToConflict, conflictUpdateDates) => {
+    const response = await request(app)
+      .patch(`/appointments/${apointmentUUID}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .send({
+        ...apointmentToConflict,
+        ...conflictUpdateDates[key]
+      })
+      .expect('content-type', /json/)
       .expect(StatusCodes.CONFLICT);
   });
 });

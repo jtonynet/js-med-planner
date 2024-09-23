@@ -116,7 +116,7 @@ describe('GET Authenticated in /patients/uuid', () => {
   });
 });
 
-describe('PATCH Authenticated /patients/:uuid', () => {
+describe('PATCH Authenticated /patients/uuid', () => {
   test.each([
     ['name', { name: patientParamsToUpdate.name }],
     ['phone', { phone: patientParamsToUpdate.phone }],
