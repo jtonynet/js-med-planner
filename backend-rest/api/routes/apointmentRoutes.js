@@ -81,7 +81,7 @@ router.get('/patients/:uuid/appointments', AppointmentController.retrieveListByP
  *         required: true
  *         schema:
  *           type: string
- *         description: UUID of the Appointments to update
+ *         description: UUID of the Appointment to update
  *     requestBody:
  *       required: true
  *       content:
@@ -90,7 +90,7 @@ router.get('/patients/:uuid/appointments', AppointmentController.retrieveListByP
  *             $ref: '#/components/schemas/request.AppointmentUpdate'
  *     responses:
  *       200:
- *         description: Appointments updated successfully
+ *         description: Appointment updated successfully
  *         content:
  *           application/json:
  *             schema:
@@ -103,5 +103,33 @@ router.get('/patients/:uuid/appointments', AppointmentController.retrieveListByP
  *         description: Patient not found
  */
 router.patch('/appointments/:uuid', AppointmentController.updateByUUID);
+
+/**
+ * @swagger
+ * /appointments/{uuid}:
+ *   delete:
+ *     summary: Delete Appointment by UUID
+ *     security:
+ *       - bearerAuth: []
+ *     tags: 
+ *       - Appointments
+ *     parameters:
+ *       - in: path
+ *         name: uuid
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: UUID of the Appointment to delete
+ *     responses:
+ *       204:
+ *         description: No Content Appointment deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Appointment not found
+ *       500:
+ *         description: Internal server error
+ */
+router.delete('/appointments/:uuid', AppointmentController.deleteByUUID);
 
 module.exports = router;

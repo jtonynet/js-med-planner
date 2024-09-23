@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const request = require('supertest')
 const { describe, it, beforeAll, afterAll } = require('@jest/globals')
 const app = require('../../app.js');
-const { patients } = require('../../models');
+const { patients, appointments } = require('../../models');
 
 let server;
 let bearerToken;
@@ -234,3 +234,28 @@ describe('PATCH Authenticated conflict date time in /appointments/uuid', () => {
   });
 });
 
+describe('DELETE Authenticated in /appointments/uuid', () => {
+  it(`Should SOFT delete (paranoid) appointments by UUID ${apointmentToConflict.uuid}`, async () => {
+    await request(app)
+      .delete(`/appointments/${apointmentToConflict.uuid}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .expect(StatusCodes.NO_CONTENT);
+
+    const deletedAppointment = await appointments.findOne({
+      where: { uuid: apointmentToConflict.uuid },
+      paranoid: false,
+    });
+    expect(deletedAppointment.deletedAt).not.toBeNull();
+  });
+
+  it(`Should return a list of appointments by patient UUID ${patientToConflictAppointment.uuid} is length zero`, async () => {
+    const response = await request(app)
+      .get(`/patients/${patientToConflictAppointment.uuid}/appointments`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.OK);
+
+    expect(response.body.length).toEqual(0);
+  });
+});
