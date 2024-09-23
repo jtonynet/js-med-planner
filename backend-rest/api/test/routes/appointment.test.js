@@ -181,13 +181,13 @@ describe('POST Authenticated conflict date time in /appointments/uuid/appointmen
   });
 });
 
-// describe('PATCH Authenticated /appointments/uuid', () => {
-//   it('Should update one appointment by Patient UUID', async () => {
-//     const response = await request(app)
-//       .patch(`/appointments/${appointmentsToCreate[0].uuid}`)
-//       .set('Authorization', `Bearer ${bearerToken}`)
-//       .set('Accept', 'application.json')
-//       .expect('content-type', /json/)
-//       .expect(StatusCodes.OK);
-//   });
-// });
+describe('PATCH Authenticated /appointments/uuid', () => {
+  it('Should update one appointment by Patient UUID', async () => {
+    const response = await request(app)
+      .patch(`/appointments/${appointmentsToCreate[0].uuid}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.OK);
+  });
+});
