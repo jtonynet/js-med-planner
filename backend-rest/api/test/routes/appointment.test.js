@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const request = require('supertest')
 const { describe, it, beforeAll, afterAll } = require('@jest/globals')
 const app = require('../../app.js');
-const { patients } = require('../../models');
+const { patients, appointments } = require('../../models');
 
 let server;
 let bearerToken;
@@ -240,6 +240,12 @@ describe('DELETE Authenticated in /appointments/uuid', () => {
       .delete(`/appointments/${apointmentToConflict.uuid}`)
       .set('Authorization', `Bearer ${bearerToken}`)
       .expect(StatusCodes.NO_CONTENT);
+
+    const deletedAppointment = await appointments.findOne({
+      where: { uuid: apointmentToConflict.uuid },
+      paranoid: false,
+    });
+    expect(deletedAppointment.deletedAt).not.toBeNull();
   });
 
   it(`Should return a list of appointments by patient UUID ${patientToConflictAppointment.uuid} is length zero`, async () => {

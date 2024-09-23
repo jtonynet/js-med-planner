@@ -105,6 +105,34 @@ class AppointmentController {
     }
   }
 
+  static async deleteByUUID(req, res) {
+    const { uuid: uuidParam } = req.params
+
+    try {
+      const appointment = await appointments.findOne({
+        where: {
+          uuid: uuidParam,
+        },
+      });
+
+      if (!appointment) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+          message: 'appointment not found',
+        });
+      }
+
+      await appointment.destroy();
+
+      res.status(StatusCodes.NO_CONTENT).end();
+
+    } catch (error) {
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Error deleting appointment'
+      });
+    }
+  }
+
   static async _searchConflicts(appointment) {
     try {
       const conflicts = await appointment.findConflicts();
