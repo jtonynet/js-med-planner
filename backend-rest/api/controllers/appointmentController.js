@@ -1,6 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
 const { appointments, patients, doctors, db } = require('../models');
-const moment = require('moment-timezone');
 
 class AppointmentController {
   static async create(req, res) {
@@ -25,28 +24,17 @@ class AppointmentController {
       const fields = { uuid, patientId: patient.id, doctorId: doctor.id, description, startTime, endTime };
       const newAppointment = appointments.build(fields);
 
-      const conflicts = await AppointmentController.findConflicts(newAppointment);
-      if (conflicts.length > 0) {
-        // USE IT ON  on place of "America/Sao_Paulo"
-        // const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const appoitementsConflicted = conflicts.map(conflict => ({
-          uuid: conflict.uuid,
-          startTime: moment.tz(conflict.startTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss'),
-          endTime: moment.tz(conflict.endTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss')
-        }));
-
-        return res.status(StatusCodes.CONFLICT).json({
-          message: `${conflicts.length} conflicting appointment(s) found`,
-          appointments: appoitementsConflicted
-        });
-      };
+      const conflicts = await AppointmentController._searchConflicts(newAppointment);
+      if (conflicts.exists) {
+        return res.status(StatusCodes.CONFLICT).json(conflicts.response);
+      }
 
       // TODO: validate
 
       await newAppointment.save();
 
       return res.status(StatusCodes.CREATED).json(
-        AppointmentController.serializeModel(newAppointment)
+        newAppointment.serialize()
       );
 
     } catch (error) {
@@ -96,26 +84,17 @@ class AppointmentController {
         }
       });
 
-      const conflicts = await AppointmentController.findConflicts(appointment);
-      if (conflicts.length > 0) {
-        // USE IT ON  on place of "America/Sao_Paulo"
-        // const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const appoitementsConflicted = conflicts.map(conflict => ({
-          uuid: conflict.uuid,
-          startTime: moment.tz(conflict.startTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss'),
-          endTime: moment.tz(conflict.endTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss')
-        }));
-
-        return res.status(StatusCodes.CONFLICT).json({
-          message: `${conflicts.length} conflicting appointment(s) found`,
-          appointments: appoitementsConflicted
-        });
-      };
+      const conflicts = await AppointmentController._searchConflicts(appointment);
+      if (conflicts.exists) {
+        return res.status(StatusCodes.CONFLICT).json(conflicts.response);
+      }
 
       // TODO: validate
 
+      await appointment.save();
+
       res.status(StatusCodes.OK).json(
-        AppointmentController.serializeModel(appointment)
+        appointment.serialize
       );
 
     } catch (error) {
@@ -126,50 +105,31 @@ class AppointmentController {
     }
   }
 
-  static async findConflicts(appointmentModel) {
+  static async _searchConflicts(appointment) {
     try {
-      /*
-        1. ExtractMethod to model / ServiceMethod / Repository candidate
+      const conflicts = await appointment.findConflicts();
+      if (conflicts.length > 0) {
+        const appointmentsConflicted = conflicts.map(conflict => ({
+          uuid: conflict.uuid,
+          startTime: conflict.startTime,
+          endTime: conflict.endTime
+        }));
 
-        2. This query became awful and unnecessarily complex using 
-        the ORM features, so I decided to keep it raw in the code.
-      */
-      const conflictsQuery = `
-        SELECT uuid, "startTime", "endTime" 
-        FROM appointments 
-        WHERE "doctorId" = :doctorId
-          AND(
-            ("startTime" BETWEEN :startTime AND :endTime)
-            OR("endTime" BETWEEN :startTime AND :endTime)
-            OR("startTime" < :startTime AND "endTime" > :endTime)
-        );
-       `;
-
-      const conflicts = await appointments.sequelize.query(
-        conflictsQuery,
-        {
-          replacements: {
-            doctorId: appointmentModel.doctorId,
-            startTime: appointmentModel.startTime,
-            endTime: appointmentModel.endTime
-          },
-          type: appointments.sequelize.QueryTypes.SELECT
-        }
-      );
-
-      return conflicts;
+        return {
+          exists: true,
+          response: {
+            message: `${conflicts.length} conflicting appointment(s) found`,
+            appointments: appointmentsConflicted
+          }
+        };
+      }
+      return {
+        exists: false,
+        response: null
+      };
     } catch (error) {
       throw error;
     }
-  }
-
-  static serializeModel(appointmentModel) {
-    return {
-      uuid: appointmentModel.uuid,
-      description: appointmentModel.description,
-      startTime: moment.tz(appointmentModel.startTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss'),
-      endTime: moment.tz(appointmentModel.endTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss'),
-    };
   }
 }
 

@@ -27,7 +27,7 @@ router.use(authenticate);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/request.AppointmentUpdate'
+ *             $ref: '#/components/schemas/request.Appointment'
  *     responses:
  *       201:
  *         description: One Appointment

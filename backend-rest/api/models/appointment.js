@@ -1,7 +1,6 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+const moment = require('moment-timezone');
 module.exports = (sequelize, DataTypes) => {
   class appointments extends Model {
     /**
@@ -20,7 +19,53 @@ module.exports = (sequelize, DataTypes) => {
         as: 'doctor',
       });
     }
+
+    async findConflicts() {
+      try {
+        /*
+          This query became awful and unnecessarily complex using 
+          the ORM features, so I decided to keep it raw in the code.
+        */
+        const conflictsQuery = `
+          SELECT uuid, "startTime", "endTime" 
+          FROM appointments 
+          WHERE "doctorId" = :doctorId
+            AND(
+              ("startTime" BETWEEN :startTime AND :endTime)
+              OR("endTime" BETWEEN :startTime AND :endTime)
+              OR("startTime" < :startTime AND "endTime" > :endTime)
+          );
+         `;
+
+        const conflicts = await sequelize.query(
+          conflictsQuery,
+          {
+            replacements: {
+              doctorId: this.doctorId,
+              startTime: this.startTime,
+              endTime: this.endTime
+            },
+            type: this.sequelize.QueryTypes.SELECT
+          }
+        );
+
+        return conflicts;
+
+      } catch (error) {
+        throw error;
+      }
+    }
+
+    serialize() {
+      return {
+        uuid: this.uuid,
+        description: this.description,
+        startTime: this.startTime,
+        endTime: this.endTime
+      };
+    }
   }
+
   appointments.init({
     uuid: {
       type: DataTypes.UUID,
@@ -52,11 +97,29 @@ module.exports = (sequelize, DataTypes) => {
     },
     startTime: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      get() {
+        const rawValue = this.getDataValue('startTime');
+
+        //timezone "America/Sao_Paulo"
+        return moment.tz(
+          rawValue,
+          Intl.DateTimeFormat().resolvedOptions().timeZone
+        ).format('YYYY-MM-DD HH:mm:ss');
+      }
     },
     endTime: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: false,
+      get() {
+        const rawValue = this.getDataValue('endTime');
+
+        //timezone "America/Sao_Paulo"
+        return moment.tz(
+          rawValue,
+          Intl.DateTimeFormat().resolvedOptions().timeZone
+        ).format('YYYY-MM-DD HH:mm:ss');
+      }
     }
   }, {
     sequelize,
