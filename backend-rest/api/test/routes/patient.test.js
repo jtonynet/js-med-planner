@@ -151,8 +151,8 @@ describe('DELETE Authenticated in /patients/:uuid', () => {
 
     const patientsLengthBeforeDelete = responseBeforeDelete.body.length;
 
-    let patientDeleted = findByUUID(responseBeforeDelete.body, patientToUpdateAndDelete.uuid)
-    expect(patientDeleted).not.toBeUndefined();
+    let patientDeletedInResponse = findByUUID(responseBeforeDelete.body, patientToUpdateAndDelete.uuid)
+    expect(patientDeletedInResponse).not.toBeUndefined();
 
     await request(app)
       .delete(`/patients/${patientToUpdateAndDelete.uuid}`)
@@ -187,7 +187,7 @@ describe('DELETE Authenticated in /patients/:uuid', () => {
 
     expect(responseAfterDelete.body.length).toEqual(patientsLengthBeforeDelete - 1);
 
-    patientDeleted = findByUUID(responseAfterDelete.body, patientToUpdateAndDelete.uuid)
-    expect(patientDeleted).toBeUndefined();
+    patientDeletedInResponse = findByUUID(responseAfterDelete.body, patientToUpdateAndDelete.uuid)
+    expect(patientDeletedInResponse).toBeUndefined();
   });
 });
