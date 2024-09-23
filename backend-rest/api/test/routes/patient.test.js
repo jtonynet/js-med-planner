@@ -142,6 +142,18 @@ describe('PATCH Authenticated /patients/uuid', () => {
 
 describe('DELETE Authenticated in /patients/:uuid', () => {
   it('Should SOFT delete (paranoid) and anonymize patient LGPD data by UUID', async () => {
+    const responseBeforeDelete = await request(app)
+      .get('/patients')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.OK);
+
+    const patientsLengthBeforeDelete = responseBeforeDelete.body.length;
+
+    let patientDeleted = findByUUID(responseBeforeDelete.body, patientToUpdateAndDelete.uuid)
+    expect(patientDeleted).not.toBeUndefined();
+
     await request(app)
       .delete(`/patients/${patientToUpdateAndDelete.uuid}`)
       .set('Authorization', `Bearer ${bearerToken}`)
@@ -165,14 +177,17 @@ describe('DELETE Authenticated in /patients/:uuid', () => {
     expect(deletedPatient.birthDate).toEqual(dateOfBrazilianDiscovery);
     expect(deletedPatient.height).not.toEqual(decimalMinimun);
     expect(deletedPatient.weight).not.toEqual(decimalMinimun);
-  });
 
-  it('Should return a list of patients', async () => {
-    const response = await request(app)
+    const responseAfterDelete = await request(app)
       .get('/patients')
       .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
+
+    expect(responseAfterDelete.body.length).toEqual(patientsLengthBeforeDelete - 1);
+
+    patientDeleted = findByUUID(responseAfterDelete.body, patientToUpdateAndDelete.uuid)
+    expect(patientDeleted).toBeUndefined();
   });
 });
