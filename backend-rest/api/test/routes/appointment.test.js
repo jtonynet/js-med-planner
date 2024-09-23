@@ -150,6 +150,22 @@ describe('POST Authenticated in /appointments/uuid/appointments', () => {
   });
 
   test.each([
+    [patientsToCreate[0].uuid],
+    [patientsToCreate[1].uuid],
+    [patientsToCreate[2].uuid],
+    [patientsToCreate[3].uuid]
+  ])('Should return a list of appointments to Patient UUID %s', async (patientUUID) => {
+    const response = await request(app)
+      .get(`/patients/${patientUUID}/appointments`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.OK);
+  });
+});
+
+describe('POST Authenticated conflict date time in /appointments/uuid/appointments', () => {
+  test.each([
     [0, patientToConflictAppointment.uuid, apointmentToConflict, conflictCreateDates],
     [1, patientToConflictAppointment.uuid, apointmentToConflict, conflictCreateDates],
     [2, patientToConflictAppointment.uuid, apointmentToConflict, conflictCreateDates]
@@ -162,17 +178,6 @@ describe('POST Authenticated in /appointments/uuid/appointments', () => {
         ...conflictCreateDates[key]
       })
       .expect(StatusCodes.CONFLICT);
-  });
-});
-
-describe('GET Authenticated in /appointments/uuid/appointments', () => {
-  it('Should return a list of appointments with length equal a one', async () => {
-    const response = await request(app)
-      .get(`/patients/${patientUUID}/appointments`)
-      .set('Authorization', `Bearer ${bearerToken}`)
-      .set('Accept', 'application.json')
-      .expect('content-type', /json/)
-      .expect(StatusCodes.OK);
   });
 });
 

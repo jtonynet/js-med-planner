@@ -26,12 +26,12 @@ class PatientController {
   }
 
   static async retrieveList(req, res) {
-    const patientsList = await patients.findAll({
+    const list = await patients.findAll({
       attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
       order: [['createdAt', 'DESC']],
     })
 
-    res.status(StatusCodes.OK).json(patientsList);
+    res.status(StatusCodes.OK).json(list);
   }
 
   static async retrieveByUUID(req, res) {

@@ -15,6 +15,13 @@ router.use(authenticate);
  *       - bearerAuth: []
  *     tags: 
  *       - Appointments
+  *     parameters:
+ *       - in: path
+ *         name: uuid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
  *     requestBody:
  *       required: true
  *       content:
@@ -40,6 +47,13 @@ router.post('/patients/:uuid/appointments', AppointmentController.create);
  *       - bearerAuth: []
  *     tags: 
  *       - Appointments
+ *     parameters:
+ *       - in: path
+ *         name: uuid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
  *     responses:
  *       200:
  *         description: A list of appointments
@@ -48,8 +62,8 @@ router.post('/patients/:uuid/appointments', AppointmentController.create);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/response.appointment'
+ *                 $ref: '#/components/schemas/response.Appointment'
  */
-router.get('/patients/:uuid/appointments'); //, AppointmentController.retrieveList
+router.get('/patients/:uuid/appointments', AppointmentController.retrieveListByPatientUUID);
 
 module.exports = router;

@@ -90,6 +90,27 @@ class AppointmentController {
     }
   }
 
+  static async retrieveListByPatientUUID(req, res) {
+    const { uuid: patientUUIDdParam } = req.params
+
+    const patient = await patients.findOne({
+      where: {
+        uuid: patientUUIDdParam,
+      },
+      attributes: ['id'],
+    });
+
+    const list = await appointments.findAll({
+      where: {
+        id: patient.id,
+      },
+      attributes: ['uuid', 'description', 'startTime', 'endTime'],
+      order: [['createdAt', 'DESC']],
+    });
+
+    return res.status(StatusCodes.OK).json(list);
+  }
+
   static serializeModel(item) {
     return {
       uuid: item.uuid,

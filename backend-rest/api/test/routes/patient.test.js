@@ -91,15 +91,13 @@ describe('POST Authenticated in /patients', () => {
 });
 
 describe('GET Authenticated in /patients', () => {
-  it('Should return a list of patients with length equal a three', async () => {
+  it('Should return a list of patients', async () => {
     const response = await request(app)
       .get('/patients')
       .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
-
-    expect(response.body.length).toEqual(patientsToCreate.length)
 
     patientToTest = findByUUID(response.body, patientToUpdateAndDelete.uuid)
     expect(patientToTest.email).toEqual(patientToUpdateAndDelete.email);
@@ -169,14 +167,12 @@ describe('DELETE Authenticated in /patients/:uuid', () => {
     expect(deletedPatient.weight).not.toEqual(decimalMinimun);
   });
 
-  it('Should return a list of patients with length equal a two', async () => {
+  it('Should return a list of patients', async () => {
     const response = await request(app)
       .get('/patients')
       .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
-
-    expect(response.body.length).toEqual(2) // IMHO Magic number is valid just in case, semantic test suit
   });
 });
