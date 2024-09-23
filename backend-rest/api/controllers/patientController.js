@@ -71,18 +71,16 @@ class PatientController {
         });
       }
 
-      const updatedFields = {};
       const allowedFields = ['name', 'phone', 'birthDate', 'gender', 'height', 'weight'];
-
       allowedFields.forEach(field => {
         if (req.body[field] !== undefined) {
-          updatedFields[field] = req.body[field];
+          patient[field] = req.body[field];
         }
       });
 
       // TODO: validate
 
-      await patient.update(updatedFields);
+      await patient.save();
 
       res.status(StatusCodes.OK).json(
         PatientController.sanitizePatientData(patient)

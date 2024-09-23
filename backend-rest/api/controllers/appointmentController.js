@@ -23,43 +23,13 @@ class AppointmentController {
       });
 
       const fields = { uuid, patientId: patient.id, doctorId: doctor.id, description, startTime, endTime };
+      const newAppointment = appointments.build(fields);
 
-      // EXTRACT METHOD -----------
-      /*
-        TODO:
-        > 1. Requisitos funcionais:
-        >    - Requisitos desejáveis:
-        >      Eu como médico, quero que o sistema valide a minha agenda, 
-        >      não deixando eu cadastrar mais de um paciente na mesma hora.
-
-        1. ExtractMethod to model / ServiceMethod / Repository candidate
-
-        2. This query became awful and unnecessarily complex using 
-        the ORM features, so I decided to keep it raw in the code.
-      */
-      const appointmentConflictsQuery = `
-        SELECT uuid, "startTime", "endTime" 
-        FROM appointments 
-        WHERE "doctorId" = :doctorId
-          AND(
-            ("startTime" BETWEEN :startTime AND :endTime)
-            OR("endTime" BETWEEN :startTime AND :endTime)
-            OR("startTime" < :startTime AND "endTime" > :endTime)
-        );
-       `;
-
-      const appointmentConflicts = await appointments.sequelize.query(
-        appointmentConflictsQuery,
-        {
-          replacements: { doctorId: doctor.id, startTime, endTime },
-          type: appointments.sequelize.QueryTypes.SELECT
-        }
-      );
-
-      if (appointmentConflicts.length > 0) {
+      const conflicts = await AppointmentController.findConflicts(newAppointment);
+      if (conflicts.length > 0) {
         // USE IT ON  on place of "America/Sao_Paulo"
         // const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const conflicts = appointmentConflicts.map(conflict => ({
+        const appoitementsConflicted = conflicts.map(conflict => ({
           uuid: conflict.uuid,
           startTime: moment.tz(conflict.startTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss'),
           endTime: moment.tz(conflict.endTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss')
@@ -67,12 +37,9 @@ class AppointmentController {
 
         return res.status(StatusCodes.CONFLICT).json({
           message: `${conflicts.length} conflicting appointment(s) found`,
-          appointments: conflicts
+          appointments: appoitementsConflicted
         });
       };
-      // END OF EXTRACT METHOD ----------
-
-      const newAppointment = appointments.build(fields)
 
       // TODO: validate
 
@@ -102,7 +69,7 @@ class AppointmentController {
 
     const list = await appointments.findAll({
       where: {
-        id: patient.id,
+        patientId: patient.id,
       },
       attributes: ['uuid', 'description', 'startTime', 'endTime'],
       order: [['createdAt', 'DESC']],
@@ -111,12 +78,97 @@ class AppointmentController {
     return res.status(StatusCodes.OK).json(list);
   }
 
-  static serializeModel(item) {
+  static async updateByUUID(req, res) {
+    const { uuid: uuidParam } = req.params
+
+    try {
+      const appointment = await appointments.findOne({
+        where: {
+          uuid: uuidParam,
+        },
+        attributes: ['uuid', 'doctorId', 'description', 'startTime', 'endTime'],
+      });
+
+      const allowedFields = ['description', 'startTime', 'endTime'];
+      allowedFields.forEach(field => {
+        if (req.body[field] !== undefined) {
+          appointment[field] = req.body[field];
+        }
+      });
+
+      const conflicts = await AppointmentController.findConflicts(appointment);
+      if (conflicts.length > 0) {
+        // USE IT ON  on place of "America/Sao_Paulo"
+        // const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const appoitementsConflicted = conflicts.map(conflict => ({
+          uuid: conflict.uuid,
+          startTime: moment.tz(conflict.startTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss'),
+          endTime: moment.tz(conflict.endTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss')
+        }));
+
+        return res.status(StatusCodes.CONFLICT).json({
+          message: `${conflicts.length} conflicting appointment(s) found`,
+          appointments: appoitementsConflicted
+        });
+      };
+
+      // TODO: validate
+
+      res.status(StatusCodes.OK).json(
+        AppointmentController.serializeModel(appointment)
+      );
+
+    } catch (error) {
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Error updating appointment'
+      });
+    }
+  }
+
+  static async findConflicts(appointmentModel) {
+    try {
+      /*
+        1. ExtractMethod to model / ServiceMethod / Repository candidate
+
+        2. This query became awful and unnecessarily complex using 
+        the ORM features, so I decided to keep it raw in the code.
+      */
+      const conflictsQuery = `
+        SELECT uuid, "startTime", "endTime" 
+        FROM appointments 
+        WHERE "doctorId" = :doctorId
+          AND(
+            ("startTime" BETWEEN :startTime AND :endTime)
+            OR("endTime" BETWEEN :startTime AND :endTime)
+            OR("startTime" < :startTime AND "endTime" > :endTime)
+        );
+       `;
+
+      const conflicts = await appointments.sequelize.query(
+        conflictsQuery,
+        {
+          replacements: {
+            doctorId: appointmentModel.doctorId,
+            startTime: appointmentModel.startTime,
+            endTime: appointmentModel.endTime
+          },
+          type: appointments.sequelize.QueryTypes.SELECT
+        }
+      );
+
+      return conflicts;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static serializeModel(appointmentModel) {
     return {
-      uuid: item.uuid,
-      description: item.description,
-      startTime: item.startTime,
-      endTime: item.endTime
+      uuid: appointmentModel.uuid,
+      description: appointmentModel.description,
+      startTime: moment.tz(appointmentModel.startTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss'),
+      endTime: moment.tz(appointmentModel.endTime, "America/Sao_Paulo").format('YYYY-MM-DD HH:mm:ss'),
     };
   }
 }
