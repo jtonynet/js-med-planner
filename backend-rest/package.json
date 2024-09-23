@@ -1,6 +1,6 @@
 {
   "name": "js-med-planner-rest-api",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "API responsável pelos dados do Med Planner Challenge",
   "main": "index.js",
   "nodeVersion": "20.17.0",

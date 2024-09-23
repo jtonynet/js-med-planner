@@ -135,7 +135,7 @@
  *           required: true 
  *           example: "2028-12-20 16:30:00"
  * 
-  *     response.Appointment:
+ *     response.Appointment:
  *       type: object
  *       properties:
  *         uuid:
