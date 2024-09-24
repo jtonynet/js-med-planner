@@ -1,6 +1,7 @@
 'use strict';
 const { Model } = require('sequelize');
 const moment = require('moment-timezone');
+
 module.exports = (sequelize, DataTypes) => {
   class appointments extends Model {
     /**
@@ -17,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
       appointments.belongsTo(models.doctors, {
         foreignKey: 'doctorId',
         as: 'doctor',
+      });
+
+      appointments.hasMany(models.observations, {
+        foreignKey: 'appointmentId',
+        as: 'observations'
       });
     }
 

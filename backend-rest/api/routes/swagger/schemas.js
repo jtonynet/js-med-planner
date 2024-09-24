@@ -160,7 +160,29 @@
  *         startTime:
  *           type: string date
  *           example: "2028-12-20 16:30:00"
-  *         endTime:
+ *         endTime:
  *           type: string date
  *           example: "2028-12-20 16:30:00"
+ * 
+ *     request.Observation:
+ *       type: object
+ *       properties:
+ *         uuid:
+ *           type: string uuid
+ *           required: true
+ *           example: "d8671dab-4d0c-4888-bdc2-99a0e0bb8ca6"
+ *         message:
+ *           type: string
+ *           required: true
+ *           example: "Devemos solicitar exames mais profundos"
+ * 
+ *     response.Observation:
+ *       type: object
+ *       properties:
+ *         uuid:
+ *           type: string uuid
+ *           example: "d8671dab-4d0c-4888-bdc2-99a0e0bb8ca6"
+ *         message:
+ *           type: string
+ *           example: "Devemos solicitar exames mais profundos"
  */

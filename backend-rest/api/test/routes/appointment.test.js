@@ -1,8 +1,8 @@
 const { StatusCodes } = require('http-status-codes');
 const request = require('supertest')
 const { describe, it, beforeAll, afterAll } = require('@jest/globals')
-const app = require('../../app.js');
 const { patients, appointments } = require('../../models');
+const app = require('../../app.js');
 
 let server;
 let bearerToken;
@@ -130,8 +130,8 @@ const createDateOk = {
 }
 
 
-async function seedPatients() {
-  await patients.bulkCreate(patientsToCreate, { ignoreDuplicates: false });
+async function seed() {
+  await patients.bulkCreate(patientsToCreate, { ignoreDuplicates: true });
 }
 
 function findByUUID(list, uuid) {
@@ -142,7 +142,7 @@ beforeAll(async () => {
   const port = 3000;
   server = app.listen(port);
 
-  await seedPatients();
+  await seed();
 
   const response = await request(app)
     .post('/auth/login')
@@ -158,7 +158,7 @@ afterAll(async () => {
   server.close();
 });
 
-describe('POST Authenticated in /appointments/uuid/appointments', () => {
+describe('POST Authenticated in /patients/uuid/appointments', () => {
   test.each([
     [0, patientsToCreate[0].uuid, appointmentsToCreate],
     [1, patientsToCreate[1].uuid, appointmentsToCreate],
@@ -189,15 +189,16 @@ describe('POST Authenticated in /appointments/uuid/appointments', () => {
   });
 });
 
-// describe('GET Authenticated in /appointments', async () => {
-//   const response = await request(app)
-//     .get(`/patients/${patientUUID}/appointments`)
-//     .set('Authorization', `Bearer ${bearerToken}`)
-//     .set('Accept', 'application.json')
-//     .expect('content-type', /json/)
-//     .expect(StatusCodes.OK);
-// });
-
+describe('GET Authenticated in /appointments', () => {
+  it(`Should get a appointment list by authorized Doctor ${patientToConflictAppointment.uuid}`, async () => {
+    const response = await request(app)
+      .get(`/appointments`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.OK);
+  });
+});
 
 describe('POST Authenticated conflicts date time in /appointments/uuid/appointments', () => {
   test.each([
