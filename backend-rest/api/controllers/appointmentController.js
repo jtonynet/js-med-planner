@@ -45,25 +45,60 @@ class AppointmentController {
     }
   }
 
+  static async retrieveList(req, res) {
+    try {
+      const doctor = await doctors.findOne({
+        where: {
+          uuid: req.userUUID
+        },
+        attributes: ['id'],
+      });
+
+      const list = await appointments.findAll({
+        where: {
+          doctorId: doctor.id,
+        },
+        attributes: ['uuid', 'description', 'startTime', 'endTime'],
+        order: [['createdAt', 'DESC']],
+      });
+
+      return res.status(StatusCodes.OK).json(list);
+
+    } catch (error) {
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Error retriving appointment list'
+      });
+    }
+  }
+
   static async retrieveListByPatientUUID(req, res) {
     const { uuid: patientUUIDdParam } = req.params
 
-    const patient = await patients.findOne({
-      where: {
-        uuid: patientUUIDdParam,
-      },
-      attributes: ['id'],
-    });
+    try {
+      const patient = await patients.findOne({
+        where: {
+          uuid: patientUUIDdParam,
+        },
+        attributes: ['id'],
+      });
 
-    const list = await appointments.findAll({
-      where: {
-        patientId: patient.id,
-      },
-      attributes: ['uuid', 'description', 'startTime', 'endTime'],
-      order: [['createdAt', 'DESC']],
-    });
+      const list = await appointments.findAll({
+        where: {
+          patientId: patient.id,
+        },
+        attributes: ['uuid', 'description', 'startTime', 'endTime'],
+        order: [['createdAt', 'DESC']],
+      });
 
-    return res.status(StatusCodes.OK).json(list);
+      return res.status(StatusCodes.OK).json(list);
+
+    } catch (error) {
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Error retriving appointment list'
+      });
+    }
   }
 
   static async updateByUUID(req, res) {

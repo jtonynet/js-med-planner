@@ -68,9 +68,30 @@ router.get('/patients/:uuid/appointments', AppointmentController.retrieveListByP
 
 /**
  * @swagger
+ * /appointments:
+ *   get:
+ *     summary: Retrieve Appointment List by Authorized Doctor
+ *     security:
+ *       - bearerAuth: []
+ *     tags: 
+ *       - Appointments
+ *     responses:
+ *       200:
+ *         description: A list of appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/response.Appointment'
+ */
+router.get('/appointments', AppointmentController.retrieveList);
+
+/**
+ * @swagger
  * /appointments/{uuid}:
  *   patch:
- *     summary: Update Patient by UUID
+ *     summary: Update Appointment by UUID
  *     security:
  *       - bearerAuth: []
  *     tags: 
@@ -100,7 +121,7 @@ router.get('/patients/:uuid/appointments', AppointmentController.retrieveListByP
  *       401:
  *         description: Unauthorized
  *       404:
- *         description: Patient not found
+ *         description: Appointment not found
  */
 router.patch('/appointments/:uuid', AppointmentController.updateByUUID);
 
