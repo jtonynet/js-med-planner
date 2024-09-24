@@ -467,7 +467,7 @@ sequelize seed:create --name create-initial-doctor
 
 sequelize model:create --name appointments --attributes uuid:uuid,patientId:int,doctorId:int,description:string,startTime:date,endTime:date
 
-sequelize model:create --name appointments --attributes uuid:uuid,appointmentId:int,message:string
+sequelize model:create --name observations --attributes uuid:uuid,appointmentId:int,message:string
 ```
 
 //LIMPANDO DOCKER
