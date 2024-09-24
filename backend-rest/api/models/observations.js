@@ -13,7 +13,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'appointmentId',
         as: 'appointment',
       });
+    }
 
+    serialize() {
+      return {
+        uuid: this.uuid,
+        message: this.message
+      };
     }
   }
   observations.init({
