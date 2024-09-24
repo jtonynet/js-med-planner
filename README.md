@@ -458,23 +458,22 @@ sudo kill -9 $(lsof -t -i:3000)
 Criando Modelos com o cli do sequelize
 
 ```bash
-sequelize model:create --name patients --attributes uuid:uuid,name:string,phone:string,email:string,birth_date:date,gender:string,height:float,weight:float
+sequelize model:create --name patients --attributes uuid:uuid,name:string,phone:string,email:string,birthDate:date,gender:string,height:float,weight:float
 ```
 
 ```bash
 sequelize model:create --name doctors --attributes uuid:uuid,name:string,email:string,password:string
 sequelize seed:create --name create-initial-doctor
 
-sequelize model:create --name appointments --attributes uuid:uuid,patient_id:int,doctor_id:int,description:string,start_time:date,end_time:date
+sequelize model:create --name appointments --attributes uuid:uuid,patientId:int,doctorId:int,description:string,startTime:date,endTime:date
+
+sequelize model:create --name appointments --attributes uuid:uuid,appointmentId:int,message:string
 ```
-//patient.test.js
-
-
 
 //LIMPANDO DOCKER
 
-docker stop $(docker ps -aq)  # Para todos os contêineres em execução
-docker rm $(docker ps -aq)    # Remove todos os contêineres
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
 
 docker rmi $(docker images -q) --force
 
@@ -483,10 +482,6 @@ docker volume rm $(docker volume ls -q) --force
 docker network prune -f
 
 docker system prune -a --volumes
-
-
-
-
 
 -->
 
