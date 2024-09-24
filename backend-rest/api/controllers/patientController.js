@@ -1,147 +1,140 @@
 const { StatusCodes } = require('http-status-codes');
 const { patients } = require('../models');
 
+const CustomErrors = require('../errors/customErrors');
+const PatientService = require('../services/patientService');
+const patientService = new PatientService();
+
 class PatientController {
   static async create(req, res) {
+    const { uuid, name: patientName, phone, email, birthDate, gender, height, weight } = req.body;
+    const dto = { uuid, name: patientName, phone, email, birthDate, gender, height, weight };
+
     try {
-      const { uuid, name: patientName, phone, email, birthDate, gender, height, weight } = req.body;
-      const patientData = { uuid, name: patientName, phone, email, birthDate, gender, height, weight };
-
-      const newPatient = patients.build(patientData)
-
-      // TODO: validate
-
-      await newPatient.save();
-
-      res.status(StatusCodes.CREATED).json(
-        PatientController.sanitizePatientData(newPatient)
-      );
+      const newPatient = await patientService.create(dto);
+      return res.status(StatusCodes.CREATED).json(newPatient);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error creating patient'
+      if (error instanceof CustomErrors.ConflictError) {
+        return res.status(StatusCodes.CONFLICT).json({ message: error.message });
+      }
+
+      if (error instanceof CustomErrors.ValidationError) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          message: error.message,
+          errors: error.details
+        });
+      }
+
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: error.message
       });
+
     }
   }
 
   static async retrieveList(req, res) {
     try {
-      const list = await patients.findAll({
-        attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
-        order: [['createdAt', 'DESC']],
-      })
+      const list = await patientService.retrieveList();
 
       res.status(StatusCodes.OK).json(list);
 
     } catch (error) {
       console.log(error)
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error retriving patient list'
+        message: error.message
       });
+
     }
   }
 
   static async retrieveByUUID(req, res) {
-    const { uuid: uuidParam } = req.params
+    const { uuid: uuidParam } = req.params;
+    const dto = { uuid: uuidParam };
 
     try {
-      const patient = await patients.findOne({
-        where: {
-          uuid: uuidParam,
-        },
-        attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
-      })
+      const patient = await patientService.retrieveByUUID(dto);
 
       res.status(StatusCodes.OK).json(patient);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error retrieve patient'
-      });
-    }
-
-  }
-
-  static async updateByUUID(req, res) {
-    const { uuid: uuidParam } = req.params
-
-    try {
-      const patient = await patients.findOne({
-        where: {
-          uuid: uuidParam,
-        },
-      });
-
-      if (!patient) {
+      if (error instanceof CustomErrors.NotFoundError) {
         return res.status(StatusCodes.NOT_FOUND).json({
-          message: 'Patient not found',
+          message: error.message
         });
       }
 
-      const allowedFields = ['name', 'phone', 'birthDate', 'gender', 'height', 'weight'];
-      allowedFields.forEach(field => {
-        if (req.body[field] !== undefined) {
-          patient[field] = req.body[field];
-        }
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: error.message
       });
 
-      // TODO: validate
+    }
+  }
 
-      await patient.save();
+  static async updateByUUID(req, res) {
+    const { uuid: uuidParam } = req.params;
+    const allowedFields = ['name', 'phone', 'birthDate', 'gender', 'height', 'weight'];
 
-      res.status(StatusCodes.OK).json(
-        PatientController.sanitizePatientData(patient)
-      );
+    let dto = { uuid: uuidParam };
+    allowedFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        dto[field] = req.body[field];
+      }
+    });
+
+    try {
+      const patient = await patientService.updateByUUID(dto);
+
+      res.status(StatusCodes.OK).json(patient);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error updating patient'
+      if (error instanceof CustomErrors.NotFoundError) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+          message: error.message
+        });
+      }
+
+      if (error instanceof CustomErrors.ValidationError) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          message: error.message,
+          errors: error.details
+        });
+      }
+
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: error.message
       });
     }
   }
 
   static async deleteByUUID(req, res) {
-    const { uuid: uuidParam } = req.params
+    const { uuid: uuidParam } = req.params;
+    const dto = { uuid: uuidParam };
 
     try {
-      const patient = await patients.findOne({
-        where: {
-          uuid: uuidParam,
-        },
-      });
+      await patientService.deleteByUUID(dto);
 
-      if (!patient) {
+      return res.status(StatusCodes.NO_CONTENT).end();
+
+    } catch (error) {
+      if (error instanceof CustomErrors.NotFoundError) {
         return res.status(StatusCodes.NOT_FOUND).json({
-          message: 'Patient not found',
+          message: error.message
         });
       }
 
-      await patient.destroy();
+      if (error instanceof CustomErrors.ValidationError) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          message: error.message,
+          errors: error.details
+        });
+      }
 
-      res.status(StatusCodes.NO_CONTENT).end();
-
-    } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error deleting patient'
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: error.message
       });
-    }
-  }
 
-  static sanitizePatientData(patient) {
-    return {
-      uuid: patient.uuid,
-      name: patient.name,
-      phone: patient.phone,
-      email: patient.email,
-      birthDate: patient.birthDate,
-      gender: patient.gender,
-      height: patient.height,
-      weight: patient.weight,
-    };
+    }
   }
 }
 

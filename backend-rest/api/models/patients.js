@@ -15,6 +15,19 @@ module.exports = (sequelize, DataTypes) => {
         as: 'appointments'
       });
     }
+
+    serialize() {
+      return {
+        uuid: this.uuid,
+        name: this.name,
+        phone: this.phone,
+        email: this.email,
+        birthDate: this.birthDate,
+        gender: this.gender,
+        height: this.height,
+        weight: this.weight,
+      };
+    }
   }
   patients.init({
     uuid: {
@@ -80,6 +93,8 @@ module.exports = (sequelize, DataTypes) => {
 
       Crypto-shredding will address the issue of sensitive data in backup databases.
       Plan to study and implement this in the future for enhanced data protection.
+
+      FINDED BUG, PIVOTES TO CRYPTO SHREDDING!
     */
     const hashField = (field) => {
       return crypto.createHash('sha256').update(field).digest('hex');
@@ -89,7 +104,7 @@ module.exports = (sequelize, DataTypes) => {
     const dateOfBrazilianDiscovery = '1500-04-22';
 
     patient.name = hashField(patient.name);
-    patient.email = hashField(patient.email);
+    patient.email = hashField((patient.email + patient.id)); //FINDED BUG, PIVOTES TO CRYPTO SHREDDING!
     patient.phone = null;
     patient.gender = 'unspecified';
     patient.birthDate = dateOfBrazilianDiscovery;
