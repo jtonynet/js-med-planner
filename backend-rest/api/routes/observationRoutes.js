@@ -38,4 +38,32 @@ router.use(authenticate);
  */
 router.post('/appointments/:uuid/observations', ObservationController.create);
 
+/**
+ * @swagger
+ * /appointments/{uuid}/observations:
+ *   get:
+ *     summary: Retrieve Observation list by Appointments UUID
+ *     security:
+ *       - bearerAuth: []
+ *     tags: 
+ *       - Observations
+ *     parameters:
+ *       - in: path
+ *         name: uuid
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: uuid
+ *     responses:
+ *       200:
+ *         description: A list of Patient
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/response.Observation'
+ */
+router.get('/appointments/:uuid/observations', ObservationController.retrieveByAppointmentUUID);
+
 module.exports = router;
