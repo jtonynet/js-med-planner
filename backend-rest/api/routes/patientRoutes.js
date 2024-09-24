@@ -42,7 +42,7 @@ router.post('/patients', PatientController.create);
  *       - Patients
  *     responses:
  *       200:
- *         description: A list of patients
+ *         description: A list of Patient
  *         content:
  *           application/json:
  *             schema:
@@ -70,7 +70,7 @@ router.get('/patients', PatientController.retrieveList);
  *           format: uuid
  *     responses:
  *       200:
- *         description: One patient
+ *         description: One Patient
  *         content:
  *           application/json:
  *             schema:
@@ -131,7 +131,7 @@ router.patch('/patients/:uuid', PatientController.updateByUUID);
  *         required: true
  *         schema:
  *           type: string
- *         description: UUID of the patient to delete
+ *         description: UUID of the Patient to delete
  *     responses:
  *       204:
  *         description: No Content Patient deleted successfully

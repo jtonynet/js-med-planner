@@ -134,6 +134,10 @@ async function seedPatients() {
   await patients.bulkCreate(patientsToCreate, { ignoreDuplicates: false });
 }
 
+function findByUUID(list, uuid) {
+  return list.find(item => item.uuid === uuid);
+}
+
 beforeAll(async () => {
   const port = 3000;
   server = app.listen(port);
@@ -185,7 +189,17 @@ describe('POST Authenticated in /appointments/uuid/appointments', () => {
   });
 });
 
-describe('POST Authenticated conflict date time in /appointments/uuid/appointments', () => {
+// describe('GET Authenticated in /appointments', async () => {
+//   const response = await request(app)
+//     .get(`/patients/${patientUUID}/appointments`)
+//     .set('Authorization', `Bearer ${bearerToken}`)
+//     .set('Accept', 'application.json')
+//     .expect('content-type', /json/)
+//     .expect(StatusCodes.OK);
+// });
+
+
+describe('POST Authenticated conflicts date time in /appointments/uuid/appointments', () => {
   test.each([
     [0, patientToConflictAppointment.uuid, apointmentToConflict, conflictCreateDates],
     [1, patientToConflictAppointment.uuid, apointmentToConflict, conflictCreateDates],
@@ -202,7 +216,7 @@ describe('POST Authenticated conflict date time in /appointments/uuid/appointmen
   });
 });
 
-describe('PATCH Authenticated conflict date time in /appointments/uuid', () => {
+describe('PATCH Authenticated conflicts date time in /appointments/uuid', () => {
   it(`Should create a appointment  by patient UUID ${patientToConflictAppointment.uuid}`, async () => {
     const response = await request(app)
       .post(`/patients/${patientToConflictAppointment.uuid}/appointments`)

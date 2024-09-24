@@ -26,12 +26,20 @@ class PatientController {
   }
 
   static async retrieveList(req, res) {
-    const list = await patients.findAll({
-      attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
-      order: [['createdAt', 'DESC']],
-    })
+    try {
+      const list = await patients.findAll({
+        attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
+        order: [['createdAt', 'DESC']],
+      })
 
-    res.status(StatusCodes.OK).json(list);
+      res.status(StatusCodes.OK).json(list);
+
+    } catch (error) {
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Error retriving patient list'
+      });
+    }
   }
 
   static async retrieveByUUID(req, res) {
@@ -46,6 +54,7 @@ class PatientController {
       })
 
       res.status(StatusCodes.OK).json(patient);
+
     } catch (error) {
       console.log(error)
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

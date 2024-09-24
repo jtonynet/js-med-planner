@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const request = require('supertest')
 const { describe, it, beforeAll, afterAll } = require('@jest/globals')
 const app = require('../../app.js');
-const { patients } = require('../../models');
+const { patients } = require('../../models/index.js');
 
 let server;
 let bearerToken;
@@ -69,8 +69,8 @@ const patientParamsToUpdate = {
   weight: '55.00'
 }
 
-function findByUUID(patients, uuid) {
-  return patients.find(patient => patient.uuid === uuid);
+function findByUUID(list, uuid) {
+  return list.find(item => item.uuid === uuid);
 }
 
 describe('POST Authenticated in /patients', () => {
