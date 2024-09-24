@@ -33,6 +33,34 @@ class ObservationController {
       });
     }
   }
+
+  static async retrieveByAppointmentUUID(req, res) {
+    const { uuid: appointmentUUID } = req.params
+
+    try {
+      const appointment = await appointments.findOne({
+        where: {
+          uuid: appointmentUUID,
+        },
+        attributes: ['id'],
+      });
+
+      const list = await observations.findAll({
+        where: {
+          appointmentId: appointment.id
+        },
+        attributes: ['uuid', 'message'],
+      })
+
+      return res.status(StatusCodes.OK).json(list);
+
+    } catch (error) {
+      console.log(error)
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: 'Error retriving observation list'
+      });
+    }
+  }
 }
 
 module.exports = ObservationController;

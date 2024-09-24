@@ -25,6 +25,11 @@ const appointmentToCreate = {
   "endTime": "2035-12-20 10:30:00"
 };
 
+const observationToCreate = {
+  "uuid": "6112c28c-e97b-4823-9e73-ec89074449bf",
+  "message": "Devemos solicitar exames mais profundos"
+};
+
 async function seed() {
   await patients.bulkCreate([patientToCreate], { ignoreDuplicates: true });
 }
@@ -62,10 +67,20 @@ describe('POST Authenticated in /appointments/uuid/observations', () => {
     const response = await request(app)
       .post(`/appointments/${appointmentToCreate.uuid}/observations`)
       .set('Authorization', `Bearer ${bearerToken}`)
-      .send({
-        "uuid": "6112c28c-e97b-4823-9e73-ec89074449bf",
-        "message": "Devemos solicitar exames mais profundos"
-      })
+      .send(observationToCreate)
       .expect(StatusCodes.CREATED);
+  });
+});
+
+describe('GET Authenticated in /appointments/uuid/observations', () => {
+  (`Should return a list of observation to appointment UUID ${appointmentToCreate.uuid}`, async () => {
+    const response = await request(app)
+      .get(`/appointments/${appointmentToCreate.uuid}/observations`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.OK);
+
+    expect(response.body[0].message).toEqual(observationToCreate.message);
   });
 });
