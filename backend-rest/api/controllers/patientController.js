@@ -15,15 +15,15 @@ class PatientController {
       return res.status(StatusCodes.CREATED).json(newPatient);
 
     } catch (error) {
-      if (error instanceof CustomErrors.ConflictError) {
-        return res.status(StatusCodes.CONFLICT).json({ message: error.message });
-      }
-
       if (error instanceof CustomErrors.ValidationError) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: error.message,
           errors: error.details
         });
+      }
+
+      if (error instanceof CustomErrors.ConflictError) {
+        return res.status(StatusCodes.CONFLICT).json({ message: error.message });
       }
 
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

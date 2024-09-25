@@ -7,7 +7,7 @@ class PatientService {
     try {
       const newPatient = database.patients.build(dto)
 
-      // TODO: validate patient
+      await this._validatePatient(newPatient);
 
       const existingPatient = await database.patients.findOne({
         where: {
@@ -26,14 +26,16 @@ class PatientService {
       return newPatient.serialize();
 
     } catch (error) {
-      console.log(error);
-
-      if (error instanceof CustomErrors.ConflictError) {
-        throw error;
+      switch (error.constructor.name) {
+        case 'ValidationError':
+        case 'ConflictError':
+          throw error;
       }
 
       // 'Error creating patient'
+      console.log(error);
       throw new CustomErrors.InternalServerError('An unexpected error occurred');
+
     }
   }
 
@@ -143,13 +145,22 @@ class PatientService {
         throw error;
       }
 
-      // 'Error updating patient'
+      // 'Error deleting patient'
       throw new CustomErrors.InternalServerError('An unexpected error occurred');
 
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error deleting patient'
-      });
+    }
+  }
+
+  async _validatePatient(patient) {
+    try {
+      await patient.validate();
+    } catch (validationError) {
+      const errorDetails = validationError.errors.map(err => ({
+        field: err.path,
+        message: err.message
+      }));
+
+      throw new CustomErrors.ValidationError('Validation error(s) encountered', errorDetails);
     }
   }
 }

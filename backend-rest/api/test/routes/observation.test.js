@@ -11,7 +11,7 @@ const patientToCreate = {
   "uuid": "2bdbc4cf-659d-4c12-9721-08f641151ba6",
   "name": "Isabela Lisbela",
   "phone": "+554177171717",
-  "email": "belabela@xmail.com",
+  "email": "belabela@gmail.com",
   "birthDate": "1998-06-16",
   "gender": "female",
   "height": "1.60",
@@ -43,7 +43,7 @@ beforeAll(async () => {
   const response = await request(app)
     .post('/auth/login')
     .send({
-      "email": "house@md.com",
+      "email": "house.md@gmail.com",
       "password": "lupos"
     });
 

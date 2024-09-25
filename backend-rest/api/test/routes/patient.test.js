@@ -14,7 +14,7 @@ beforeAll(async () => {
   const response = await request(app)
     .post('/auth/login')
     .send({
-      "email": "house@md.com",
+      "email": "house.md@gmail.com",
       "password": "lupos"
     });
 
@@ -30,7 +30,7 @@ const patientsToCreate = [
     uuid: 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9',
     name: 'Pedro Prado',
     phone: '+551100000000',
-    email: 'pedro@xmail.com',
+    email: 'pedro@gmail.com',
     birthDate: '1990-05-15',
     gender: 'male',
     height: '1.75',
@@ -40,7 +40,7 @@ const patientsToCreate = [
     uuid: '69be741b-3bf4-41a2-9b44-0e8b655a54dc',
     name: 'Felipe Feltrin',
     phone: '+552199999999',
-    email: 'felipef@xmail.com',
+    email: 'felipef@gmail.com',
     birthDate: '1970-12-25',
     gender: 'male',
     height: '1.60',
@@ -50,7 +50,7 @@ const patientsToCreate = [
     uuid: 'bd5afa01-91a6-4b7a-8fee-bb98f5ed47a7',
     name: 'Carolina Karla',
     phone: '+5521420420420',
-    email: 'carolinak@xmail.com',
+    email: 'carolinak@gmail.com',
     birthDate: '1995-12-25',
     gender: 'female',
     height: '1.65',
@@ -189,5 +189,40 @@ describe('DELETE Authenticated in /patients/:uuid', () => {
 
     patientDeletedInResponse = findByUUID(responseAfterDelete.body, patientToUpdateAndDelete.uuid)
     expect(patientDeletedInResponse).toBeUndefined();
+  });
+});
+
+// CORNER CASES
+
+const patientToValidate =
+{
+  uuid: '5c351098-3a95-42a1-bdff-b6345803ca3f',
+  name: 'Pedro Prado',
+  phone: '+551100000000',
+  email: 'pedro@gmail.com',
+  birthDate: '1990-05-15',
+  gender: 'male',
+  height: '1.75',
+  weight: '72.50'
+};
+
+describe('POST Authenticated validate fields /patients', () => {
+  test.each([
+    ['name', { name: 'a' }],
+    ['birthDate', { birthDate: '9999-12-31' }],
+    ['gender', { gender: 'gender_not_in_enum' }],
+    ['height', { height: '00.00' }],
+    ['weight', { weight: '00.00' }]
+  ])(`Should error validate field %s at one patient by UUID ${patientToValidate.uuid}`, async (key, param) => {
+    let patient = { ...patientToValidate };
+    patient[key] = param[key];
+
+    const response = await request(app)
+      .post('/patients')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send(patient)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Validation error(s) encountered');
   });
 });

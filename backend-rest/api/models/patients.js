@@ -34,11 +34,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        notEmpty: true,
+        isUUID: 4,
+      }
     },
     name: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: {
+          args: [3, 255],
+          msg: 'O nome deve ter pelo menos 3 caracteres.'
+        }
+      }
     },
     phone: {
       type: DataTypes.STRING(25)
@@ -46,11 +57,25 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING(255),
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        isEmail: {
+          msg: 'Email deve estar em um formato válido.'
+        }
+      }
     },
     birthDate: {
       type: DataTypes.DATEONLY,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isDate: {
+          msg: 'Data de nascimento deve ser uma data válida.'
+        },
+        isBefore: {
+          args: new Date().toISOString().split('T')[0],
+          msg: 'A data de nascimento deve ser anterior à data atual.'
+        }
+      }
     },
     /*
       TODO:
@@ -60,15 +85,39 @@ module.exports = (sequelize, DataTypes) => {
     */
     gender: {
       type: DataTypes.ENUM('male', 'female', 'other', 'none', 'unspecified'),
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isIn: {
+          args: [['male', 'female', 'other', 'none', 'unspecified']],
+          msg: 'O gênero deve ser um dos seguintes: male, female, other, none, unspecified.'
+        }
+      }
     },
     height: {
       type: DataTypes.DECIMAL(5, 2),
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isDecimal: {
+          msg: 'A altura deve ser um valor decimal.'
+        },
+        min: {
+          args: 0.01,
+          msg: 'A altura deve ser maior que 0.01.'
+        }
+      }
     },
     weight: {
       type: DataTypes.DECIMAL(5, 2),
-      allowNull: false
+      allowNull: false,
+      validate: {
+        isDecimal: {
+          msg: 'O peso deve ser um valor decimal.'
+        },
+        min: {
+          args: 0.01,
+          msg: 'O peso deve ser maior que 0.01.'
+        }
+      }
     }
   }, {
     sequelize,
@@ -111,7 +160,7 @@ module.exports = (sequelize, DataTypes) => {
     patient.height = decimalMinimun;
     patient.weight = decimalMinimun;
 
-    await patient.save({ transaction: options.transaction });
+    await patient.save({ transaction: options.transaction, validate: false });
   });
 
   return patients;

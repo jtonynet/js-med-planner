@@ -9,7 +9,7 @@
  *         email:
  *           type: string
  *           required: true
- *           example: "house@md.com"
+ *           example: "house.md@gmail.com"
  *         password:
  *           type: string
  *           required: true

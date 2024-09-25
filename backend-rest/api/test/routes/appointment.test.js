@@ -12,7 +12,7 @@ const patientsToCreate = [
     "uuid": "cdc12e84-c821-42ba-aac6-979175126a36",
     "name": "Francisco Fernandez",
     "phone": "+553100101010",
-    "email": "chicof@xmail.com",
+    "email": "chicof@gmail.com",
     "birthDate": "1991-06-16",
     "gender": "male",
     "height": "1.65",
@@ -22,7 +22,7 @@ const patientsToCreate = [
     "uuid": "8234ae32-91d4-4a6b-91e6-376c7bf8003f",
     "name": "Venessa Volpato",
     "phone": "+553179797979",
-    "email": "nessav@umail.com",
+    "email": "nessav@gmail.com",
     "birthDate": "1998-10-18",
     "gender": "female",
     "height": "1.67",
@@ -32,7 +32,7 @@ const patientsToCreate = [
     "uuid": "1973d488-8aa1-48c9-80a0-3a94ef3bedda",
     "name": "Sabrina Santori",
     "phone": "+553188769933",
-    "email": "sabrinas@umail.com",
+    "email": "sabrinas@gmail.com",
     "birthDate": "1998-04-17",
     "gender": "female",
     "height": "1.67",
@@ -42,7 +42,7 @@ const patientsToCreate = [
     "uuid": "2cc68e7d-debc-4bde-ae5c-0a569fc97d85",
     "name": "Priscila Pires",
     "phone": "+553111111111",
-    "email": "paulop@umail.com",
+    "email": "paulop@gmail.com",
     "birthDate": "1995-01-28",
     "gender": "other",
     "height": "1.73",
@@ -52,7 +52,7 @@ const patientsToCreate = [
     "uuid": "4aea82a4-a7ba-4a29-92cf-f21c764ddf96",
     "name": "Paciente Difícil de Encontrar Horário Para Agendar",
     "phone": "+553111111111",
-    "email": "hardappointment@umail.com",
+    "email": "hardappointment@gmail.com",
     "birthDate": "1995-01-28",
     "gender": "male",
     "height": "1.73",
@@ -147,7 +147,7 @@ beforeAll(async () => {
   const response = await request(app)
     .post('/auth/login')
     .send({
-      "email": "house@md.com",
+      "email": "house.md@gmail.com",
       "password": "lupos"
     });
 
