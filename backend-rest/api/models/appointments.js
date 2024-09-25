@@ -75,9 +75,12 @@ module.exports = (sequelize, DataTypes) => {
   appointments.init({
     uuid: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        notEmpty: true,
+        isUUID: 4,
+      }
     },
     patientId: {
       type: DataTypes.INTEGER,
@@ -99,15 +102,28 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: {
+          args: [3, 255],
+          msg: 'Deve ter pelo menos 3 caracteres e no máximo 255.'
+        }
+      }
     },
     startTime: {
       type: DataTypes.DATE,
       allowNull: false,
+      validate: {
+        isDate: {
+          msg: 'Deve ser uma data válida no formato YYYY-MM-DD HH:mm:ss'
+        },
+        notEmpty: {
+          msg: 'Não pode ser vazia.'
+        },
+      },
       get() {
         const rawValue = this.getDataValue('startTime');
-
-        //timezone "America/Sao_Paulo"
         return moment.tz(
           rawValue,
           Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -117,10 +133,21 @@ module.exports = (sequelize, DataTypes) => {
     endTime: {
       type: DataTypes.DATE,
       allowNull: false,
+      validate: {
+        isDate: {
+          msg: 'Deve ser uma data válida no formato YYYY-MM-DD HH:mm:ss'
+        },
+        notEmpty: {
+          msg: 'Não pode ser vazia.'
+        },
+        isAfterStartTime(value) {
+          if (value && this.startTime && new Date(value) <= new Date(this.startTime)) {
+            throw new Error('Data de término deve ser posterior à data de início.');
+          }
+        }
+      },
       get() {
         const rawValue = this.getDataValue('endTime');
-
-        //timezone "America/Sao_Paulo"
         return moment.tz(
           rawValue,
           Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -137,7 +164,14 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         fields: ['uuid']
       }
-    ]
+    ],
+    validate: {
+      startTimeBeforeEndTime() {
+        if (this.startTime && this.endTime && new Date(this.startTime) >= new Date(this.endTime)) {
+          throw new Error('Data de início deve ser menor que a data de término.');
+        }
+      }
+    }
   });
   return appointments;
 };

@@ -186,6 +186,9 @@ describe('POST Authenticated in /patients/uuid/appointments', () => {
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
+
+    const appointmentsPerPatient = 1;
+    expect(response.body.length).toEqual(appointmentsPerPatient);
   });
 });
 
@@ -197,6 +200,10 @@ describe('GET Authenticated in /appointments', () => {
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
       .expect(StatusCodes.OK);
+
+
+    expect(response.body.length)
+      .toBeGreaterThanOrEqual(appointmentsToCreate.length);
   });
 });
 
@@ -214,6 +221,8 @@ describe('POST Authenticated conflicts date time in /appointments/uuid/appointme
         ...conflictCreateDates[key]
       })
       .expect(StatusCodes.CONFLICT);
+
+    expect(response.body.message).toEqual('Appointment(s) conflicting found');
   });
 });
 
@@ -246,6 +255,8 @@ describe('PATCH Authenticated conflicts date time in /appointments/uuid', () => 
       })
       .expect('content-type', /json/)
       .expect(StatusCodes.CONFLICT);
+
+    expect(response.body.message).toEqual('Appointment(s) conflicting found');
   });
 });
 
@@ -274,3 +285,13 @@ describe('DELETE Authenticated in /appointments/uuid', () => {
     expect(response.body.length).toEqual(0);
   });
 });
+
+// CORNER CASES
+
+const patientToValidate = {
+  uuid: '8e1d7569-af4a-4dcb-ab72-7c13f3bd437e',
+  description: 'Primeira consulta da Tarde',
+  startTime: '2028-12-20 18:30:00',
+  endTime: '2028-12-20 17:00:00'
+};
+

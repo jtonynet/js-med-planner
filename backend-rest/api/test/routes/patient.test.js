@@ -222,10 +222,32 @@ const fieldsToValidate = [
   ['weight', { weight: '00.00' }]
 ];
 
+const fieldsDontSendToValidate = [
+  ['name'],
+  ['phone'],
+  ['birthDate'],
+  ['gender'],
+  ['height'],
+  ['weight']
+]
+
 describe('POST Authenticated validate fields errors in /patients', () => {
   test.each(fieldsToValidate)(`Should return error on validate field %s at patient by UUID ${patientToValidate.uuid}`, async (key, param) => {
     let patient = { ...patientToValidate };
     patient[key] = param[key];
+
+    const response = await request(app)
+      .post('/patients')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send(patient)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Validation error(s) on request encountered');
+  });
+
+  test.each(fieldsDontSendToValidate)(`Should return error on sending without field %s at patient by UUID ${patientToValidate.uuid}`, async (key) => {
+    let patient = { ...patientToValidate };
+    delete patient[key];
 
     const response = await request(app)
       .post('/patients')

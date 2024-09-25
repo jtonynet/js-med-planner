@@ -1,48 +1,57 @@
 const { StatusCodes } = require('http-status-codes');
+const { validate: validateUUID } = require('uuid');
+const CustomErrors = require('../errors/customErrors');
+const AppointmentService = require('../services/appointmentService');
+const appointmentService = new AppointmentService();
+
 const { appointments, patients, doctors, db } = require('../models');
 
 class AppointmentController {
+
   static async create(req, res) {
     const { uuid: patientUUID } = req.params
-    let { uuid, description, startTime, endTime } = req.body;
 
-    try {
-      const patient = await patients.findOne({
-        where: {
-          uuid: patientUUID,
-        },
-        attributes: ['id'],
-      });
-
-      const doctor = await doctors.findOne({
-        where: {
-          uuid: req.userUUID
-        },
-        attributes: ['id'],
-      });
-
-      const fields = { uuid, patientId: patient.id, doctorId: doctor.id, description, startTime, endTime };
-      const newAppointment = appointments.build(fields);
-
-      const conflicts = await AppointmentController._searchConflicts(newAppointment);
-      if (conflicts.exists) {
-        return res.status(StatusCodes.CONFLICT).json(conflicts.response);
-      }
-
-      // TODO: validate
-
-      await newAppointment.save();
-
-      return res.status(StatusCodes.CREATED).json(
-        newAppointment.serialize()
-      );
-
-    } catch (error) {
-      console.log(error)
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error creating appointment'
+    if (!validateUUID(patientUUID)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
       });
     }
+
+    try {
+      const { uuid: appointmentUUID, description, startTime, endTime } = req.body;
+      const dto = { userUUID: req.userUUID, patientUUID, appointmentUUID, description, startTime, endTime };
+
+      const newAppointment = await appointmentService.create(dto);
+
+      return res.status(StatusCodes.CREATED).json(newAppointment);
+
+    } catch (error) {
+      if (error instanceof CustomErrors.NotFoundError) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+          message: error.message
+        });
+      }
+
+      if (error instanceof CustomErrors.ValidationError) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          message: error.message,
+          errors: error.details
+        });
+      }
+
+      if (error instanceof CustomErrors.ConflictError) {
+        return res.status(StatusCodes.CONFLICT).json({
+          message: error.message,
+          errors: error.details
+        });
+      }
+
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        message: error.message
+      });
+
+    }
+
   }
 
   static async retrieveList(req, res) {
@@ -181,7 +190,7 @@ class AppointmentController {
         return {
           exists: true,
           response: {
-            message: `${conflicts.length} conflicting appointment(s) found`,
+            message: 'Appointment(s) conflicting found',
             appointments: appointmentsConflicted
           }
         };

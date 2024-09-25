@@ -1,13 +1,14 @@
 const { Op } = require('sequelize');
 const database = require('../models');
+const BaseService = require('./baseService');
 const CustomErrors = require('../errors/customErrors');
 
-class PatientService {
+class PatientService extends BaseService {
   async create(dto) {
     try {
       const newPatient = database.patients.build(dto)
 
-      await this._validatePatient(newPatient);
+      await this._validateModel(newPatient);
 
       const existingPatient = await database.patients.findOne({
         where: {
@@ -97,7 +98,7 @@ class PatientService {
       delete dto.uuid;
       patient.set(dto);
 
-      await this._validatePatient(patient);
+      await this._validateModel(patient);
 
       await patient.save();
 
@@ -139,19 +140,6 @@ class PatientService {
       // 'Error deleting patient'
       console.log(error);
       throw new CustomErrors.InternalServerError('An unexpected error occurred');
-    }
-  }
-
-  async _validatePatient(patient) {
-    try {
-      await patient.validate();
-    } catch (validationError) {
-      const errorDetails = validationError.errors.map(err => ({
-        field: err.path,
-        message: err.message
-      }));
-
-      throw new CustomErrors.ValidationError('Validation error(s) on request encountered', errorDetails);
     }
   }
 }
