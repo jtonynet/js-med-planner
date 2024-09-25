@@ -123,7 +123,7 @@ Deve existir ao menos 1 minuto de diferença entre o cadastro de um paciente e o
 ### 💻 Rodando o Projeto
 
 <a id="run-containerized"></a>
-#### 🐋 Conteinerizado
+#### 🐋 [QUEBRADO NO MOMENTO] Conteinerizado 
 
 Rode os comandos `docker compose` (de acordo com sua versão do docker compose) no diretório raiz do projeto:
 ```bash
@@ -152,7 +152,13 @@ ou se conecte a uma database válida, então vá para o diretório `backend-rest
 ```
 <br/>
 
-#### ⏳ TODO: migrations e seeds
+#### ⏳ Migrations e seeds
+
+No ambiente local e dentro da pasta `backend-rest`, rode o comando.
+
+```bash
+/js-med-planner/backend-rest$  npm run db:clean
+```
 
 <br/>
 
