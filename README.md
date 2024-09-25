@@ -106,14 +106,6 @@ _*A documentação original do desafio é mais abrangente, com sugestões de tel
 
 Faz sentido utilizar __Arquitetura de Duas Camadas__. Caso a complexidade aumente, podemos extender para o uso de uma terceira camada (`services/repository`).
 
-Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no GitHub Actions
-
-
-Sobre:
->   - Eu como médico, quero que o sistema valide a minha agenda, não deixando
-eu cadastrar mais de um paciente na mesma hora.
-
-Deve existir ao menos 1 minuto de diferença entre o cadastro de um paciente e outro.
 
 [⤴️ de volta ao índice](#index)
 
@@ -173,7 +165,7 @@ No ambiente local e dentro da pasta `backend-rest`, rode o comando.
 
 Com a aplicação em execução, a rota de documentação Swagger fica disponível em http://localhost:3000/docs/
 
-O endpoint `auth/login` provê um token `Bearer` que deve ser obtido e utilizado no `Authorize` do swagger para que as requisições possam ser procedidas adequadamente.
+O endpoint `/auth/login` provê um token `Bearer` que deve ser obtido e utilizado no `Authorize` do swagger para que as requisições possam ser procedidas adequadamente.
 
 O cliente deve informar o UUID do recurso para criação. Para validações, você pode utilizar um [site gerador de UUIDs](https://www.uuidgenerator.net/).
 
@@ -327,7 +319,7 @@ então vá para o diretório do mesmo e execute o comando de testes:
 
 <img src="./docs/assets/images/screen_captures/integration_tests_db.jpeg">
 
-Cada vez que o comando for procedido, a database de testes será recriada no test-postgres-med-planner assegurando uma execução limpa
+Cada vez que o comando for executado, a database de testes será recriada no test-postgres-med-planner assegurando uma execução limpa
 
 <img src="./docs/assets/images/screen_captures/integration_tests_run.jpeg">
 
@@ -343,7 +335,7 @@ Saída esperada pelo comando
 ### 👏 Boas Práticas
 
 - [Swagger](https://swagger.io/)
-- [Github Project - Kanbam](https://github.com/users/jtonynet/projects/5/views/1)
+- [Github Project - Kanbam](https://github.com/users/jtonynet/projects/6)
 - [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 - [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 - [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
@@ -488,6 +480,8 @@ docker volume rm $(docker volume ls -q) --force
 docker network prune -f
 
 docker system prune -a --volumes
+
+sudo systemctl restart docker
 
 -->
 

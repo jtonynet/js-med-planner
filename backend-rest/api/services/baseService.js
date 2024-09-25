@@ -3,6 +3,7 @@ const CustomErrors = require('../errors/customErrors');
 class BaseService {
   async _validateModel(model) {
     try {
+
       await model.validate();
 
     } catch (validationError) {

@@ -85,27 +85,51 @@ describe('GET Authenticated in /appointments/uuid/observations', () => {
   });
 });
 
-// CORNER CASE
+// CORNER CASES
 
 const observationToValidate = {
   "uuid": "6112c28c-e97b-4823-9e73-ec89074449bf",
   "message": "Devemos solicitar exames mais profundos"
 };
 
-//-----------------
+let fieldsToValidate = [
+  ['uuid', { uuid: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' }],
+  ['message', { message: 'a' }],
+];
 
-// describe('POST Authenticated in /appointments/uuid/observations', () => {
-//   it(`Should create a appointment by patient UUID ${patientToCreate.uuid}`, async () => {
-//     const response = await request(app)
-//       .post(`/patients/${patientToCreate.uuid}/appointments`)
-//       .set('Authorization', `Bearer ${bearerToken}`)
-//       .send({})
-//       .expect(StatusCodes.CREATED);
-//   });
-// });
+describe('POST Authenticated return error on validate in /appointments/uuid/observations DOIS', () => {
+  test.each(fieldsToValidate)
+    (`Should return error with incorrect field %s by appointment UUID ${appointmentToCreate.uuid}`,
+      async (key, param) => {
+        let observation = { ...observationToValidate };
+        observation[key] = param[key];
 
-//-----------------
+        const response = await request(app)
+          .post(`/appointments/${appointmentToCreate.uuid}/observations`)
+          .set('Authorization', `Bearer ${bearerToken}`)
+          .send(observation)
+          .expect(StatusCodes.BAD_REQUEST);
 
+        expect(response.body.message).toEqual('Validation error(s) encountered');
+        expect(response.body.errors[0].field).toEqual(key);
+      });
+
+  test.each(fieldsToValidate)
+    (`Should return error without field %s by appointment UUID ${appointmentToCreate.uuid}`,
+      async (key) => {
+        let observation = { ...observationToValidate };
+        delete observation[key];
+
+        const response = await request(app)
+          .post(`/appointments/${appointmentToCreate.uuid}/observations`)
+          .set('Authorization', `Bearer ${bearerToken}`)
+          .send(observation)
+          .expect(StatusCodes.BAD_REQUEST);
+
+        expect(response.body.message).toEqual('Validation error(s) encountered');
+        expect(response.body.errors[0].field).toEqual(key);
+      });
+});
 
 describe('GET Authenticated with incorrect uuid appointments/uuid/observations', () => {
   it('Should return error validate appointment by incorrect patient UUID', async () => {

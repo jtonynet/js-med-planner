@@ -25,8 +25,12 @@ module.exports = (sequelize, DataTypes) => {
   observations.init({
     uuid: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      unique: true
+      unique: true,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        isUUID: 4,
+      }
     },
     appointmentId: {
       type: DataTypes.INTEGER,
