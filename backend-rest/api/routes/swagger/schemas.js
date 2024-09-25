@@ -28,7 +28,7 @@
  *           example: "Pedro Prado"
  *         phone:
  *           type: string
- *           example: "+5511912345678"
+ *           example: "5511912345678"
  *         email:
  *           type: string
  *           required: true
@@ -65,7 +65,7 @@
  *           example: Paula Prado
  *         phone:
  *           type: string
- *           example: +5521999998888
+ *           example: 5521999998888
  *         birthDate:
  *           type: string
  *           format: date
@@ -98,7 +98,7 @@
  *           example: "Pedro Prado"
  *         phone:
  *           type: string
- *           example: "+5511912345678"
+ *           example: "5511912345678"
  *         email:
  *           type: string
  *           example: "pedro@xmail.com"

@@ -52,7 +52,20 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     phone: {
-      type: DataTypes.STRING(25)
+      type: DataTypes.STRING(25),
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: 'O telefone é um campo obrigatório.'
+        },
+        isNumeric: {
+          msg: 'O telefone deve conter apenas números.'
+        },
+        len: {
+          args: [11, 15],
+          msg: 'O telefone deve ter entre 11 e 15 dígitos.'
+        }
+      }
     },
     email: {
       type: DataTypes.STRING(255),
@@ -154,7 +167,7 @@ module.exports = (sequelize, DataTypes) => {
 
     patient.name = hashField(patient.name);
     patient.email = hashField((patient.email + patient.id)); //FINDED BUG, PIVOTES TO CRYPTO SHREDDING!
-    patient.phone = null;
+    patient.phone = '000000000000000';
     patient.gender = 'unspecified';
     patient.birthDate = dateOfBrazilianDiscovery;
     patient.height = decimalMinimun;

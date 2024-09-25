@@ -172,7 +172,7 @@ describe('DELETE Authenticated in /patients/:uuid', () => {
 
     expect(deletedPatient.name).not.toEqual(patientToUpdateAndDelete.name);
     expect(deletedPatient.email).not.toEqual(patientToUpdateAndDelete.email);
-    expect(deletedPatient.phone).toBeNull();
+    expect(deletedPatient.phone).not.toEqual(patientToUpdateAndDelete.phone);
     expect(deletedPatient.gender).toEqual('unspecified');
     expect(deletedPatient.birthDate).toEqual(dateOfBrazilianDiscovery);
     expect(deletedPatient.height).not.toEqual(decimalMinimun);
@@ -215,6 +215,7 @@ const patientToValidate =
 
 const fieldsToValidate = [
   ['name', { name: 'a' }],
+  ['phone', { phone: '0' }],
   ['birthDate', { birthDate: '9999-12-31' }],
   ['gender', { gender: 'gender_not_in_enum' }],
   ['height', { height: '00.00' }],
