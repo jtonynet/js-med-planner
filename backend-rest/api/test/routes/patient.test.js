@@ -29,7 +29,7 @@ const patientsToCreate = [
   {
     uuid: 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9',
     name: 'Pedro Prado',
-    phone: '+551100000000',
+    phone: '551100000000',
     email: 'pedro@gmail.com',
     birthDate: '1990-05-15',
     gender: 'male',
@@ -39,7 +39,7 @@ const patientsToCreate = [
   {
     uuid: '69be741b-3bf4-41a2-9b44-0e8b655a54dc',
     name: 'Felipe Feltrin',
-    phone: '+552199999999',
+    phone: '552199999999',
     email: 'felipef@gmail.com',
     birthDate: '1970-12-25',
     gender: 'male',
@@ -49,7 +49,7 @@ const patientsToCreate = [
   {
     uuid: 'bd5afa01-91a6-4b7a-8fee-bb98f5ed47a7',
     name: 'Carolina Karla',
-    phone: '+5521420420420',
+    phone: '5521420420420',
     email: 'carolinak@gmail.com',
     birthDate: '1995-12-25',
     gender: 'female',
@@ -62,7 +62,7 @@ patientToUpdateAndDelete = patientsToCreate[0]
 
 const patientParamsToUpdate = {
   name: 'Paula Prado',
-  phone: '+5521999998888',
+  phone: '5521999998888',
   birthDate: '1980-05-15',
   gender: 'other',
   height: '1.80',
@@ -190,6 +190,13 @@ describe('DELETE Authenticated in /patients/:uuid', () => {
     patientDeletedInResponse = findByUUID(responseAfterDelete.body, patientToUpdateAndDelete.uuid)
     expect(patientDeletedInResponse).toBeUndefined();
   });
+
+  it('Should return not found to delete twice by UUID', async () => {
+    await request(app)
+      .delete(`/patients/${patientToUpdateAndDelete.uuid}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .expect(StatusCodes.NOT_FOUND);
+  });
 });
 
 // CORNER CASES
@@ -198,7 +205,7 @@ const patientToValidate =
 {
   uuid: '5c351098-3a95-42a1-bdff-b6345803ca3f',
   name: 'Pedro Prado',
-  phone: '+551100000000',
+  phone: '551100000000',
   email: 'pedro@gmail.com',
   birthDate: '1990-05-15',
   gender: 'male',
@@ -258,6 +265,31 @@ describe('GET Authenticated with incorrect uuid /patients/uuid', () => {
   it('Should return error validate patient by incorrect UUID', async () => {
     const response = await request(app)
       .get('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Validation error on uuid encountered');
+  });
+});
+
+describe('PATCH Authenticated with incorrect uuid /patients/uuid', () => {
+  it('Should return error validate patient by incorrect UUID', async () => {
+    const response = await request(app)
+      .patch('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send(patientToValidate)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Validation error on uuid encountered');
+  });
+});
+
+describe('DELETE Authenticated with incorrect uuid /patients/uuid', () => {
+  it('Should return error validate patient by incorrect UUID', async () => {
+    const response = await request(app)
+      .delete('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
       .set('Authorization', `Bearer ${bearerToken}`)
       .set('Accept', 'application.json')
       .expect('content-type', /json/)
