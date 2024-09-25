@@ -222,30 +222,22 @@ const fieldsToValidate = [
   ['weight', { weight: '00.00' }]
 ];
 
-const fieldsDontSendToValidate = [
-  ['name'],
-  ['phone'],
-  ['birthDate'],
-  ['gender'],
-  ['height'],
-  ['weight']
-]
-
 describe('POST Authenticated validate fields errors in /patients', () => {
-  test.each(fieldsToValidate)(`Should return error on validate field %s at patient by UUID ${patientToValidate.uuid}`, async (key, param) => {
-    let patient = { ...patientToValidate };
-    patient[key] = param[key];
+  test.each(fieldsToValidate)(`Should return error on validate field %s at patient by UUID ${patientToValidate.uuid}`,
+    async (key, param) => {
+      let patient = { ...patientToValidate };
+      patient[key] = param[key];
 
-    const response = await request(app)
-      .post('/patients')
-      .set('Authorization', `Bearer ${bearerToken}`)
-      .send(patient)
-      .expect(StatusCodes.BAD_REQUEST);
+      const response = await request(app)
+        .post('/patients')
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .send(patient)
+        .expect(StatusCodes.BAD_REQUEST);
 
-    expect(response.body.message).toEqual('Validation error(s) on request encountered');
-  });
+      expect(response.body.message).toEqual('Validation error(s) encountered');
+    });
 
-  test.each(fieldsDontSendToValidate)(`Should return error on sending without field %s at patient by UUID ${patientToValidate.uuid}`, async (key) => {
+  test.each(fieldsToValidate)(`Should return error on sending without field %s at patient by UUID ${patientToValidate.uuid}`, async (key) => {
     let patient = { ...patientToValidate };
     delete patient[key];
 
@@ -255,7 +247,7 @@ describe('POST Authenticated validate fields errors in /patients', () => {
       .send(patient)
       .expect(StatusCodes.BAD_REQUEST);
 
-    expect(response.body.message).toEqual('Validation error(s) on request encountered');
+    expect(response.body.message).toEqual('Validation error(s) encountered');
   });
 
   it('Should create a patient', async () => {
@@ -280,7 +272,7 @@ describe('PATCH Authenticated validate fields errors in /patients', () => {
       .send(patient)
       .expect(StatusCodes.BAD_REQUEST);
 
-    expect(response.body.message).toEqual('Validation error(s) on request encountered');
+    expect(response.body.message).toEqual('Validation error(s) encountered');
   });
 });
 

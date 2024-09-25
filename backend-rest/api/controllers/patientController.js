@@ -29,7 +29,6 @@ class PatientController {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: error.message
       });
-
     }
   }
 
@@ -44,7 +43,6 @@ class PatientController {
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: error.message
       });
-
     }
   }
 
@@ -74,7 +72,6 @@ class PatientController {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: error.message
       });
-
     }
   }
 
@@ -147,7 +144,6 @@ class PatientController {
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: error.message
       });
-
     }
   }
 }

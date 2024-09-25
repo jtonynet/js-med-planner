@@ -244,20 +244,23 @@ describe('PATCH Authenticated conflicts date time in /appointments/uuid', () => 
     [0, apointmentToConflict.uuid, apointmentToConflict, conflictUpdateDates],
     [1, apointmentToConflict.uuid, apointmentToConflict, conflictUpdateDates],
     [2, apointmentToConflict.uuid, apointmentToConflict, conflictUpdateDates]
-  ])('Should conflict date time appointment %s on update by UUID %s', async (key, apointmentUUID, apointmentToConflict, conflictUpdateDates) => {
-    const response = await request(app)
-      .patch(`/appointments/${apointmentUUID}`)
-      .set('Authorization', `Bearer ${bearerToken}`)
-      .set('Accept', 'application.json')
-      .send({
+  ])('Should conflict date time appointment %s on update by UUID %s',
+    async (key, apointmentUUID, apointmentToConflict, conflictUpdateDates) => {
+      const appointmentToTest = {
         ...apointmentToConflict,
         ...conflictUpdateDates[key]
-      })
-      .expect('content-type', /json/)
-      .expect(StatusCodes.CONFLICT);
+      };
 
-    expect(response.body.message).toEqual('Appointment(s) conflicting found');
-  });
+      const response = await request(app)
+        .patch(`/appointments/${apointmentUUID}`)
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .set('Accept', 'application.json')
+        .send(appointmentToTest)
+        .expect('content-type', /json/)
+        .expect(StatusCodes.CONFLICT);
+
+      expect(response.body.message).toEqual('Appointment(s) conflicting found');
+    });
 });
 
 describe('DELETE Authenticated in /appointments/uuid', () => {
@@ -288,10 +291,134 @@ describe('DELETE Authenticated in /appointments/uuid', () => {
 
 // CORNER CASES
 
-const patientToValidate = {
+const appointmentEndTimeGreaterStartTime = {
   uuid: '8e1d7569-af4a-4dcb-ab72-7c13f3bd437e',
   description: 'Primeira consulta da Tarde',
-  startTime: '2028-12-20 18:30:00',
-  endTime: '2028-12-20 17:00:00'
+  startTime: '2031-12-20 18:30:00',
+  endTime: '2031-12-20 17:00:00'
 };
 
+const appointmentToValidate = {
+  uuid: '8e1d7569-af4a-4dcb-ab72-7c13f3bd437e',
+  description: 'Primeira consulta da Tarde',
+  startTime: '2031-12-20 17:00:00',
+  endTime: '2031-12-20 18:30:00'
+};
+
+let fieldsToValidate = [
+  ['uuid', { uuid: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' }],
+  ['description', { description: 'a' }],
+  ['startTime', { startTime: '0000-00-00' }],
+  ['endTime', { endTime: '0000-00-00' }]
+];
+
+describe('POST Authenticated return error on validate in /patients/uuid/appointments', () => {
+  it(`Should return error on validate endTime is greater startTime in patient UUID ${patientToConflictAppointment.uuid}`,
+    async () => {
+      const response = await request(app)
+        .post(`/patients/${patientToConflictAppointment.uuid}/appointments`)
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .send(appointmentEndTimeGreaterStartTime)
+        .expect(StatusCodes.BAD_REQUEST);
+
+      expect(response.body.message).toEqual('Validation error(s) encountered');
+      expect(response.body.errors[0].field).toEqual('endTime');
+      expect(response.body.errors[1].field).toEqual('startTimeBeforeEndTime');
+    });
+
+  test.each(fieldsToValidate)(`Should return error on validate field %s at patient by UUID ${patientToConflictAppointment.uuid}`,
+    async (key, param) => {
+      let appointment = { ...appointmentToValidate };
+      appointment[key] = param[key];
+
+      const response = await request(app)
+        .post(`/patients/${patientToConflictAppointment.uuid}/appointments`)
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .send(appointment)
+        .expect(StatusCodes.BAD_REQUEST);
+
+      expect(response.body.message).toEqual('Validation error(s) encountered');
+      expect(response.body.errors[0].field).toEqual(key);
+    });
+
+  test.each(fieldsToValidate)(`Should return error without field %s at patient by UUID ${patientToConflictAppointment.uuid}`,
+    async (key) => {
+      let appointment = { ...appointmentToValidate };
+      delete appointment[key];
+
+      const response = await request(app)
+        .post(`/patients/${patientToConflictAppointment.uuid}/appointments`)
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .send(appointment)
+        .expect(StatusCodes.BAD_REQUEST);
+
+      expect(response.body.message).toEqual('Validation error(s) encountered');
+      expect(response.body.errors[0].field).toEqual(key);
+    });
+});
+
+describe('PATCH Authenticated return error on validate in /patients/uuid/appointments', () => {
+  it(`Should return error on validate field %s at patient by UUID ${patientToConflictAppointment.uuid}`, async () => {
+    const response = await request(app)
+      .post(`/patients/${patientToConflictAppointment.uuid}/appointments`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send(appointmentToValidate)
+      .expect(StatusCodes.CREATED);
+
+    expect(response.body.description).toEqual(appointmentToValidate.description);
+  });
+
+  delete fieldsToValidate[0];
+
+  test.each(fieldsToValidate)('Should conflict date time appointment %s on update by UUID %s',
+    async (key, param) => {
+      let appointment = { ...appointmentToValidate };
+      appointment[key] = param[key];
+
+      const response = await request(app)
+        .patch(`/appointments/${appointment.uuid}`)
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .set('Accept', 'application.json')
+        .send(appointment)
+        .expect('content-type', /json/)
+        .expect(StatusCodes.BAD_REQUEST);
+
+      expect(response.body.message).toEqual('Validation error(s) encountered');
+      expect(response.body.errors[0].field).toEqual(key);
+    });
+});
+
+describe('GET Authenticated with incorrect uuid patients/uuid/appointments', () => {
+  it('Should return error validate appointment by incorrect patient UUID', async () => {
+    const response = await request(app)
+      .get('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/appointments')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Request error invalid uuid');
+  });
+});
+
+describe('PATCH Authenticated with incorrect uuid patients/uuid/appointments', () => {
+  it('Should return error validate patient by incorrect UUID', async () => {
+    const response = await request(app)
+      .patch('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Request error invalid uuid');
+  });
+});
+
+describe('DELETE Authenticated with incorrect uuid /patients/uuid', () => {
+  it('Should return error validate patient by incorrect UUID', async () => {
+    const response = await request(app)
+      .delete('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Request error invalid uuid');
+  });
+});

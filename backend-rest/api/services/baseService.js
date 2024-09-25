@@ -12,7 +12,7 @@ class BaseService {
       }));
 
       throw new CustomErrors.ValidationError(
-        'Validation error(s) on request encountered',
+        'Validation error(s) encountered',
         errorDetails
       );
     }

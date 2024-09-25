@@ -104,7 +104,7 @@ não pelo uso de ORM;
 
 _*A documentação original do desafio é mais abrangente, com sugestões de tela para o front e mais dados._
 
-Faz sentido utilizar __Arquitetura de Duas Camadas__. Caso a complexidade aumente, podemos extender para o uso de uma terceira camada (`services`).
+Faz sentido utilizar __Arquitetura de Duas Camadas__. Caso a complexidade aumente, podemos extender para o uso de uma terceira camada (`services/repository`).
 
 Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no GitHub Actions
 
