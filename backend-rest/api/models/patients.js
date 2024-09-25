@@ -46,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
         len: {
           args: [3, 255],
-          msg: 'O nome deve ter pelo menos 3 caracteres.'
+          msg: 'Deve ter pelo menos 3 caracteres e no máximo 255.'
         }
       }
     },
@@ -55,14 +55,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notEmpty: {
-          msg: 'O telefone é um campo obrigatório.'
+          msg: 'Campo obrigatório.'
         },
         isNumeric: {
-          msg: 'O telefone deve conter apenas números.'
+          msg: 'Deve conter apenas números.'
         },
         len: {
           args: [11, 15],
-          msg: 'O telefone deve ter entre 11 e 15 dígitos.'
+          msg: 'Deve ter entre 11 e 15 dígitos.'
         }
       }
     },
@@ -72,7 +72,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
       validate: {
         isEmail: {
-          msg: 'Email deve estar em um formato válido.'
+          msg: 'Deve estar em um formato válido.'
         }
       }
     },
@@ -81,11 +81,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isDate: {
-          msg: 'Data de nascimento deve ser uma data válida.'
+          msg: 'Deve ser uma data válida.'
         },
         isBefore: {
           args: new Date().toISOString().split('T')[0],
-          msg: 'A data de nascimento deve ser anterior à data atual.'
+          msg: 'Deve ser anterior à data atual.'
         }
       }
     },
@@ -101,7 +101,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isIn: {
           args: [['male', 'female', 'other', 'none', 'unspecified']],
-          msg: 'O gênero deve ser um dos seguintes: male, female, other, none, unspecified.'
+          msg: 'Deve ser um dos seguintes: male, female, other, none, unspecified.'
         }
       }
     },
@@ -110,11 +110,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isDecimal: {
-          msg: 'A altura deve ser um valor decimal.'
+          msg: 'Deve ser um valor decimal.'
         },
         min: {
           args: 0.01,
-          msg: 'A altura deve ser maior que 0.01.'
+          msg: 'Deve ser maior que 0.01.'
         }
       }
     },
@@ -123,11 +123,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isDecimal: {
-          msg: 'O peso deve ser um valor decimal.'
+          msg: 'Deve ser um valor decimal.'
         },
         min: {
           args: 0.01,
-          msg: 'O peso deve ser maior que 0.01.'
+          msg: 'Deve ser maior que 0.01.'
         }
       }
     }

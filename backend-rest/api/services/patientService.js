@@ -105,8 +105,8 @@ class PatientService {
 
     } catch (error) {
       switch (error.constructor.name) {
-        case 'ValidationError':
         case 'NotFoundError':
+        case 'ValidationError':
           throw error;
       }
 
@@ -132,7 +132,6 @@ class PatientService {
 
     } catch (error) {
       switch (error.constructor.name) {
-        case 'ValidationError':
         case 'NotFoundError':
           throw error;
       };
