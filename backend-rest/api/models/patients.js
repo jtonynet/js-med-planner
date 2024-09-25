@@ -32,7 +32,6 @@ module.exports = (sequelize, DataTypes) => {
   patients.init({
     uuid: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       unique: true,
       validate: {

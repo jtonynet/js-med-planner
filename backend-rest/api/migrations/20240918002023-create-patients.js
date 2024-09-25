@@ -12,7 +12,6 @@ module.exports = {
       uuid: {
         allowNull: false,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUID,
         unique: true
       },
       name: {

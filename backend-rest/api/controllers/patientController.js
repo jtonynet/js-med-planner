@@ -1,6 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
-const { patients } = require('../models');
-
+const { validate: validateUUID } = require('uuid');
 const CustomErrors = require('../errors/customErrors');
 const PatientService = require('../services/patientService');
 const patientService = new PatientService();
@@ -50,6 +49,13 @@ class PatientController {
 
   static async retrieveByUUID(req, res) {
     const { uuid: uuidParam } = req.params;
+
+    if (!validateUUID(uuidParam)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
+      });
+    }
+
     const dto = { uuid: uuidParam };
 
     try {
@@ -80,6 +86,13 @@ class PatientController {
 
   static async updateByUUID(req, res) {
     const { uuid: uuidParam } = req.params;
+
+    if (!validateUUID(uuidParam)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
+      });
+    }
+
     const allowedFields = ['name', 'phone', 'birthDate', 'gender', 'height', 'weight'];
 
     let dto = { uuid: uuidParam };
@@ -116,6 +129,13 @@ class PatientController {
 
   static async deleteByUUID(req, res) {
     const { uuid: uuidParam } = req.params;
+
+    if (!validateUUID(uuidParam)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
+      });
+    }
+
     const dto = { uuid: uuidParam };
 
     try {

@@ -271,7 +271,7 @@ describe('GET Authenticated with incorrect uuid /patients/uuid', () => {
       .expect('content-type', /json/)
       .expect(StatusCodes.BAD_REQUEST);
 
-    expect(response.body.message).toEqual('Validation error on uuid encountered');
+    expect(response.body.message).toEqual('Request error invalid uuid');
   });
 });
 
@@ -283,7 +283,7 @@ describe('PATCH Authenticated with incorrect uuid /patients/uuid', () => {
       .send(patientToValidate)
       .expect(StatusCodes.BAD_REQUEST);
 
-    expect(response.body.message).toEqual('Validation error on uuid encountered');
+    expect(response.body.message).toEqual('Request error invalid uuid');
   });
 });
 
@@ -296,6 +296,6 @@ describe('DELETE Authenticated with incorrect uuid /patients/uuid', () => {
       .expect('content-type', /json/)
       .expect(StatusCodes.BAD_REQUEST);
 
-    expect(response.body.message).toEqual('Validation error on uuid encountered');
+    expect(response.body.message).toEqual('Request error invalid uuid');
   });
 });

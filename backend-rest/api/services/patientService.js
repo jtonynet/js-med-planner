@@ -1,5 +1,4 @@
 const { Op } = require('sequelize');
-const { validate: validateUUID } = require('uuid');
 const database = require('../models');
 const CustomErrors = require('../errors/customErrors');
 
@@ -57,8 +56,6 @@ class PatientService {
 
   async retrieveByUUID(dto) {
     try {
-      this._validateUUID(dto.uuid);
-
       const patient = await database.patients.findOne({
         where: {
           uuid: dto.uuid,
@@ -87,8 +84,6 @@ class PatientService {
 
   async updateByUUID(dto) {
     try {
-      this._validateUUID(dto.uuid);
-
       let patient = await database.patients.findOne({
         where: {
           uuid: dto.uuid,
@@ -123,8 +118,6 @@ class PatientService {
 
   async deleteByUUID(dto) {
     try {
-      this._validateUUID(dto.uuid);
-
       const patient = await database.patients.findOne({
         where: {
           uuid: dto.uuid,
@@ -160,18 +153,6 @@ class PatientService {
       }));
 
       throw new CustomErrors.ValidationError('Validation error(s) on request encountered', errorDetails);
-    }
-  }
-
-  _validateUUID(uuid) {
-    if (!validateUUID(uuid)) {
-      throw new CustomErrors.ValidationError(
-        'Validation error on uuid encountered',
-        {
-          field: 'queryString.uuid',
-          message: 'uuid is not valid'
-        }
-      );
     }
   }
 }
