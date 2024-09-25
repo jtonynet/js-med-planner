@@ -84,3 +84,51 @@ describe('GET Authenticated in /appointments/uuid/observations', () => {
     expect(response.body[0].message).toEqual(observationToCreate.message);
   });
 });
+
+// CORNER CASE
+
+const observationToValidate = {
+  "uuid": "6112c28c-e97b-4823-9e73-ec89074449bf",
+  "message": "Devemos solicitar exames mais profundos"
+};
+
+//-----------------
+
+// describe('POST Authenticated in /appointments/uuid/observations', () => {
+//   it(`Should create a appointment by patient UUID ${patientToCreate.uuid}`, async () => {
+//     const response = await request(app)
+//       .post(`/patients/${patientToCreate.uuid}/appointments`)
+//       .set('Authorization', `Bearer ${bearerToken}`)
+//       .send({})
+//       .expect(StatusCodes.CREATED);
+//   });
+// });
+
+//-----------------
+
+
+describe('GET Authenticated with incorrect uuid appointments/uuid/observations', () => {
+  it('Should return error validate appointment by incorrect patient UUID', async () => {
+    const response = await request(app)
+      .get('/appointments/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/observations')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Request error invalid uuid');
+  });
+});
+
+describe('POST Authenticated with incorrect uuid appointments/uuid/observations', () => {
+  it('Should return error validate appointment by incorrect patient UUID', async () => {
+    const response = await request(app)
+      .post('/appointments/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/observations')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Request error invalid uuid');
+  });
+});

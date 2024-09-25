@@ -12,6 +12,7 @@ class PatientController {
       const dto = { uuid, name: patientName, phone, email, birthDate, gender, height, weight };
 
       const newPatient = await patientService.create(dto);
+
       return res.status(StatusCodes.CREATED).json(newPatient);
 
     } catch (error) {

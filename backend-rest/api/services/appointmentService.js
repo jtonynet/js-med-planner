@@ -1,4 +1,3 @@
-const { Op } = require('sequelize');
 const database = require('../models');
 const BaseService = require('./baseService');
 const CustomErrors = require('../errors/customErrors');
@@ -120,7 +119,7 @@ class AppointmentService extends BaseService {
           throw error;
       }
 
-      // 'Error creating appointment'
+      // 'Error retriving appointment list'
       console.log(error);
       throw new CustomErrors.InternalServerError('An unexpected error occurred');
     }

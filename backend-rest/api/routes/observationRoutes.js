@@ -64,6 +64,6 @@ router.post('/appointments/:uuid/observations', ObservationController.create);
  *               items:
  *                 $ref: '#/components/schemas/response.Observation'
  */
-router.get('/appointments/:uuid/observations', ObservationController.retrieveByAppointmentUUID);
+router.get('/appointments/:uuid/observations', ObservationController.retrieveListByAppointmentUUID);
 
 module.exports = router;

@@ -370,7 +370,7 @@ describe('PATCH Authenticated return error on validate in /patients/uuid/appoint
 
   delete fieldsToValidate[0];
 
-  test.each(fieldsToValidate)('Should conflict date time appointment %s on update by UUID %s',
+  test.each(fieldsToValidate)('Should return erro on field %s validate %s',
     async (key, param) => {
       let appointment = { ...appointmentToValidate };
       appointment[key] = param[key];
