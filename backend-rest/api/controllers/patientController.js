@@ -58,6 +58,13 @@ class PatientController {
       res.status(StatusCodes.OK).json(patient);
 
     } catch (error) {
+      if (error instanceof CustomErrors.ValidationError) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+          message: error.message,
+          errors: error.details
+        });
+      }
+
       if (error instanceof CustomErrors.NotFoundError) {
         return res.status(StatusCodes.NOT_FOUND).json({
           message: error.message
@@ -88,16 +95,16 @@ class PatientController {
       res.status(StatusCodes.OK).json(patient);
 
     } catch (error) {
-      if (error instanceof CustomErrors.NotFoundError) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: error.message
-        });
-      }
-
       if (error instanceof CustomErrors.ValidationError) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: error.message,
           errors: error.details
+        });
+      }
+
+      if (error instanceof CustomErrors.NotFoundError) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+          message: error.message
         });
       }
 

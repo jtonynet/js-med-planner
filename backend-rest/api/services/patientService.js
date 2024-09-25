@@ -1,4 +1,5 @@
 const { Op } = require('sequelize');
+const { validate: validateUUID } = require('uuid');
 const database = require('../models');
 const CustomErrors = require('../errors/customErrors');
 
@@ -35,7 +36,6 @@ class PatientService {
       // 'Error creating patient'
       console.log(error);
       throw new CustomErrors.InternalServerError('An unexpected error occurred');
-
     }
   }
 
@@ -49,17 +49,15 @@ class PatientService {
       return list;
 
     } catch (error) {
-      console.log(error);
-
       // 'Error retriving patient list'
+      console.log(error);
       throw new CustomErrors.InternalServerError('An unexpected error occurred');
     }
-
   }
 
   async retrieveByUUID(dto) {
     try {
-      // TODO: validate dto.uuid
+      this._validateUUID(dto.uuid);
 
       const patient = await database.patients.findOne({
         where: {
@@ -75,20 +73,21 @@ class PatientService {
       return patient.serialize();
 
     } catch (error) {
-      console.log(error)
-
-      if (error instanceof CustomErrors.NotFoundError) {
-        throw error;
+      switch (error.constructor.name) {
+        case 'ValidationError':
+        case 'NotFoundError':
+          throw error;
       }
 
       // 'Error retrieve patient'
+      console.log(error);
       throw new CustomErrors.InternalServerError('An unexpected error occurred');
     }
   }
 
   async updateByUUID(dto) {
     try {
-      // TODO: validate dto.uuid
+      this._validateUUID(dto.uuid);
 
       let patient = await database.patients.findOne({
         where: {
@@ -103,27 +102,28 @@ class PatientService {
       delete dto.uuid;
       patient.set(dto);
 
-      // TODO: validate patient
+      await this._validatePatient(patient);
 
       await patient.save();
 
       return patient.serialize();
 
     } catch (error) {
-      console.log(error)
-
-      if (error instanceof CustomErrors.NotFoundError) {
-        throw error;
+      switch (error.constructor.name) {
+        case 'ValidationError':
+        case 'NotFoundError':
+          throw error;
       }
 
       // 'Error updating patient'
+      console.log(error);
       throw new CustomErrors.InternalServerError('An unexpected error occurred');
     }
   }
 
   async deleteByUUID(dto) {
     try {
-      // TODO: validate dto.uuid
+      this._validateUUID(dto.uuid);
 
       const patient = await database.patients.findOne({
         where: {
@@ -138,16 +138,15 @@ class PatientService {
       return await patient.destroy();
 
     } catch (error) {
-
-      console.log(error)
-
-      if (error instanceof CustomErrors.NotFoundError) {
-        throw error;
-      }
+      switch (error.constructor.name) {
+        case 'ValidationError':
+        case 'NotFoundError':
+          throw error;
+      };
 
       // 'Error deleting patient'
+      console.log(error);
       throw new CustomErrors.InternalServerError('An unexpected error occurred');
-
     }
   }
 
@@ -160,7 +159,19 @@ class PatientService {
         message: err.message
       }));
 
-      throw new CustomErrors.ValidationError('Validation error(s) encountered', errorDetails);
+      throw new CustomErrors.ValidationError('Validation error(s) on request encountered', errorDetails);
+    }
+  }
+
+  _validateUUID(uuid) {
+    if (!validateUUID(uuid)) {
+      throw new CustomErrors.ValidationError(
+        'Validation error on uuid encountered',
+        {
+          field: 'queryString.uuid',
+          message: 'uuid is not valid'
+        }
+      );
     }
   }
 }

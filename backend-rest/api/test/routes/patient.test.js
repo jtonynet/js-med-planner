@@ -206,14 +206,16 @@ const patientToValidate =
   weight: '72.50'
 };
 
-describe('POST Authenticated validate fields /patients', () => {
-  test.each([
-    ['name', { name: 'a' }],
-    ['birthDate', { birthDate: '9999-12-31' }],
-    ['gender', { gender: 'gender_not_in_enum' }],
-    ['height', { height: '00.00' }],
-    ['weight', { weight: '00.00' }]
-  ])(`Should error validate field %s at one patient by UUID ${patientToValidate.uuid}`, async (key, param) => {
+const fieldsToValidate = [
+  ['name', { name: 'a' }],
+  ['birthDate', { birthDate: '9999-12-31' }],
+  ['gender', { gender: 'gender_not_in_enum' }],
+  ['height', { height: '00.00' }],
+  ['weight', { weight: '00.00' }]
+];
+
+describe('POST Authenticated validate fields errors in /patients', () => {
+  test.each(fieldsToValidate)(`Should return error on validate field %s at patient by UUID ${patientToValidate.uuid}`, async (key, param) => {
     let patient = { ...patientToValidate };
     patient[key] = param[key];
 
@@ -223,6 +225,44 @@ describe('POST Authenticated validate fields /patients', () => {
       .send(patient)
       .expect(StatusCodes.BAD_REQUEST);
 
-    expect(response.body.message).toEqual('Validation error(s) encountered');
+    expect(response.body.message).toEqual('Validation error(s) on request encountered');
+  });
+
+  it('Should create a patient', async () => {
+    const response = await request(app)
+      .post('/patients')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send(patientToValidate)
+      .expect(StatusCodes.CREATED);
+
+    expect(response.body.email).toEqual(patientToValidate.email);
+  });
+});
+
+describe('PATCH Authenticated validate fields errors in /patients', () => {
+  test.each(fieldsToValidate)(`Should return error on validate field %s at patient by UUID ${patientToValidate.uuid}`, async (key, param) => {
+    let patient = { ...patientToValidate };
+    patient[key] = param[key];
+
+    const response = await request(app)
+      .patch(`/patients/${patientToValidate.uuid}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send(patient)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Validation error(s) on request encountered');
+  });
+});
+
+describe('GET Authenticated with incorrect uuid /patients/uuid', () => {
+  it('Should return error validate patient by incorrect UUID', async () => {
+    const response = await request(app)
+      .get('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Validation error on uuid encountered');
   });
 });
