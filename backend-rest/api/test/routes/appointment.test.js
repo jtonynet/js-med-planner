@@ -307,7 +307,6 @@ const appointmentToValidate = {
 
 let fieldsToValidate = [
   ['uuid', { uuid: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' }],
-  ['description', { description: 'a' }],
   ['startTime', { startTime: '0000-00-00' }],
   ['endTime', { endTime: '0000-00-00' }]
 ];

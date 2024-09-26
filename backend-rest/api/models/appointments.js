@@ -108,14 +108,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.STRING(255),
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-        len: {
-          args: [3, 255],
-          msg: 'Deve ter pelo menos 3 caracteres e no máximo 255.'
-        }
-      }
+      allowNull: true,
     },
     startTime: {
       type: DataTypes.DATE,
