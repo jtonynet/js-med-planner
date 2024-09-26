@@ -13,13 +13,6 @@ class ValidationError extends CustomError {
   }
 }
 
-class ConflictError extends CustomError {
-  constructor(message, details = []) {
-    super(message);
-    this.details = details
-  }
-}
-
 class NotFoundError extends CustomError {
   constructor(message) {
     super(message);
@@ -32,17 +25,9 @@ class InternalServerError extends CustomError {
   }
 }
 
-class DatabaseError extends CustomError {
-  constructor(message) {
-    super(message);
-  }
-}
-
 module.exports = {
   CustomError,
   ValidationError,
-  ConflictError,
   NotFoundError,
-  InternalServerError,
-  DatabaseError
+  InternalServerError
 };

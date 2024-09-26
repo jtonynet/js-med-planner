@@ -20,7 +20,7 @@ class PatientService extends BaseService {
       });
 
       if (existingPatient) {
-        throw new CustomErrors.ConflictError('Patient already exists');
+        throw new CustomErrors.ValidationError('Patient already exists');
       };
 
       await newPatient.save();
@@ -29,7 +29,6 @@ class PatientService extends BaseService {
     } catch (error) {
       switch (error.constructor.name) {
         case 'ValidationError':
-        case 'ConflictError':
           throw error;
       }
 

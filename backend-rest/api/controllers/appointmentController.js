@@ -40,13 +40,6 @@ class AppointmentController {
         });
       }
 
-      if (error instanceof CustomErrors.ConflictError) {
-        return res.status(StatusCodes.CONFLICT).json({
-          message: error.message,
-          errors: error.details
-        });
-      }
-
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: error.message
       });
@@ -132,13 +125,6 @@ class AppointmentController {
 
       if (error instanceof CustomErrors.ValidationError) {
         return res.status(StatusCodes.BAD_REQUEST).json({
-          message: error.message,
-          errors: error.details
-        });
-      }
-
-      if (error instanceof CustomErrors.ConflictError) {
-        return res.status(StatusCodes.CONFLICT).json({
           message: error.message,
           errors: error.details
         });

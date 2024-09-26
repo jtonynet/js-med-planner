@@ -32,7 +32,7 @@ class ObservationService extends BaseService {
       });
 
       if (existingObservation) {
-        throw new CustomErrors.ConflictError('Observation already exists');
+        throw new CustomErrors.ValidationError('Observation already exists');
       };
 
       await newObservation.save();
@@ -43,7 +43,6 @@ class ObservationService extends BaseService {
       switch (error.constructor.name) {
         case 'NotFoundError':
         case 'ValidationError':
-        case 'ConflictError':
           throw error;
       }
 

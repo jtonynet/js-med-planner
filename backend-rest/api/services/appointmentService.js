@@ -41,7 +41,7 @@ class AppointmentService extends BaseService {
       });
 
       if (existingAppointment) {
-        throw new CustomErrors.ConflictError('Appointment already exists');
+        throw new CustomErrors.ValidationError('Appointment already exists');
       };
 
       await this._searchConflicts(newAppointment);
@@ -54,7 +54,6 @@ class AppointmentService extends BaseService {
       switch (error.constructor.name) {
         case 'NotFoundError':
         case 'ValidationError':
-        case 'ConflictError':
           throw error;
       }
 
@@ -153,7 +152,6 @@ class AppointmentService extends BaseService {
       switch (error.constructor.name) {
         case 'NotFoundError':
         case 'ValidationError':
-        case 'ConflictError':
           throw error;
       }
 
@@ -201,7 +199,7 @@ class AppointmentService extends BaseService {
           endTime: conflict.endTime
         }));
 
-        throw new CustomErrors.ConflictError(
+        throw new CustomErrors.ValidationError(
           'Appointment(s) conflicting found',
           appointmentsConflicted
         );

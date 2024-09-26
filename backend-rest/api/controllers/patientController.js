@@ -23,10 +23,6 @@ class PatientController {
         });
       }
 
-      if (error instanceof CustomErrors.ConflictError) {
-        return res.status(StatusCodes.CONFLICT).json({ message: error.message });
-      }
-
       return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: error.message
       });
