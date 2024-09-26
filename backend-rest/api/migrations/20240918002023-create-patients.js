@@ -12,7 +12,6 @@ module.exports = {
       uuid: {
         allowNull: false,
         type: Sequelize.UUID,
-        defaultValue: Sequelize.UUID,
         unique: true
       },
       name: {
@@ -20,6 +19,7 @@ module.exports = {
         type: Sequelize.STRING(255)
       },
       phone: {
+        allowNull: false,
         type: Sequelize.STRING(25)
       },
       email: {

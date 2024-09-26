@@ -15,16 +15,7 @@ const router = Router();
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 required: true
- *                 example: "house@md.com"
- *               password:
- *                 type: string
- *                 required: true
- *                 example: "lupos"
+ *             $ref: '#/components/schemas/request.Auth'
  *     responses:
  *       200:
  *         description: Successful login, returns a Bearer token
@@ -34,7 +25,7 @@ const router = Router();
  *               type: string
  *               example: "your_jwt_token_here"
  *       401:
- *         description: Unauthorized, invalid email or password
+ *         description: not authorized
  *       500:
  *         description: Internal server error
  */

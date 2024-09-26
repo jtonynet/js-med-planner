@@ -30,11 +30,19 @@ router.use(authenticate);
  *             $ref: '#/components/schemas/request.Appointment'
  *     responses:
  *       201:
- *         description: One Appointment
+ *         description: New resource created
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/response.Appointment'
+ *       400:
+ *         $ref: '#/components/schemas/response.ValidationError'
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         $ref: '#/components/schemas/response.NotFoundError'
+ *       500:
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.post('/patients/:uuid/appointments', AppointmentController.create);
 
@@ -56,13 +64,19 @@ router.post('/patients/:uuid/appointments', AppointmentController.create);
  *           format: uuid
  *     responses:
  *       200:
- *         description: A list of appointments
+ *         description: Resource list
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/response.Appointment'
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         $ref: '#/components/schemas/response.NotFoundError'
+ *       500:
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.get('/patients/:uuid/appointments', AppointmentController.retrieveListByPatientUUID);
 
@@ -77,13 +91,17 @@ router.get('/patients/:uuid/appointments', AppointmentController.retrieveListByP
  *       - Appointments
  *     responses:
  *       200:
- *         description: A list of appointments
+ *         description: Resource list
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/response.Appointment'
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.get('/appointments', AppointmentController.retrieveList);
 
@@ -111,17 +129,19 @@ router.get('/appointments', AppointmentController.retrieveList);
  *             $ref: '#/components/schemas/request.AppointmentUpdate'
  *     responses:
  *       200:
- *         description: Appointment updated successfully
+ *         description: Resource updated
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/response.Appointment'
  *       400:
- *         description: Bad request, invalid parameters
+ *         $ref: '#/components/schemas/response.ValidationError'
  *       401:
  *         description: Unauthorized
  *       404:
- *         description: Appointment not found
+ *         $ref: '#/components/schemas/response.NotFoundError'
+ *       500:
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.patch('/appointments/:uuid', AppointmentController.updateByUUID);
 
@@ -143,13 +163,13 @@ router.patch('/appointments/:uuid', AppointmentController.updateByUUID);
  *         description: UUID of the Appointment to delete
  *     responses:
  *       204:
- *         description: No Content Appointment deleted successfully
+ *         description: No Content
  *       401:
  *         description: Unauthorized
  *       404:
- *         description: Appointment not found
+ *         $ref: '#/components/schemas/response.NotFoundError'
  *       500:
- *         description: Internal server error
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.delete('/appointments/:uuid', AppointmentController.deleteByUUID);
 

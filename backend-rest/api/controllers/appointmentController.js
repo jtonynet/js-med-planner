@@ -1,197 +1,116 @@
 const { StatusCodes } = require('http-status-codes');
-const { appointments, patients, doctors, db } = require('../models');
+const { validate: validateUUID } = require('uuid');
+const BaseController = require('./baseController');
+const CustomErrors = require('../errors/customErrors');
+const AppointmentService = require('../services/appointmentService');
+const appointmentService = new AppointmentService();
 
-class AppointmentController {
+class AppointmentController extends BaseController {
+
   static async create(req, res) {
     const { uuid: patientUUID } = req.params
-    let { uuid, description, startTime, endTime } = req.body;
+
+    if (!validateUUID(patientUUID)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
+      });
+    }
 
     try {
-      const patient = await patients.findOne({
-        where: {
-          uuid: patientUUID,
-        },
-        attributes: ['id'],
-      });
+      const { uuid: appointmentUUID, description, startTime, endTime } = req.body;
 
-      const doctor = await doctors.findOne({
-        where: {
-          uuid: req.userUUID
-        },
-        attributes: ['id'],
-      });
+      const dto = { userUUID: req.userUUID, patientUUID, appointmentUUID, description, startTime, endTime };
 
-      const fields = { uuid, patientId: patient.id, doctorId: doctor.id, description, startTime, endTime };
-      const newAppointment = appointments.build(fields);
+      const newAppointment = await appointmentService.create(dto);
 
-      const conflicts = await AppointmentController._searchConflicts(newAppointment);
-      if (conflicts.exists) {
-        return res.status(StatusCodes.CONFLICT).json(conflicts.response);
-      }
-
-      // TODO: validate
-
-      await newAppointment.save();
-
-      return res.status(StatusCodes.CREATED).json(
-        newAppointment.serialize()
-      );
+      return res.status(StatusCodes.CREATED).json(newAppointment);
 
     } catch (error) {
-      console.log(error)
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error creating appointment'
+      return BaseController._handleErrorResponse(res, error);
+    }
+  }
+
+  static async retrieveListByPatientUUID(req, res) {
+    const { uuid: patientUUID } = req.params;
+
+    if (!validateUUID(patientUUID)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
       });
+    }
+
+    try {
+      const userUUID = req.userUUID;
+
+      const dto = { patientUUID, userUUID };
+
+      const list = await appointmentService.retrieveListByPatientUUID(dto);
+
+      res.status(StatusCodes.OK).json(list);
+
+    } catch (error) {
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
   static async retrieveList(req, res) {
     try {
-      const doctor = await doctors.findOne({
-        where: {
-          uuid: req.userUUID
-        },
-        attributes: ['id'],
-      });
+      const dto = { userUUID: req.userUUID };
 
-      const list = await appointments.findAll({
-        where: {
-          doctorId: doctor.id,
-        },
-        attributes: ['uuid', 'description', 'startTime', 'endTime'],
-        order: [['createdAt', 'DESC']],
-      });
+      const list = await appointmentService.retrieveList(dto);
 
-      return res.status(StatusCodes.OK).json(list);
+      res.status(StatusCodes.OK).json(list);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error retriving appointment list'
-      });
-    }
-  }
-
-  static async retrieveListByPatientUUID(req, res) {
-    const { uuid: patientUUIDdParam } = req.params
-
-    try {
-      const patient = await patients.findOne({
-        where: {
-          uuid: patientUUIDdParam,
-        },
-        attributes: ['id'],
-      });
-
-      const list = await appointments.findAll({
-        where: {
-          patientId: patient.id,
-        },
-        attributes: ['uuid', 'description', 'startTime', 'endTime'],
-        order: [['createdAt', 'DESC']],
-      });
-
-      return res.status(StatusCodes.OK).json(list);
-
-    } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error retriving appointment list'
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
   static async updateByUUID(req, res) {
-    const { uuid: uuidParam } = req.params
+    const { uuid: appointmentUUID } = req.params
+
+    if (!validateUUID(appointmentUUID)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
+      });
+    }
 
     try {
-      const appointment = await appointments.findOne({
-        where: {
-          uuid: uuidParam,
-        },
-        attributes: ['uuid', 'doctorId', 'description', 'startTime', 'endTime'],
-      });
-
       const allowedFields = ['description', 'startTime', 'endTime'];
+
+      let dto = { uuid: appointmentUUID };
       allowedFields.forEach(field => {
         if (req.body[field] !== undefined) {
-          appointment[field] = req.body[field];
+          dto[field] = req.body[field];
         }
       });
+      const appointment = await appointmentService.updateByUUID(dto);
 
-      const conflicts = await AppointmentController._searchConflicts(appointment);
-      if (conflicts.exists) {
-        return res.status(StatusCodes.CONFLICT).json(conflicts.response);
-      }
-
-      // TODO: validate
-
-      await appointment.save();
-
-      res.status(StatusCodes.OK).json(
-        appointment.serialize
-      );
+      res.status(StatusCodes.OK).json(appointment);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error updating appointment'
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
   static async deleteByUUID(req, res) {
-    const { uuid: uuidParam } = req.params
+    const { uuid: appointmentUUID } = req.params
 
-    try {
-      const appointment = await appointments.findOne({
-        where: {
-          uuid: uuidParam,
-        },
-      });
-
-      if (!appointment) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: 'appointment not found',
-        });
-      }
-
-      await appointment.destroy();
-
-      res.status(StatusCodes.NO_CONTENT).end();
-
-    } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error deleting appointment'
+    if (!validateUUID(appointmentUUID)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
       });
     }
-  }
 
-  static async _searchConflicts(appointment) {
     try {
-      const conflicts = await appointment.findConflicts();
-      if (conflicts.length > 0) {
-        const appointmentsConflicted = conflicts.map(conflict => ({
-          uuid: conflict.uuid,
-          startTime: conflict.startTime,
-          endTime: conflict.endTime
-        }));
+      let dto = { uuid: appointmentUUID };
 
-        return {
-          exists: true,
-          response: {
-            message: `${conflicts.length} conflicting appointment(s) found`,
-            appointments: appointmentsConflicted
-          }
-        };
-      }
-      return {
-        exists: false,
-        response: null
-      };
+      await appointmentService.deleteByUUID(dto);
+
+      return res.status(StatusCodes.NO_CONTENT).end();
+
     } catch (error) {
-      throw error;
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 }

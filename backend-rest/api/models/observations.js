@@ -25,9 +25,12 @@ module.exports = (sequelize, DataTypes) => {
   observations.init({
     uuid: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      unique: true,
       allowNull: false,
-      unique: true
+      validate: {
+        notEmpty: true,
+        isUUID: 4,
+      }
     },
     appointmentId: {
       type: DataTypes.INTEGER,
@@ -40,7 +43,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     message: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: {
+          args: [3, 1000],
+          msg: 'Deve ter pelo menos 3 caracteres e no máximo 1000.'
+        }
+      }
     }
   }, {
     sequelize,

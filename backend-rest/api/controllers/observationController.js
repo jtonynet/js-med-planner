@@ -1,64 +1,52 @@
 const { StatusCodes } = require('http-status-codes');
-const { appointments, observations } = require('../models');
+const { validate: validateUUID } = require('uuid');
+const CustomErrors = require('../errors/customErrors');
+const BaseController = require('./baseController');
+const ObservationService = require('../services/observationService');
+const observationService = new ObservationService();
 
-class ObservationController {
+class ObservationController extends BaseController {
   static async create(req, res) {
-    try {
-      const { uuid: appointmentUUID } = req.params
+    const { uuid: appointmentUUID } = req.params;
 
-      const appointment = await appointments.findOne({
-        where: {
-          uuid: appointmentUUID,
-        },
-        attributes: ['id'],
+    if (!validateUUID(appointmentUUID)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
       });
+    }
 
+    try {
       const { uuid, message } = req.body;
-      const observationData = { uuid, message, appointmentId: appointment.id };
 
-      const newObservation = observations.build(observationData);
+      const dto = { uuid, message, appointmentUUID };
 
-      // TODO: validate
+      const newObservation = await observationService.create(dto);
 
-      await newObservation.save();
-
-      res.status(StatusCodes.CREATED).json(
-        newObservation.serialize()
-      );
+      return res.status(StatusCodes.CREATED).json(newObservation);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error creating observation'
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
-  static async retrieveByAppointmentUUID(req, res) {
-    const { uuid: appointmentUUID } = req.params
+  static async retrieveListByAppointmentUUID(req, res) {
+    const { uuid: appointmentUUID } = req.params;
+
+    if (!validateUUID(appointmentUUID)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
+      });
+    }
 
     try {
-      const appointment = await appointments.findOne({
-        where: {
-          uuid: appointmentUUID,
-        },
-        attributes: ['id'],
-      });
+      const dto = { uuid: appointmentUUID };
 
-      const list = await observations.findAll({
-        where: {
-          appointmentId: appointment.id
-        },
-        attributes: ['uuid', 'message'],
-      })
+      const list = await observationService.retrieveListByAppointmentUUID(dto);
 
       return res.status(StatusCodes.OK).json(list);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error retriving observation list'
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 }

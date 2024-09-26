@@ -1,147 +1,104 @@
 const { StatusCodes } = require('http-status-codes');
-const { patients } = require('../models');
+const { validate: validateUUID } = require('uuid');
+const BaseController = require('./baseController');
+const PatientService = require('../services/patientService');
+const patientService = new PatientService();
 
-class PatientController {
+class PatientController extends BaseController {
   static async create(req, res) {
+    const { uuid, name: patientName, phone, email, birthDate, gender, height, weight } = req.body;
+
     try {
-      const { uuid, name: patientName, phone, email, birthDate, gender, height, weight } = req.body;
-      const patientData = { uuid, name: patientName, phone, email, birthDate, gender, height, weight };
+      const dto = { uuid, name: patientName, phone, email, birthDate, gender, height, weight };
 
-      const newPatient = patients.build(patientData)
+      const newPatient = await patientService.create(dto);
 
-      // TODO: validate
-
-      await newPatient.save();
-
-      res.status(StatusCodes.CREATED).json(
-        PatientController.sanitizePatientData(newPatient)
-      );
+      return res.status(StatusCodes.CREATED).json(newPatient);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error creating patient'
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
   static async retrieveList(req, res) {
     try {
-      const list = await patients.findAll({
-        attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
-        order: [['createdAt', 'DESC']],
-      })
+      const list = await patientService.retrieveList();
 
       res.status(StatusCodes.OK).json(list);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error retriving patient list'
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
   static async retrieveByUUID(req, res) {
-    const { uuid: uuidParam } = req.params
+    const { uuid: uuidParam } = req.params;
+
+    if (!validateUUID(uuidParam)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
+      });
+    }
 
     try {
-      const patient = await patients.findOne({
-        where: {
-          uuid: uuidParam,
-        },
-        attributes: ['uuid', 'name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'],
-      })
+      const dto = { uuid: uuidParam };
+
+      const patient = await patientService.retrieveByUUID(dto);
 
       res.status(StatusCodes.OK).json(patient);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error retrieve patient'
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
-
   }
 
   static async updateByUUID(req, res) {
-    const { uuid: uuidParam } = req.params
+    const { uuid: uuidParam } = req.params;
+
+    if (!validateUUID(uuidParam)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
+      });
+    }
 
     try {
-      const patient = await patients.findOne({
-        where: {
-          uuid: uuidParam,
-        },
-      });
-
-      if (!patient) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: 'Patient not found',
-        });
-      }
-
       const allowedFields = ['name', 'phone', 'birthDate', 'gender', 'height', 'weight'];
+
+      let dto = { uuid: uuidParam };
       allowedFields.forEach(field => {
         if (req.body[field] !== undefined) {
-          patient[field] = req.body[field];
+          dto[field] = req.body[field];
         }
       });
 
-      // TODO: validate
+      const patient = await patientService.updateByUUID(dto);
 
-      await patient.save();
-
-      res.status(StatusCodes.OK).json(
-        PatientController.sanitizePatientData(patient)
-      );
+      res.status(StatusCodes.OK).json(patient);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error updating patient'
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
   static async deleteByUUID(req, res) {
-    const { uuid: uuidParam } = req.params
+    const { uuid: uuidParam } = req.params;
 
-    try {
-      const patient = await patients.findOne({
-        where: {
-          uuid: uuidParam,
-        },
-      });
-
-      if (!patient) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: 'Patient not found',
-        });
-      }
-
-      await patient.destroy();
-
-      res.status(StatusCodes.NO_CONTENT).end();
-
-    } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: 'Error deleting patient'
+    if (!validateUUID(uuidParam)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        message: 'Request error invalid uuid'
       });
     }
-  }
 
-  static sanitizePatientData(patient) {
-    return {
-      uuid: patient.uuid,
-      name: patient.name,
-      phone: patient.phone,
-      email: patient.email,
-      birthDate: patient.birthDate,
-      gender: patient.gender,
-      height: patient.height,
-      weight: patient.weight,
-    };
+    try {
+      const dto = { uuid: uuidParam };
+
+      await patientService.deleteByUUID(dto);
+
+      return res.status(StatusCodes.NO_CONTENT).end();
+
+    } catch (error) {
+      return BaseController._handleErrorResponse(res, error);
+    }
   }
 }
 

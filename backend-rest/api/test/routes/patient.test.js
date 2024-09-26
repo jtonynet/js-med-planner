@@ -14,7 +14,7 @@ beforeAll(async () => {
   const response = await request(app)
     .post('/auth/login')
     .send({
-      "email": "house@md.com",
+      "email": "house.md@gmail.com",
       "password": "lupos"
     });
 
@@ -29,8 +29,8 @@ const patientsToCreate = [
   {
     uuid: 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9',
     name: 'Pedro Prado',
-    phone: '+551100000000',
-    email: 'pedro@xmail.com',
+    phone: '551100000000',
+    email: 'pedro@gmail.com',
     birthDate: '1990-05-15',
     gender: 'male',
     height: '1.75',
@@ -39,8 +39,8 @@ const patientsToCreate = [
   {
     uuid: '69be741b-3bf4-41a2-9b44-0e8b655a54dc',
     name: 'Felipe Feltrin',
-    phone: '+552199999999',
-    email: 'felipef@xmail.com',
+    phone: '552199999999',
+    email: 'felipef@gmail.com',
     birthDate: '1970-12-25',
     gender: 'male',
     height: '1.60',
@@ -49,8 +49,8 @@ const patientsToCreate = [
   {
     uuid: 'bd5afa01-91a6-4b7a-8fee-bb98f5ed47a7',
     name: 'Carolina Karla',
-    phone: '+5521420420420',
-    email: 'carolinak@xmail.com',
+    phone: '5521420420420',
+    email: 'carolinak@gmail.com',
     birthDate: '1995-12-25',
     gender: 'female',
     height: '1.65',
@@ -62,7 +62,7 @@ patientToUpdateAndDelete = patientsToCreate[0]
 
 const patientParamsToUpdate = {
   name: 'Paula Prado',
-  phone: '+5521999998888',
+  phone: '5521999998888',
   birthDate: '1980-05-15',
   gender: 'other',
   height: '1.80',
@@ -172,7 +172,7 @@ describe('DELETE Authenticated in /patients/:uuid', () => {
 
     expect(deletedPatient.name).not.toEqual(patientToUpdateAndDelete.name);
     expect(deletedPatient.email).not.toEqual(patientToUpdateAndDelete.email);
-    expect(deletedPatient.phone).toBeNull();
+    expect(deletedPatient.phone).not.toEqual(patientToUpdateAndDelete.phone);
     expect(deletedPatient.gender).toEqual('unspecified');
     expect(deletedPatient.birthDate).toEqual(dateOfBrazilianDiscovery);
     expect(deletedPatient.height).not.toEqual(decimalMinimun);
@@ -189,5 +189,127 @@ describe('DELETE Authenticated in /patients/:uuid', () => {
 
     patientDeletedInResponse = findByUUID(responseAfterDelete.body, patientToUpdateAndDelete.uuid)
     expect(patientDeletedInResponse).toBeUndefined();
+  });
+
+  it('Should return not found to delete twice by UUID', async () => {
+    await request(app)
+      .delete(`/patients/${patientToUpdateAndDelete.uuid}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .expect(StatusCodes.NOT_FOUND);
+  });
+});
+
+// CORNER CASES
+
+const patientToValidate =
+{
+  uuid: '5c351098-3a95-42a1-bdff-b6345803ca3f',
+  name: 'Pedro Prado',
+  phone: '551100000000',
+  email: 'pedro@gmail.com',
+  birthDate: '1990-05-15',
+  gender: 'male',
+  height: '1.75',
+  weight: '72.50'
+};
+
+const fieldsToValidate = [
+  ['name', { name: 'a' }],
+  ['phone', { phone: '0' }],
+  ['birthDate', { birthDate: '9999-12-31' }],
+  ['gender', { gender: 'gender_not_in_enum' }],
+  ['height', { height: '00.00' }],
+  ['weight', { weight: '00.00' }]
+];
+
+describe('POST Authenticated validate fields errors in /patients', () => {
+  test.each(fieldsToValidate)(`Should return error on validate field %s at patient by UUID ${patientToValidate.uuid}`,
+    async (key, param) => {
+      let patient = { ...patientToValidate };
+      patient[key] = param[key];
+
+      const response = await request(app)
+        .post('/patients')
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .send(patient)
+        .expect(StatusCodes.BAD_REQUEST);
+
+      expect(response.body.message).toEqual('Validation error(s) encountered');
+    });
+
+  test.each(fieldsToValidate)(`Should return error on sending without field %s at patient by UUID ${patientToValidate.uuid}`, async (key) => {
+    let patient = { ...patientToValidate };
+    delete patient[key];
+
+    const response = await request(app)
+      .post('/patients')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send(patient)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Validation error(s) encountered');
+  });
+
+  it('Should create a patient', async () => {
+    const response = await request(app)
+      .post('/patients')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send(patientToValidate)
+      .expect(StatusCodes.CREATED);
+
+    expect(response.body.email).toEqual(patientToValidate.email);
+  });
+});
+
+describe('PATCH Authenticated validate fields errors in /patients', () => {
+  test.each(fieldsToValidate)(`Should return error on validate field %s at patient by UUID ${patientToValidate.uuid}`, async (key, param) => {
+    let patient = { ...patientToValidate };
+    patient[key] = param[key];
+
+    const response = await request(app)
+      .patch(`/patients/${patientToValidate.uuid}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send(patient)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Validation error(s) encountered');
+  });
+});
+
+describe('GET Authenticated with incorrect uuid /patients/uuid', () => {
+  it('Should return error validate patient by incorrect UUID', async () => {
+    const response = await request(app)
+      .get('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Request error invalid uuid');
+  });
+});
+
+describe('PATCH Authenticated with incorrect uuid /patients/uuid', () => {
+  it('Should return error validate patient by incorrect UUID', async () => {
+    const response = await request(app)
+      .patch('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .send(patientToValidate)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Request error invalid uuid');
+  });
+});
+
+describe('DELETE Authenticated with incorrect uuid /patients/uuid', () => {
+  it('Should return error validate patient by incorrect UUID', async () => {
+    const response = await request(app)
+      .delete('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.BAD_REQUEST);
+
+    expect(response.body.message).toEqual('Request error invalid uuid');
   });
 });

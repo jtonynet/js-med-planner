@@ -9,7 +9,7 @@
  *         email:
  *           type: string
  *           required: true
- *           example: "house@md.com"
+ *           example: "house.md@gmail.com"
  *         password:
  *           type: string
  *           required: true
@@ -28,7 +28,7 @@
  *           example: "Pedro Prado"
  *         phone:
  *           type: string
- *           example: "+5511912345678"
+ *           example: "5511912345678"
  *         email:
  *           type: string
  *           required: true
@@ -65,7 +65,7 @@
  *           example: Paula Prado
  *         phone:
  *           type: string
- *           example: +5521999998888
+ *           example: 5521999998888
  *         birthDate:
  *           type: string
  *           format: date
@@ -98,7 +98,7 @@
  *           example: "Pedro Prado"
  *         phone:
  *           type: string
- *           example: "+5511912345678"
+ *           example: "5511912345678"
  *         email:
  *           type: string
  *           example: "pedro@xmail.com"
@@ -185,4 +185,47 @@
  *         message:
  *           type: string
  *           example: "Devemos solicitar exames mais profundos"
+ * 
+ *     response.NotFoundError:
+ *       description: Resource not found
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *                 example: "Resource not found"
+ * 
+ *     response.ValidationError:
+ *       description: Validation error(s) on request
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *                 example: Validation error(s) on request encountered
+ *               errors:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     field:
+ *                       type: string
+ *                     message:
+ *                       type: string
+ *
+ *     response.InternalServerError:
+ *       description: Internal server error
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *                 example: An unexpected error occurred
+ *
  */

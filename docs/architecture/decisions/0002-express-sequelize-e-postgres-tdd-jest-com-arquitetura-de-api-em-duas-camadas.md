@@ -43,4 +43,4 @@ Decidi também utilizar o [Github Projects](https://github.com/users/jtonynet/pr
 
 ## Consequências
 
-Uma API bem documentada (__Swagger, Readme, ADRs e Diagramas__) que atende às propostas da área de negócios e às __Guidelines and Guardrails__ (definições prévias da área de tecnologia), conforme descrito no [arquivo README.md](../../../README.md), com capacidade de desenvolvimento e expansão de forma __Iterativa e Incremental__.
+Uma API bem documentada (__Swagger, Readme, ADRs e Diagramas__) que atende as propostas da área de negócios e as __Guidelines and Guardrails__ (definições prévias da área de tecnologia), conforme descrito no [arquivo README.md](../../../README.md), com capacidade de desenvolvimento e expansão de forma __Iterativa e Incremental__.

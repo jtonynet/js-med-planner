@@ -104,16 +104,8 @@ não pelo uso de ORM;
 
 _*A documentação original do desafio é mais abrangente, com sugestões de tela para o front e mais dados._
 
-Faz sentido utilizar __Arquitetura de Duas Camadas__. Caso a complexidade aumente, podemos extender para o uso de uma terceira camada (`services`).
+Faz sentido utilizar __Arquitetura de Duas Camadas__. Caso a complexidade aumente, podemos extender para o uso de uma terceira camada (`services/repository`).
 
-Foco em garantir estabilidade com __TDD__ e uma implementação de __CI__ no GitHub Actions
-
-
-Sobre:
->   - Eu como médico, quero que o sistema valide a minha agenda, não deixando
-eu cadastrar mais de um paciente na mesma hora.
-
-Deve existir ao menos 1 minuto de diferença entre o cadastro de um paciente e outro.
 
 [⤴️ de volta ao índice](#index)
 
@@ -123,7 +115,7 @@ Deve existir ao menos 1 minuto de diferença entre o cadastro de um paciente e o
 ### 💻 Rodando o Projeto
 
 <a id="run-containerized"></a>
-#### 🐋 Conteinerizado
+#### 🐋 [QUEBRADO NO MOMENTO] Conteinerizado 
 
 Rode os comandos `docker compose` (de acordo com sua versão do docker compose) no diretório raiz do projeto:
 ```bash
@@ -152,7 +144,13 @@ ou se conecte a uma database válida, então vá para o diretório `backend-rest
 ```
 <br/>
 
-#### ⏳ TODO: migrations e seeds
+#### ⏳ Migrations e seeds
+
+No ambiente local e dentro da pasta `backend-rest`, rode o comando.
+
+```bash
+/js-med-planner/backend-rest$  npm run db:clean
+```
 
 <br/>
 
@@ -167,7 +165,7 @@ ou se conecte a uma database válida, então vá para o diretório `backend-rest
 
 Com a aplicação em execução, a rota de documentação Swagger fica disponível em http://localhost:3000/docs/
 
-O endpoint `auth/login` provê um token `Bearer` que deve ser obtido e utilizado no `Authorize` do swagger para que as requisições possam ser procedidas adequadamente.
+O endpoint `/auth/login` provê um token `Bearer` que deve ser obtido e utilizado no `Authorize` do swagger para que as requisições possam ser procedidas adequadamente.
 
 O cliente deve informar o UUID do recurso para criação. Para validações, você pode utilizar um [site gerador de UUIDs](https://www.uuidgenerator.net/).
 
@@ -175,11 +173,13 @@ O cliente deve informar o UUID do recurso para criação. Para validações, voc
 
 <br/>
 
+<!-- 
 ####  <img src="./docs/assets/images/icons/postman.svg" width="20px" height="20px" alt="Swagger" title="Swagger">  Postman
 
 Dentro da pasta [./scripts/postman](./scripts/postman/rjs-med-planner.postman_collection.json) encontra-se o arquivo JSON básico que pode ser importado no seu `Postman` para auxiliar em testes manuais e desenvolvimento.</summary>
 
 <img src="./docs/assets/images/screen_captures/postman_medplanner_rest_api.png">
+-->
 
 <br/>
 
@@ -242,56 +242,6 @@ erDiagram
    1. A abordagem da tabela `doctor` com o campo `password` foi aplicada apenas para ter uma autenticação minima nos endpoints dos recursos desde o inicio. Caso alcance todos os requisitos obrigatórios do desafio e tenha tempo disponível, pretendo implementar `user` com `roles` adequadas
 <br/>
 
-**Diagrama de Sistema:**
-
-```mermaid
-graph LR
-    subgraph Doctor Flow
-      DOCTOR(["👩‍⚕️ Authorized Doctor"])
-
-      DOCTOR --> CREATE_PATIENT("🌐 Create Patient")
-      DOCTOR --> RETRIEVE_PATIENT_LIST("🌐 Retrieve Patient List")
-      DOCTOR --> RETRIEVE_PATIENT("🌐 Retrieve Patient")
-      DOCTOR --> UPDATE_PATIENT("🌐 Update Patient")
-      DOCTOR --> DELETE_PATIENT("🌐 Delete Patient")
-    end
-
-    subgraph Two Tier Architecture
-      subgraph Controllers
-        API_CREATE_PATIENT("🖥️ Create Patient")
-        API_GET_PATIENTS("🖥️ Retrieve Patient")
-        API_GET_PATIENT("🖥️ Get Patient by UUID")
-        API_UPDATE_PATIENT("🖥️ Update Patient by UUID")
-        API_DELETE_PATIENT("🖥️ Delete Patient by UUID")
-      end
-
-      subgraph Models
-        ENTITY_PATIENT("📄 Patient")
-      end
-
-      subgraph DATABASE
-        MED_PLANNER_DB[("🗄️ PostgreSQL <br/> med-planner-db")]
-      end 
-    end
-  
-  CREATE_PATIENT -->|http POST| API_CREATE_PATIENT
-  RETRIEVE_PATIENT_LIST -->|http GET| API_GET_PATIENTS
-  RETRIEVE_PATIENT -->|http GET| API_GET_PATIENT
-  UPDATE_PATIENT -->|http PATCH| API_UPDATE_PATIENT
-  DELETE_PATIENT -->|http DELETE| API_DELETE_PATIENT
-
-  API_CREATE_PATIENT-->ENTITY_PATIENT
-  API_GET_PATIENTS-->ENTITY_PATIENT
-  API_GET_PATIENT-->ENTITY_PATIENT
-  API_UPDATE_PATIENT-->ENTITY_PATIENT 
-  API_DELETE_PATIENT-->ENTITY_PATIENT
-
-
-  ENTITY_PATIENT-->MED_PLANNER_DB
-```
-_*Diagrama INICIAL geral com baixo nível de fidelidade_
-
-
 <br/>
 
 <!-- 
@@ -321,7 +271,7 @@ então vá para o diretório do mesmo e execute o comando de testes:
 
 <img src="./docs/assets/images/screen_captures/integration_tests_db.jpeg">
 
-Cada vez que o comando for procedido, a database de testes será recriada no test-postgres-med-planner assegurando uma execução limpa
+Cada vez que o comando for executado, a database de testes será recriada no test-postgres-med-planner assegurando uma execução limpa
 
 <img src="./docs/assets/images/screen_captures/integration_tests_run.jpeg">
 
@@ -337,7 +287,7 @@ Saída esperada pelo comando
 ### 👏 Boas Práticas
 
 - [Swagger](https://swagger.io/)
-- [Github Project - Kanbam](https://github.com/users/jtonynet/projects/5/views/1)
+- [Github Project - Kanbam](https://github.com/users/jtonynet/projects/6)
 - [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html)
 - [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
 - [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
@@ -482,6 +432,8 @@ docker volume rm $(docker volume ls -q) --force
 docker network prune -f
 
 docker system prune -a --volumes
+
+sudo systemctl restart docker
 
 -->
 
