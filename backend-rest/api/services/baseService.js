@@ -18,6 +18,17 @@ class BaseService {
       );
     }
   }
+
+  _errorHandler(error) {
+    switch (error.constructor.name) {
+      case 'ValidationError':
+      case 'NotFoundError':
+        throw error;
+    }
+
+    console.log(error);
+    throw new CustomErrors.InternalServerError('An unexpected error occurred');
+  }
 }
 
 module.exports = BaseService;

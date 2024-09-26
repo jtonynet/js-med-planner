@@ -51,15 +51,7 @@ class AppointmentService extends BaseService {
       return newAppointment.serialize();
 
     } catch (error) {
-      switch (error.constructor.name) {
-        case 'NotFoundError':
-        case 'ValidationError':
-          throw error;
-      }
-
-      // 'Error creating appointment'
-      console.log(error);
-      throw new CustomErrors.InternalServerError('An unexpected error occurred');
+      this._errorHandler(error);
     }
   }
 
@@ -83,9 +75,7 @@ class AppointmentService extends BaseService {
       return list;
 
     } catch (error) {
-      // 'Error retriving appointment list'
-      console.log(error);
-      throw new CustomErrors.InternalServerError('An unexpected error occurred');
+      this._errorHandler(error);
     }
   }
 
@@ -113,14 +103,7 @@ class AppointmentService extends BaseService {
       return list;
 
     } catch (error) {
-      switch (error.constructor.name) {
-        case 'NotFoundError':
-          throw error;
-      }
-
-      // 'Error retriving appointment list'
-      console.log(error);
-      throw new CustomErrors.InternalServerError('An unexpected error occurred');
+      this._errorHandler(error);
     }
   }
 
@@ -149,15 +132,7 @@ class AppointmentService extends BaseService {
       return appointment.serialize();
 
     } catch (error) {
-      switch (error.constructor.name) {
-        case 'NotFoundError':
-        case 'ValidationError':
-          throw error;
-      }
-
-      // 'Error updating patient'
-      console.log(error);
-      throw new CustomErrors.InternalServerError('An unexpected error occurred');
+      this._errorHandler(error);
     }
   }
 
@@ -178,14 +153,7 @@ class AppointmentService extends BaseService {
       await appointment.destroy();
 
     } catch (error) {
-      switch (error.constructor.name) {
-        case 'NotFoundError':
-          throw error;
-      };
-
-      // 'Error deleting appointment'
-      console.log(error);
-      throw new CustomErrors.InternalServerError('An unexpected error occurred');
+      this._errorHandler(error);
     }
   }
 

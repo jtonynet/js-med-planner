@@ -27,14 +27,7 @@ class PatientService extends BaseService {
       return newPatient.serialize();
 
     } catch (error) {
-      switch (error.constructor.name) {
-        case 'ValidationError':
-          throw error;
-      }
-
-      // 'Error creating patient'
-      console.log(error);
-      throw new CustomErrors.InternalServerError('An unexpected error occurred');
+      this._errorHandler(error);
     }
   }
 
@@ -48,9 +41,7 @@ class PatientService extends BaseService {
       return list;
 
     } catch (error) {
-      // 'Error retriving patient list'
-      console.log(error);
-      throw new CustomErrors.InternalServerError('An unexpected error occurred');
+      this._errorHandler(error);
     }
   }
 
@@ -70,15 +61,7 @@ class PatientService extends BaseService {
       return patient.serialize();
 
     } catch (error) {
-      switch (error.constructor.name) {
-        case 'ValidationError':
-        case 'NotFoundError':
-          throw error;
-      }
-
-      // 'Error retrieve patient'
-      console.log(error);
-      throw new CustomErrors.InternalServerError('An unexpected error occurred');
+      this._errorHandler(error);
     }
   }
 
@@ -104,15 +87,7 @@ class PatientService extends BaseService {
       return patient.serialize();
 
     } catch (error) {
-      switch (error.constructor.name) {
-        case 'NotFoundError':
-        case 'ValidationError':
-          throw error;
-      }
-
-      // 'Error updating patient'
-      console.log(error);
-      throw new CustomErrors.InternalServerError('An unexpected error occurred');
+      this._errorHandler(error)
     }
   }
 
@@ -131,14 +106,7 @@ class PatientService extends BaseService {
       return await patient.destroy();
 
     } catch (error) {
-      switch (error.constructor.name) {
-        case 'NotFoundError':
-          throw error;
-      };
-
-      // 'Error deleting patient'
-      console.log(error);
-      throw new CustomErrors.InternalServerError('An unexpected error occurred');
+      this._errorHandler(error);
     }
   }
 }

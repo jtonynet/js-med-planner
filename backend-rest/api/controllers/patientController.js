@@ -1,10 +1,11 @@
 const { StatusCodes } = require('http-status-codes');
 const { validate: validateUUID } = require('uuid');
 const CustomErrors = require('../errors/customErrors');
+const BaseController = require('./baseController');
 const PatientService = require('../services/patientService');
 const patientService = new PatientService();
 
-class PatientController {
+class PatientController extends BaseController {
   static async create(req, res) {
     const { uuid, name: patientName, phone, email, birthDate, gender, height, weight } = req.body;
 
@@ -16,16 +17,7 @@ class PatientController {
       return res.status(StatusCodes.CREATED).json(newPatient);
 
     } catch (error) {
-      if (error instanceof CustomErrors.ValidationError) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          message: error.message,
-          errors: error.details
-        });
-      }
-
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: error.message
-      });
+      return BaseController._errorToResponse(res, error);
     }
   }
 
@@ -36,10 +28,7 @@ class PatientController {
       res.status(StatusCodes.OK).json(list);
 
     } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: error.message
-      });
+      return BaseController._errorToResponse(res, error);
     }
   }
 
@@ -60,15 +49,7 @@ class PatientController {
       res.status(StatusCodes.OK).json(patient);
 
     } catch (error) {
-      if (error instanceof CustomErrors.NotFoundError) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: error.message
-        });
-      }
-
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: error.message
-      });
+      return BaseController._errorToResponse(res, error);
     }
   }
 
@@ -96,22 +77,7 @@ class PatientController {
       res.status(StatusCodes.OK).json(patient);
 
     } catch (error) {
-      if (error instanceof CustomErrors.NotFoundError) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: error.message
-        });
-      }
-
-      if (error instanceof CustomErrors.ValidationError) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          message: error.message,
-          errors: error.details
-        });
-      }
-
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: error.message
-      });
+      return BaseController._errorToResponse(res, error);
     }
   }
 
@@ -132,15 +98,7 @@ class PatientController {
       return res.status(StatusCodes.NO_CONTENT).end();
 
     } catch (error) {
-      if (error instanceof CustomErrors.NotFoundError) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: error.message
-        });
-      }
-
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: error.message
-      });
+      return BaseController._errorToResponse(res, error);
     }
   }
 }

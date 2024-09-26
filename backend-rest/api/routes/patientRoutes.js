@@ -28,6 +28,8 @@ router.use(authenticate);
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/response.Patient'
+ * 
+ * 
  */
 router.post('/patients', PatientController.create);
 
