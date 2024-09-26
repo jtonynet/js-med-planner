@@ -28,6 +28,7 @@
  *           example: "Pedro Prado"
  *         phone:
  *           type: string
+ *           required: true
  *           example: "5511912345678"
  *         email:
  *           type: string
@@ -142,10 +143,10 @@
  *           type: string
  *           example: "Remarcando primeira consulta da tarde"
  *         startTime:
- *           required: true 
+ *           type: string date
  *           example: "2028-12-20 17:00:00"
  *         endTime:
- *           required: true 
+ *           type: string date
  *           example: "2028-12-20 18:00:00"
  * 
  *     response.Appointment:
@@ -163,6 +164,31 @@
  *         endTime:
  *           type: string date
  *           example: "2028-12-20 16:30:00"
+ * 
+ *     response.AppointmentWithPatient:
+ *       type: object
+ *       properties:
+ *         uuid:
+ *           type: string uuid
+ *           example: "ccd71acf-7be4-42dc-b562-a7807d70c173"
+ *         description:
+ *           type: string
+ *           example: "Primeira consulta da manhã"
+ *         startTime:
+ *           type: string date
+ *           example: "2028-12-20 16:30:00"
+ *         endTime:
+ *           type: string date
+ *           example: "2028-12-20 16:30:00"
+ *         patient:
+ *           type: object
+ *           properties:
+ *             uuid:
+ *               type: string uuid
+ *               example: "69be741b-3bf4-41a2-9b44-0e8b655a54dd"
+ *             name:
+ *               type: string
+ *               example: "Pedro Prado"
  * 
  *     request.Observation:
  *       type: object

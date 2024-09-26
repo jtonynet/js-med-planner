@@ -70,7 +70,7 @@ router.post('/patients/:uuid/appointments', AppointmentController.create);
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/response.Appointment'
+ *                 $ref: '#/components/schemas/response.AppointmentWithPatient'
  *       401:
  *         description: Unauthorized
  *       404:
@@ -97,7 +97,7 @@ router.get('/patients/:uuid/appointments', AppointmentController.retrieveListByP
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/response.Appointment'
+ *                 $ref: '#/components/schemas/response.AppointmentWithPatient'
  *       401:
  *         description: Unauthorized
  *       500:
