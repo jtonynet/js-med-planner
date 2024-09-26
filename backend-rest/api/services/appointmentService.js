@@ -69,6 +69,13 @@ class AppointmentService extends BaseService {
           doctorId: doctor.id,
         },
         attributes: ['uuid', 'description', 'startTime', 'endTime'],
+        include: [
+          {
+            model: database.patients,
+            as: 'patient',
+            attributes: ['uuid', 'name']
+          }
+        ],
         order: [['createdAt', 'DESC']],
       });
 
@@ -97,6 +104,13 @@ class AppointmentService extends BaseService {
           patientId: patient.id,
         },
         attributes: ['uuid', 'description', 'startTime', 'endTime'],
+        include: [
+          {
+            model: database.patients,
+            as: 'patient',
+            attributes: ['uuid', 'name']
+          }
+        ],
         order: [['createdAt', 'DESC']],
       });
 
