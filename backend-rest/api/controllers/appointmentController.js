@@ -1,7 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const { validate: validateUUID } = require('uuid');
 const BaseController = require('./baseController');
-const CustomErrors = require('../errors/customErrors');
 const AppointmentService = require('../services/appointmentService');
 const appointmentService = new AppointmentService();
 
