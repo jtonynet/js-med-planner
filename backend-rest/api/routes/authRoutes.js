@@ -25,7 +25,7 @@ const router = Router();
  *               type: string
  *               example: "your_jwt_token_here"
  *       401:
- *         description: Unauthorized, invalid email or password
+ *         description: not authorized
  *       500:
  *         description: Internal server error
  */

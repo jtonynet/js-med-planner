@@ -41,7 +41,7 @@ class PatientService extends BaseService {
       return list;
 
     } catch (error) {
-      this._errorHandler(error);
+      this._errorHandler(error)
     }
   }
 
@@ -106,7 +106,7 @@ class PatientService extends BaseService {
       return await patient.destroy();
 
     } catch (error) {
-      this._errorHandler(error);
+      this._errorHandler(error)
     }
   }
 }

@@ -2,7 +2,7 @@ const { StatusCodes } = require('http-status-codes');
 const CustomErrors = require('../errors/customErrors');
 
 class BaseController {
-    static _errorToResponse(res, error) {
+    static _handleErrorResponse(res, error) {
         if (error instanceof CustomErrors.NotFoundError) {
             return res.status(StatusCodes.NOT_FOUND).json({
                 message: error.message

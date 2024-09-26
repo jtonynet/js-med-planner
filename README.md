@@ -173,11 +173,13 @@ O cliente deve informar o UUID do recurso para criação. Para validações, voc
 
 <br/>
 
+<!-- 
 ####  <img src="./docs/assets/images/icons/postman.svg" width="20px" height="20px" alt="Swagger" title="Swagger">  Postman
 
 Dentro da pasta [./scripts/postman](./scripts/postman/rjs-med-planner.postman_collection.json) encontra-se o arquivo JSON básico que pode ser importado no seu `Postman` para auxiliar em testes manuais e desenvolvimento.</summary>
 
 <img src="./docs/assets/images/screen_captures/postman_medplanner_rest_api.png">
+-->
 
 <br/>
 
@@ -239,56 +241,6 @@ erDiagram
 
    1. A abordagem da tabela `doctor` com o campo `password` foi aplicada apenas para ter uma autenticação minima nos endpoints dos recursos desde o inicio. Caso alcance todos os requisitos obrigatórios do desafio e tenha tempo disponível, pretendo implementar `user` com `roles` adequadas
 <br/>
-
-**Diagrama de Sistema:**
-
-```mermaid
-graph LR
-    subgraph Doctor Flow
-      DOCTOR(["👩‍⚕️ Authorized Doctor"])
-
-      DOCTOR --> CREATE_PATIENT("🌐 Create Patient")
-      DOCTOR --> RETRIEVE_PATIENT_LIST("🌐 Retrieve Patient List")
-      DOCTOR --> RETRIEVE_PATIENT("🌐 Retrieve Patient")
-      DOCTOR --> UPDATE_PATIENT("🌐 Update Patient")
-      DOCTOR --> DELETE_PATIENT("🌐 Delete Patient")
-    end
-
-    subgraph Two Tier Architecture
-      subgraph Controllers
-        API_CREATE_PATIENT("🖥️ Create Patient")
-        API_GET_PATIENTS("🖥️ Retrieve Patient")
-        API_GET_PATIENT("🖥️ Get Patient by UUID")
-        API_UPDATE_PATIENT("🖥️ Update Patient by UUID")
-        API_DELETE_PATIENT("🖥️ Delete Patient by UUID")
-      end
-
-      subgraph Models
-        ENTITY_PATIENT("📄 Patient")
-      end
-
-      subgraph DATABASE
-        MED_PLANNER_DB[("🗄️ PostgreSQL <br/> med-planner-db")]
-      end 
-    end
-  
-  CREATE_PATIENT -->|http POST| API_CREATE_PATIENT
-  RETRIEVE_PATIENT_LIST -->|http GET| API_GET_PATIENTS
-  RETRIEVE_PATIENT -->|http GET| API_GET_PATIENT
-  UPDATE_PATIENT -->|http PATCH| API_UPDATE_PATIENT
-  DELETE_PATIENT -->|http DELETE| API_DELETE_PATIENT
-
-  API_CREATE_PATIENT-->ENTITY_PATIENT
-  API_GET_PATIENTS-->ENTITY_PATIENT
-  API_GET_PATIENT-->ENTITY_PATIENT
-  API_UPDATE_PATIENT-->ENTITY_PATIENT 
-  API_DELETE_PATIENT-->ENTITY_PATIENT
-
-
-  ENTITY_PATIENT-->MED_PLANNER_DB
-```
-_*Diagrama INICIAL geral com baixo nível de fidelidade_
-
 
 <br/>
 

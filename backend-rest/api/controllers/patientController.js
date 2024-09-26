@@ -1,6 +1,5 @@
 const { StatusCodes } = require('http-status-codes');
 const { validate: validateUUID } = require('uuid');
-const CustomErrors = require('../errors/customErrors');
 const BaseController = require('./baseController');
 const PatientService = require('../services/patientService');
 const patientService = new PatientService();
@@ -17,7 +16,7 @@ class PatientController extends BaseController {
       return res.status(StatusCodes.CREATED).json(newPatient);
 
     } catch (error) {
-      return BaseController._errorToResponse(res, error);
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
@@ -28,7 +27,7 @@ class PatientController extends BaseController {
       res.status(StatusCodes.OK).json(list);
 
     } catch (error) {
-      return BaseController._errorToResponse(res, error);
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
@@ -49,7 +48,7 @@ class PatientController extends BaseController {
       res.status(StatusCodes.OK).json(patient);
 
     } catch (error) {
-      return BaseController._errorToResponse(res, error);
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
@@ -77,7 +76,7 @@ class PatientController extends BaseController {
       res.status(StatusCodes.OK).json(patient);
 
     } catch (error) {
-      return BaseController._errorToResponse(res, error);
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
@@ -98,7 +97,7 @@ class PatientController extends BaseController {
       return res.status(StatusCodes.NO_CONTENT).end();
 
     } catch (error) {
-      return BaseController._errorToResponse(res, error);
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 }

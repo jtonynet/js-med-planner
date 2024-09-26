@@ -185,4 +185,47 @@
  *         message:
  *           type: string
  *           example: "Devemos solicitar exames mais profundos"
+ * 
+ *     response.NotFoundError:
+ *       description: Resource not found
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *                 example: "Resource not found"
+ * 
+ *     response.ValidationError:
+ *       description: Validation error(s) on request
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *                 example: Validation error(s) on request encountered
+ *               errors:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     field:
+ *                       type: string
+ *                     message:
+ *                       type: string
+ *
+ *     response.InternalServerError:
+ *       description: Internal server error
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               message:
+ *                 type: string
+ *                 example: An unexpected error occurred
+ *
  */

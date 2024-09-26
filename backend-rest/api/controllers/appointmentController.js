@@ -1,12 +1,11 @@
 const { StatusCodes } = require('http-status-codes');
 const { validate: validateUUID } = require('uuid');
+const BaseController = require('./baseController');
 const CustomErrors = require('../errors/customErrors');
 const AppointmentService = require('../services/appointmentService');
 const appointmentService = new AppointmentService();
 
-const { appointments, patients, doctors, db } = require('../models');
-
-class AppointmentController {
+class AppointmentController extends BaseController {
 
   static async create(req, res) {
     const { uuid: patientUUID } = req.params
@@ -27,39 +26,7 @@ class AppointmentController {
       return res.status(StatusCodes.CREATED).json(newAppointment);
 
     } catch (error) {
-      if (error instanceof CustomErrors.NotFoundError) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: error.message
-        });
-      }
-
-      if (error instanceof CustomErrors.ValidationError) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          message: error.message,
-          errors: error.details
-        });
-      }
-
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: error.message
-      });
-
-    }
-  }
-
-  static async retrieveList(req, res) {
-    try {
-      const dto = { userUUID: req.userUUID };
-
-      const list = await appointmentService.retrieveList(dto);
-
-      res.status(StatusCodes.OK).json(list);
-
-    } catch (error) {
-      console.log(error)
-      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: error.message
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
@@ -82,15 +49,20 @@ class AppointmentController {
       res.status(StatusCodes.OK).json(list);
 
     } catch (error) {
-      if (error instanceof CustomErrors.NotFoundError) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: error.message
-        });
-      }
+      return BaseController._handleErrorResponse(res, error);
+    }
+  }
 
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: error.message
-      });
+  static async retrieveList(req, res) {
+    try {
+      const dto = { userUUID: req.userUUID };
+
+      const list = await appointmentService.retrieveList(dto);
+
+      res.status(StatusCodes.OK).json(list);
+
+    } catch (error) {
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
@@ -117,22 +89,7 @@ class AppointmentController {
       res.status(StatusCodes.OK).json(appointment);
 
     } catch (error) {
-      if (error instanceof CustomErrors.NotFoundError) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: error.message
-        });
-      }
-
-      if (error instanceof CustomErrors.ValidationError) {
-        return res.status(StatusCodes.BAD_REQUEST).json({
-          message: error.message,
-          errors: error.details
-        });
-      }
-
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: error.message
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 
@@ -153,15 +110,7 @@ class AppointmentController {
       return res.status(StatusCodes.NO_CONTENT).end();
 
     } catch (error) {
-      if (error instanceof CustomErrors.NotFoundError) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: error.message
-        });
-      }
-
-      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message: error.message
-      });
+      return BaseController._handleErrorResponse(res, error);
     }
   }
 }

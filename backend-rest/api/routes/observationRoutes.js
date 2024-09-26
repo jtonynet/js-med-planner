@@ -30,11 +30,19 @@ router.use(authenticate);
  *             $ref: '#/components/schemas/request.Observation'
  *     responses:
  *       201:
- *         description: One patient
+ *         description: New resource created
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/response.Observation'
+ *       400:
+ *         $ref: '#/components/schemas/response.ValidationError'
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         $ref: '#/components/schemas/response.NotFoundError'
+ *       500:
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.post('/appointments/:uuid/observations', ObservationController.create);
 
@@ -56,13 +64,19 @@ router.post('/appointments/:uuid/observations', ObservationController.create);
  *           format: uuid
  *     responses:
  *       200:
- *         description: A list of Patient
+ *         description: Resource list
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/response.Observation'
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         $ref: '#/components/schemas/response.NotFoundError'
+ *       500:
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.get('/appointments/:uuid/observations', ObservationController.retrieveListByAppointmentUUID);
 

@@ -23,12 +23,17 @@ router.use(authenticate);
  *             $ref: '#/components/schemas/request.Patient'
  *     responses:
  *       201:
- *         description: One patient
+ *         description: New resource created
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/response.Patient'
- * 
+ *       400:
+ *         $ref: '#/components/schemas/response.ValidationError'
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         $ref: '#/components/schemas/response.InternalServerError'
  * 
  */
 router.post('/patients', PatientController.create);
@@ -44,13 +49,17 @@ router.post('/patients', PatientController.create);
  *       - Patients
  *     responses:
  *       200:
- *         description: A list of Patient
+ *         description: Resource list
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/response.Patient'
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.get('/patients', PatientController.retrieveList);
 
@@ -72,11 +81,17 @@ router.get('/patients', PatientController.retrieveList);
  *           format: uuid
  *     responses:
  *       200:
- *         description: One Patient
+ *         description: One resource
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/response.Patient'
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         $ref: '#/components/schemas/response.NotFoundError'
+ *       500:
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.get('/patients/:uuid', PatientController.retrieveByUUID);
 
@@ -104,17 +119,19 @@ router.get('/patients/:uuid', PatientController.retrieveByUUID);
  *             $ref: '#/components/schemas/request.PatientUpdate'
  *     responses:
  *       200:
- *         description: Patient updated successfully
+ *         description: Resource updated
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/response.Patient'
  *       400:
- *         description: Bad request, invalid parameters
+ *         $ref: '#/components/schemas/response.ValidationError'
  *       401:
  *         description: Unauthorized
  *       404:
- *         description: Patient not found
+ *         $ref: '#/components/schemas/response.NotFoundError'
+ *       500:
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.patch('/patients/:uuid', PatientController.updateByUUID);
 
@@ -136,13 +153,13 @@ router.patch('/patients/:uuid', PatientController.updateByUUID);
  *         description: UUID of the Patient to delete
  *     responses:
  *       204:
- *         description: No Content Patient deleted successfully
+ *         description: No Content
  *       401:
  *         description: Unauthorized
  *       404:
- *         description: Patient not found
+ *         $ref: '#/components/schemas/response.NotFoundError'
  *       500:
- *         description: Internal server error
+ *         $ref: '#/components/schemas/response.InternalServerError'
  */
 router.delete('/patients/:uuid', PatientController.deleteByUUID);
 
