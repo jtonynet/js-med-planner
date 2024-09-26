@@ -33,7 +33,7 @@
  *         email:
  *           type: string
  *           required: true
- *           example: "pedro@xmail.com"
+ *           example: "pedro@gmail.com"
  *         birthDate:
  *           type: string date
  *           required: true 
@@ -102,7 +102,7 @@
  *           example: "5511912345678"
  *         email:
  *           type: string
- *           example: "pedro@xmail.com"
+ *           example: "pedro@gmail.com"
  *         birthDate:
  *           type: string
  *           example: "1990-05-15"
