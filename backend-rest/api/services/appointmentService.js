@@ -113,7 +113,7 @@ class AppointmentService extends BaseService {
         where: {
           uuid: dto.uuid,
         },
-        attributes: ['uuid', 'patientId', 'doctorId', 'description', 'startTime', 'endTime'],
+        attributes: ['id', 'uuid', 'patientId', 'doctorId', 'description', 'startTime', 'endTime'],
       });
 
       if (!appointment) {

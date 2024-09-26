@@ -5,6 +5,11 @@ const { sign } = require('jsonwebtoken');
 const jsonSecret = require('../config/jsonSecret');
 
 class AuthController {
+  /*
+    TODO:
+      1. Create service
+      2. Enhance feature auth
+  */
   static async login(req, res) {
     const { email, password } = req.body
 
@@ -17,13 +22,13 @@ class AuthController {
       });
 
       if (!doctor) {
-        res.status(StatusCodes.UNAUTHORIZED).json({ message: 'unregistered doctor' });
+        throw new Error('unregistered doctor');
       }
 
       const passwordIsValid = await compare(String(password), doctor.password);
 
       if (!passwordIsValid) {
-        res.status(StatusCodes.UNAUTHORIZED).json({ message: 'invalid email or password' });
+        throw new Error('invalid email or password');
       }
 
       const accessToken = sign({
@@ -36,6 +41,7 @@ class AuthController {
       res.status(200).send(accessToken);
 
     } catch (error) {
+      console.log(error)
       res.status(StatusCodes.UNAUTHORIZED).send({ message: 'not authorized' });
     }
   }

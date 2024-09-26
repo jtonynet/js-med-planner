@@ -32,10 +32,15 @@ module.exports = (sequelize, DataTypes) => {
           This query became awful and unnecessarily complex using 
           the ORM features, so I decided to keep it raw in the code.
         */
+        let dontCheckItself = "";
+        if (this.id) {
+          dontCheckItself = `AND id != :id`;
+        }
+
         const conflictsQuery = `
           SELECT uuid, "startTime", "endTime" 
           FROM appointments 
-          WHERE "doctorId" = :doctorId
+          WHERE "doctorId" = :doctorId ${dontCheckItself}
             AND(
               ("startTime" BETWEEN :startTime AND :endTime)
               OR("endTime" BETWEEN :startTime AND :endTime)
@@ -47,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
           conflictsQuery,
           {
             replacements: {
+              id: this.id,
               doctorId: this.doctorId,
               startTime: this.startTime,
               endTime: this.endTime
