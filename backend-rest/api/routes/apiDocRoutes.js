@@ -10,7 +10,7 @@ const swaggerOptions = {
     openapi: '3.0.0',
     info: {
       title: 'MedPlanner Rest API',
-      version: '0.0.17',
+      version: '0.0.18',
       description: 'API documentation',
     },
     servers: [

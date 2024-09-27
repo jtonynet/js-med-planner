@@ -9,11 +9,6 @@ on:
 env:
   JSON_SECRET : ${{ secrets.JSON_SECRET }}
   TZ : America/Sao_Paulo
-  DB_NAME : med_planner_db
-  DB_USER : api_user
-  DB_PWD : api_pass
-  DB_HOST : postgres-med-planner
-  DB_PORT : 5432
   DB_DIALECT : postgres
   DB_TIMEZONE : America/Sao_Paulo
   DB_TEST_NAME : med_planner_db_test
@@ -57,3 +52,6 @@ jobs:
       - name: Run Tests in backend-rest
         working-directory: ./backend-rest
         run: npm run test
+
+# TODO:
+# Create Container and push to docker registry in future
