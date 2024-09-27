@@ -17,7 +17,7 @@
 [<img src="./docs/assets/images/icons/amazonaws.svg" width="25px" height="25px" alt="Amazon AWS Logo" title="Amazon AWS">](https://aws.amazon.com/pt/) [<img src="./docs/assets/images/icons/passport.svg" width="25px" height="25px" alt="Passport Logo" title="Passport">](https://www.passportjs.org/) [<img src="./docs/assets/images/icons/prometheus.svg" width="25px" height="25px" alt="Prometheus Logo" title="Prometheus">](https://prometheus.io/) [<img src="./docs/assets/images/icons/grafana.svg" width="25px" height="25px" alt="Grafana Logo" title="Grafana">](https://grafana.com/)
 -->
 
-[![Badge Status](https://img.shields.io/badge/STATUS-EM_DESENVOLVIMENTO-green)](#header) [![Github Project](https://img.shields.io/badge/PROJECT%20VIEW%20KANBAM-GITHUB-green?logo=github&logoColor=white)](https://github.com/users/jtonynet/projects/6) <!-- ![Badge GitHubActions](https://github.com/jtonynet/go-products-api/actions/workflows/main.yml/badge.svg?branch=main) -->
+[![Badge Status](https://img.shields.io/badge/STATUS-EM_DESENVOLVIMENTO-green)](#header) [![Github Project](https://img.shields.io/badge/PROJECT%20VIEW%20KANBAM-GITHUB-green?logo=github&logoColor=white)](https://github.com/users/jtonynet/projects/6)  ![Badge GitHubActions](https://github.com/jtonynet/js-med-planner/actions/workflows/main.yml/badge.svg?branch=37-suite-de-testes-rodando-no-githubactions-ci)
 
 ---
 

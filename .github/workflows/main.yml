@@ -19,10 +19,12 @@ jobs:
       with:
         node-version: 20.17.0
 
-    - name: Install dependencies
+    - name: Install dependencies in backend-rest
+      working-directory: ./backend-rest
       run: npm install
 
     - name: Set environment variables
+      working-directory: ./backend-rest
       run: |
         echo "JSON_SECRET=${{ secrets.JSON_SECRET }}" >> .env
 
@@ -35,7 +37,8 @@ jobs:
     - name: Wait for Database to Start
       run: sleep 8
 
-    - name: Run Tests
+    - name: Run Tests in backend-rest
+      working-directory: ./backend-rest
       run: npm run test
 
     - name: Stop and Remove Containers
