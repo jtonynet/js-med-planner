@@ -61,3 +61,5 @@ services:
     tty: true
     networks:
       - med-planner-network
+    env_file:
+      - ./backend-rest/.env
