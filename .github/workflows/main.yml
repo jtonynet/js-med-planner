@@ -57,6 +57,3 @@ jobs:
       - name: Run Tests in backend-rest
         working-directory: ./backend-rest
         run: npm run test
-
-      - name: Stop and Remove Containers
-        run: docker compose down
