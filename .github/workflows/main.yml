@@ -19,7 +19,7 @@ env:
   DB_TEST_NAME : med_planner_db_test
   DB_TEST_USER : api_user_test
   DB_TEST_PWD : api_pass_test
-  DB_TEST_HOST : test-postgres-med-planner-A
+  DB_TEST_HOST : test-postgres-med-planner
   DB_TEST_PORT : 5432
   DB_TEST_DIALECT : postgres
   DB_TEST_TIMEZONE : America/Sao_Paulo
@@ -55,7 +55,7 @@ jobs:
         echo "DB_TEST_NAME=med_planner_db_test" >> .env
         echo "DB_TEST_USER=api_user_test" >> .env
         echo "DB_TEST_PWD=api_pass_test" >> .env
-        echo "DB_TEST_HOST=test-postgres-med-planner-B" >> .env
+        echo "DB_TEST_HOST=test-postgres-med-planner" >> .env
         echo "DB_TEST_PORT=5432" >> .env
         echo "DB_TEST_DIALECT=postgres" >> .env
         echo "DB_TEST_TIMEZONE=America/Sao_Paulo" >> .env
@@ -69,6 +69,12 @@ jobs:
 
     - name: Wait for Database to Start
       run: sleep 8
+
+    - name: Check PostgreSQL connectivity
+      working-directory: ./backend-rest
+      run: |
+        apt-get update && apt-get install -y netcat
+        nc -zv test-postgres-med-planner 5432
 
     - name: Install dependencies in backend-rest
       working-directory: ./backend-rest
