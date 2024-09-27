@@ -1,0 +1,42 @@
+name: TESTES_CI
+
+on:
+  push:
+    branches: [ '*' ]
+  pull_request:
+    branches: [ '*' ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.17.0
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Set environment variables
+      run: |
+        echo "JSON_SECRET=${{ secrets.JSON_SECRET }}" >> .env
+
+    - name: Build Database Container
+      run: docker compose build test-postgres-med-planner
+
+    - name: Create Database Container
+      run: docker compose up test-postgres-med-planner -d
+
+    - name: Wait for Database to Start
+      run: sleep 8
+
+    - name: Run Tests
+      run: npm run test
+
+    - name: Stop and Remove Containers
+      run: docker compose down
