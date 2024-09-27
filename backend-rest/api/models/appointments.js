@@ -22,17 +22,16 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     async findConflicts() {
-      try {
-        /*
-          This query became awful and unnecessarily complex using 
-          the ORM features, so I decided to keep it raw in the code.
-        */
-        let dontCheckItself = "";
-        if (this.id) {
-          dontCheckItself = `AND id != :id`;
-        }
+      /*
+        This query became awful and unnecessarily complex using 
+        the ORM features, so I decided to keep it raw in the code.
+      */
+      let dontCheckItself = "";
+      if (this.id) {
+        dontCheckItself = `AND id != :id`;
+      }
 
-        const conflictsQuery = `
+      const conflictsQuery = `
           SELECT uuid, "startTime", "endTime" 
           FROM appointments 
           WHERE "doctorId" = :doctorId ${dontCheckItself}
@@ -43,30 +42,40 @@ module.exports = (sequelize, DataTypes) => {
           );
          `;
 
-        const conflicts = await sequelize.query(
-          conflictsQuery,
-          {
-            replacements: {
-              id: this.id,
-              doctorId: this.doctorId,
-              startTime: this.startTime,
-              endTime: this.endTime
-            },
-            type: this.sequelize.QueryTypes.SELECT
-          }
-        );
+      const conflicts = await sequelize.query(
+        conflictsQuery,
+        {
+          replacements: {
+            id: this.id,
+            doctorId: this.doctorId,
+            startTime: this.startTime,
+            endTime: this.endTime
+          },
+          type: this.sequelize.QueryTypes.SELECT
+        }
+      );
 
-        return conflicts;
+      /*
+        TODO:
+        ugly, but it works. Look for a better way to handle timezones
+      */
+      const result = conflicts.map(appointment => {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        return {
+          uuid: appointment.uuid,
+          startTime: moment.tz(appointment.startTime, timezone).format('YYYY-MM-DD HH:mm:ss'),
+          endTime: moment.tz(appointment.endTime, timezone).format('YYYY-MM-DD HH:mm:ss')
+        };
+      });
 
-      } catch (error) {
-        throw error;
-      }
+      return result;
     }
 
     serialize() {
       return {
         uuid: this.uuid,
         description: this.description,
+        observation: this.observation,
         startTime: this.startTime,
         endTime: this.endTime
       };
@@ -104,6 +113,10 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.STRING(255),
       allowNull: true,
+    },
+    observation: {
+      type: DataTypes.TEXT,
+      allowNull: true
     },
     startTime: {
       type: DataTypes.DATE,

@@ -28,9 +28,9 @@ afterAll(async () => {
 const patientsToCreate = [
   {
     uuid: 'db7a27cc-69c4-46eb-ad0d-3166972bfbc9',
-    name: 'Pedro Prado',
+    name: 'Virgilio Vigo',
     phone: '551100000000',
-    email: 'pedro@gmail.com',
+    email: 'virgiliov@gmail.com',
     birthDate: '1990-05-15',
     gender: 'male',
     height: '1.75',
@@ -204,9 +204,9 @@ describe('DELETE Authenticated in /patients/:uuid', () => {
 const patientToValidate =
 {
   uuid: '5c351098-3a95-42a1-bdff-b6345803ca3f',
-  name: 'Pedro Prado',
+  name: 'Diogo Diogenes',
   phone: '551100000000',
-  email: 'pedro@gmail.com',
+  email: 'diogod@gmail.com',
   birthDate: '1990-05-15',
   gender: 'male',
   height: '1.75',

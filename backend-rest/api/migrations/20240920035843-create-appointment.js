@@ -29,7 +29,10 @@ module.exports = {
         },
       },
       description: {
-        type: Sequelize.STRING(500)
+        type: Sequelize.STRING
+      },
+      observation: {
+        type: Sequelize.STRING
       },
       startTime: {
         type: Sequelize.DATE
@@ -56,7 +59,7 @@ module.exports = {
       name: 'unique_appointments_uuid_index'
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('appointments');
   }
 };

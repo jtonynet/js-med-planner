@@ -21,7 +21,7 @@ class PatientService extends BaseService {
 
       if (existingPatient) {
         throw new CustomErrors.ValidationError('Patient already exists');
-      };
+      }
 
       await newPatient.save();
       return newPatient.serialize();
