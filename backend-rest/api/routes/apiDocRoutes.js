@@ -38,7 +38,6 @@ const swaggerOptions = {
     path.join(__dirname, './authRoutes.js'),
     path.join(__dirname, './patientRoutes.js'),
     path.join(__dirname, './apointmentRoutes.js'),
-    path.join(__dirname, './observationRoutes.js'),
     path.join(__dirname, './swagger/schemas.js'),
   ],
 };

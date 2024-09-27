@@ -19,11 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'doctorId',
         as: 'doctor',
       });
-
-      appointments.hasMany(models.observations, {
-        foreignKey: 'appointmentId',
-        as: 'observations'
-      });
     }
 
     async findConflicts() {
