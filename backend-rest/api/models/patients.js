@@ -1,6 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
-const crypto = require('crypto');
+const bcrypt = require('bcryptjs');
 
 module.exports = (sequelize, DataTypes) => {
   class patients extends Model {
@@ -148,24 +148,24 @@ module.exports = (sequelize, DataTypes) => {
     /*
       TODO:
       https://en.wikipedia.org/wiki/Crypto-shredding
-      The current use of hashField is LGPD compliant and provides minimal anonymization, 
-      satisfying the desired requirements. However, a more robust solution would involve 
-      crypto-shredding for string fields and using approximate ranges for dates and numeric values.
+      Minimal anonymization, satisfying the desired requirements. However, a more robust 
+      solution would involve crypto-shredding for string fields and using approximate 
+      ranges for dates and numeric values.
 
       Crypto-shredding will address the issue of sensitive data in backup databases.
       Plan to study and implement this in the future for enhanced data protection.
-
-      FINDED BUG, PIVOTES TO CRYPTO SHREDDING!
     */
-    const hashField = (field) => {
-      return crypto.createHash('sha256').update(field).digest('hex');
+    const hashField = async (field) => {
+      const salt = await bcrypt.genSalt(10); // Gera o salt aleatoriamente
+      const hashedField = await bcrypt.hash(field, salt); // Cria o hash do campo
+      return hashedField; // Retorna apenas o hash, já que o salt está embutido
     };
 
     const decimalMinimun = '00.01';
     const dateOfBrazilianDiscovery = '1500-04-22';
 
-    patient.name = hashField(patient.name);
-    patient.email = hashField((patient.email + patient.id)); //FINDED BUG, PIVOTES TO CRYPTO SHREDDING!
+    patient.name = hashField(patient.name + patient.id);
+    patient.email = hashField((patient.email + patient.id));
     patient.phone = '000000000000000';
     patient.gender = 'unspecified';
     patient.birthDate = dateOfBrazilianDiscovery;
