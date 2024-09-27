@@ -62,7 +62,7 @@ class PatientController extends BaseController {
     }
 
     try {
-      const allowedFields = ['name', 'phone', 'birthDate', 'gender', 'height', 'weight'];
+      const allowedFields = ['name', 'phone', 'email', 'birthDate', 'gender', 'height', 'weight'];
 
       let dto = { uuid: uuidParam };
       allowedFields.forEach(field => {

@@ -119,16 +119,7 @@ Faz sentido utilizar __Arquitetura de Duas Camadas__. Caso a complexidade aument
 #### 🌐 Ambiente
 Docker e Docker Compose são necessários para rodar a aplicação de forma containerizada, e é fortemente recomendado utilizá-los para rodar o banco de dados localmente.
 
-Crie uma copia do arquivo `./backend-rest/.env.SAMPLE` e renomeie para `./backend-rest/.env`. Acesse o arquivo e procure a seguinte linha:
-
-```bash
-JSON_SECRET=ASK_TO_TEAM_FOR_ENV_LOCAL_SECRET # ATTENTION: Local dev purpose
-```
-
-<details>
-  <summary>Clique aqui para obter o valor adequado a ser utilizado no lugar de <i>ASK_TO_TEAM_FOR_ENV_LOCAL_SECRET</i> (clicar aqui é o mesmo que perguntar ao time, isso não é um vazamento 🤓).</summary>
-  <b>c940b61c49f2a0a1bf3de506ca33a605</b>
-</details>
+Crie uma copia do arquivo `./backend-rest/.env.SAMPLE` e renomeie para `./backend-rest/.env`.
 
 <br/>
 
@@ -427,7 +418,21 @@ Contrate artistas para projetos comerciais ou mais elaborados e aprenda a ser en
 <a id="conclusion"></a>
 ### 🏁 Conclusão
 
-__TODO__
+Mantive o desenvolvimento focado em atingir os requisitos obrigatórios, com testes de integração e validações, em uma estrutura simples de duas camadas, pois o problema não parecia exigir mais do que isso.
+
+Validar o conflito de horários de agendamento me pareceu o ponto central da API. Adotei, por padrão, o timezone America/Sao_Paulo para evitar conflitos (facilitando o desenvolvimento). Uma solução mais robusta pode ser implementada caso seja necessário lidar com diferentes fusos horários.
+
+Deletar os dados do paciente, adotei soft delete (paranoid) e criptografia simples por simplicidade e tempo. A abordagem correta é utilizar uma estratégia de Crypto-Shredding, que "remove" também dos backups.
+
+Embora exista uma branch com o rascunho inicial do front-end que consumiria a API, resolvi focar esforços na própria API, buscando aderência à posição e aos demais desafios propostos, visando produtividade.
+
+Os testes de integração estão rodando conforme o CI. Não tive tempo hábil para criar e me aprofundar em uma esteira de CD, mas esse é um tema que me interessa.
+
+Desde o início, preocupei-me com uma autenticação mínima para permitir que o projeto evoluísse sem a necessidade de grandes refactors quando recursos mais avançados, como roles e refresh tokens, fossem necessários.
+
+Essas são minhas considerações sobre o que consegui produzir ao longo desse desafio, e continuarei me aplicando aos pontos cegos que não tive tempo ou conhecimento para aprimorar.
+
+
 
 😊🚀
 
