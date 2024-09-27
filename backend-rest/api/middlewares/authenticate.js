@@ -1,6 +1,6 @@
 const { StatusCodes } = require('http-status-codes');
 const { verify, decode } = require('jsonwebtoken');
-const jsonsecret = require('../config/jsonSecret');
+const jsonSecret = process.env.JSON_SECRET;
 
 module.exports = async (req, res, next) => {
   const token = req.headers.authorization
@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
   const [, accessToken] = token.split(" ");
 
   try {
-    verify(accessToken, jsonsecret.secret);
+    verify(accessToken, jsonSecret);
 
     const { uuid, email } = await decode(accessToken);
 

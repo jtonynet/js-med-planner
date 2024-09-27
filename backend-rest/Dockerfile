@@ -1,6 +1,6 @@
 FROM node:20.17.0
 
-ENV TZ=UTC
+ENV TZ=America/Sao_Paulo
 
 RUN apt-get update && apt-get install -y tzdata && \
     ln -fs /usr/share/zoneinfo/$TZ /etc/localtime && \
