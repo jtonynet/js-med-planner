@@ -22,19 +22,6 @@ jobs:
     - name: Create .env
       run: touch ./backend-rest/.env
 
-    - name: Build Database Container
-      run: docker compose build test-postgres-med-planner
-
-    - name: Create Database Container
-      run: docker compose up test-postgres-med-planner -d
-
-    - name: Wait for Database to Start
-      run: sleep 8
-
-    - name: Install dependencies in backend-rest
-      working-directory: ./backend-rest
-      run: npm install
-
     - name: Set environment variables
       working-directory: ./backend-rest
       run: |
@@ -47,6 +34,19 @@ jobs:
         echo "DB_TEST_DIALECT=postgres" >> .env
         echo "DB_TEST_TIMEZONE=America/Sao_Paulo" >> .env
         echo "TZ=America/Sao_Paulo" >> .env
+
+    - name: Build Database Container
+      run: docker compose build test-postgres-med-planner
+
+    - name: Create Database Container
+      run: docker compose up test-postgres-med-planner -d
+
+    - name: Wait for Database to Start
+      run: sleep 8
+
+    - name: Install dependencies in backend-rest
+      working-directory: ./backend-rest
+      run: npm install
 
     - name: Run Tests in backend-rest
       working-directory: ./backend-rest
