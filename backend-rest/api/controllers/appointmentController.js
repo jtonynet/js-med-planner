@@ -16,9 +16,9 @@ class AppointmentController extends BaseController {
     }
 
     try {
-      const { uuid: appointmentUUID, description, startTime, endTime } = req.body;
+      const { uuid: appointmentUUID, description, observation, startTime, endTime } = req.body;
 
-      const dto = { userUUID: req.userUUID, patientUUID, appointmentUUID, description, startTime, endTime };
+      const dto = { userUUID: req.userUUID, patientUUID, appointmentUUID, description, observation, startTime, endTime };
 
       const newAppointment = await appointmentService.create(dto);
 
@@ -75,7 +75,7 @@ class AppointmentController extends BaseController {
     }
 
     try {
-      const allowedFields = ['description', 'startTime', 'endTime'];
+      const allowedFields = ['description', 'observation', 'startTime', 'endTime'];
 
       let dto = { uuid: appointmentUUID };
       allowedFields.forEach(field => {

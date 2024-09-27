@@ -14,7 +14,7 @@ class AppointmentService extends BaseService {
 
       if (!patient) {
         throw new CustomErrors.NotFoundError('Patient not found');
-      };
+      }
 
       const doctor = await database.doctors.findOne({
         where: {
@@ -28,6 +28,7 @@ class AppointmentService extends BaseService {
         patientId: patient.id,
         doctorId: doctor.id,
         description: dto.description,
+        observation: dto.observation,
         startTime: dto.startTime,
         endTime: dto.endTime
       });
@@ -42,7 +43,7 @@ class AppointmentService extends BaseService {
 
       if (existingAppointment) {
         throw new CustomErrors.ValidationError('Appointment already exists');
-      };
+      }
 
       await this._searchConflicts(newAppointment);
 
@@ -68,7 +69,7 @@ class AppointmentService extends BaseService {
         where: {
           doctorId: doctor.id,
         },
-        attributes: ['uuid', 'description', 'startTime', 'endTime'],
+        attributes: ['uuid', 'description', 'observation', 'startTime', 'endTime'],
         include: [
           {
             model: database.patients,
@@ -97,13 +98,13 @@ class AppointmentService extends BaseService {
 
       if (!patient) {
         throw new CustomErrors.NotFoundError('Patient not found');
-      };
+      }
 
       const list = await database.appointments.findAll({
         where: {
           patientId: patient.id,
         },
-        attributes: ['uuid', 'description', 'startTime', 'endTime'],
+        attributes: ['uuid', 'description', 'observation', 'startTime', 'endTime'],
         include: [
           {
             model: database.patients,
@@ -127,7 +128,7 @@ class AppointmentService extends BaseService {
         where: {
           uuid: dto.uuid,
         },
-        attributes: ['id', 'uuid', 'patientId', 'doctorId', 'description', 'startTime', 'endTime'],
+        attributes: ['id', 'uuid', 'patientId', 'doctorId', 'description', 'observation', 'startTime', 'endTime'],
       });
 
       if (!appointment) {
@@ -159,9 +160,7 @@ class AppointmentService extends BaseService {
       });
 
       if (!appointment) {
-        return res.status(StatusCodes.NOT_FOUND).json({
-          message: 'appointment not found',
-        });
+        throw new CustomErrors.NotFoundError('Appointment not found');
       }
 
       await appointment.destroy();
@@ -172,23 +171,18 @@ class AppointmentService extends BaseService {
   }
 
   async _searchConflicts(appointment) {
-    try {
-      const conflicts = await appointment.findConflicts();
-      if (conflicts.length > 0) {
-        const appointmentsConflicted = conflicts.map(conflict => ({
-          uuid: conflict.uuid,
-          startTime: conflict.startTime,
-          endTime: conflict.endTime
-        }));
+    const conflicts = await appointment.findConflicts();
+    if (conflicts.length > 0) {
+      const appointmentsConflicted = conflicts.map(conflict => ({
+        uuid: conflict.uuid,
+        startTime: conflict.startTime,
+        endTime: conflict.endTime
+      }));
 
-        throw new CustomErrors.ValidationError(
-          'Appointment(s) conflicting found',
-          appointmentsConflicted
-        );
-      }
-
-    } catch (error) {
-      throw error;
+      throw new CustomErrors.ValidationError(
+        'conflict',
+        appointmentsConflicted
+      );
     }
   }
 }

@@ -236,19 +236,26 @@ erDiagram
         string name
         string phone
         string email
-        date birth_date
+        date birthDate
         enum gender
         decimal height
         decimal weight
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
     }
     appointment {
         int id
         UUID uuid
-        int patient_id
-        int doctor_id
+        int patientId
+        int doctorId
         string description
-        datetime start_time
-        datetime end_time
+        string observation
+        datetime startTime
+        datetime endTime
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
     }
     doctor {
         int id
@@ -256,20 +263,16 @@ erDiagram
         string name
         string email
         string password
-    }
-    observation{
-        int id
-        UUID uuid
-        int appointment_id
-        string message
+        datetime createdAt
+        datetime updatedAt
+        datetime deletedAt
     }
 
     patient ||--o{ appointment : has
     doctor ||--o{ appointment : has
-    appointment ||--o{ observation : has
 ```
 
-   1. A abordagem da tabela `doctor` com o campo `password` foi aplicada apenas para ter uma autenticação minima nos endpoints dos recursos desde o inicio. Caso alcance todos os requisitos obrigatórios do desafio e tenha tempo disponível, pretendo implementar `user` com `roles` adequadas
+   1. A abordagem da tabela `doctor` com o campo `password` foi aplicada apenas para ter uma autenticação minima nos endpoints dos recursos desde o inicio. Caso alcance todos os requisitos obrigatórios do desafio e tenha tempo disponível, pretendo implementar `user` com `roles` adequadas e uma política de `refresh-token`
 <br/>
 
 <br/>

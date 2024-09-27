@@ -125,8 +125,12 @@
  *           example: "ccd71acf-7be4-42dc-b562-a7807d70c173"
  *         description:
  *           type: string
- *           required: true
+ *           required: false
  *           example: "Primeira consulta da Tarde"
+ *         observation:
+ *           type: string
+ *           required: false
+ *           example: "Exames mais profundos por conta das dores nas costas"
  *         startTime:
  *           type: string date
  *           required: true 
@@ -142,6 +146,9 @@
  *         description:
  *           type: string
  *           example: "Remarcando primeira consulta da tarde"
+ *         observation:
+ *           type: string
+ *           example: "Exames mais profundos por conta das dores nas costas"
  *         startTime:
  *           type: string date
  *           example: "2028-12-20 17:00:00"
@@ -158,6 +165,9 @@
  *         description:
  *           type: string
  *           example: "Primeira consulta da manhã"
+ *         observation:
+ *           type: string
+ *           example: "Exames mais profundos por conta das dores nas costas"
  *         startTime:
  *           type: string date
  *           example: "2028-12-20 16:30:00"
@@ -174,6 +184,9 @@
  *         description:
  *           type: string
  *           example: "Primeira consulta da manhã"
+ *         observation:
+ *           type: string
+ *           example: "Exames mais profundos por conta das dores nas costas"
  *         startTime:
  *           type: string date
  *           example: "2028-12-20 16:30:00"
@@ -189,28 +202,6 @@
  *             name:
  *               type: string
  *               example: "Pedro Prado"
- * 
- *     request.Observation:
- *       type: object
- *       properties:
- *         uuid:
- *           type: string uuid
- *           required: true
- *           example: "d8671dab-4d0c-4888-bdc2-99a0e0bb8ca6"
- *         message:
- *           type: string
- *           required: true
- *           example: "Devemos solicitar exames mais profundos"
- * 
- *     response.Observation:
- *       type: object
- *       properties:
- *         uuid:
- *           type: string uuid
- *           example: "d8671dab-4d0c-4888-bdc2-99a0e0bb8ca6"
- *         message:
- *           type: string
- *           example: "Devemos solicitar exames mais profundos"
  * 
  *     response.NotFoundError:
  *       description: Resource not found

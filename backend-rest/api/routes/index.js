@@ -3,7 +3,6 @@ const apiDoc = require('./apiDocRoutes');
 const auth = require('./authRoutes');
 const patient = require('./patientRoutes');
 const appointment = require('./apointmentRoutes');
-const observation = require('./observationRoutes');
 
 module.exports = app => {
   app.use(
@@ -11,7 +10,6 @@ module.exports = app => {
     apiDoc,
     auth,
     patient,
-    appointment,
-    observation
+    appointment
   );
 };

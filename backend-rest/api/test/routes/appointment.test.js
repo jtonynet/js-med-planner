@@ -222,7 +222,7 @@ describe('POST Authenticated conflicts date time in /appointments/uuid/appointme
       })
       .expect(StatusCodes.BAD_REQUEST);
 
-    expect(response.body.message).toEqual('Appointment(s) conflicting found');
+    expect(response.body.message).toEqual('conflict');
   });
 });
 
@@ -259,7 +259,7 @@ describe('PATCH Authenticated conflicts date time in /appointments/uuid', () => 
         .expect('content-type', /json/)
         .expect(StatusCodes.BAD_REQUEST);
 
-      expect(response.body.message).toEqual('Appointment(s) conflicting found');
+      expect(response.body.message).toEqual('conflict');
     });
 });
 
