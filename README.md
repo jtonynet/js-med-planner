@@ -418,7 +418,7 @@ Contrate artistas para projetos comerciais ou mais elaborados e aprenda a ser en
 <a id="conclusion"></a>
 ### 🏁 Conclusão
 
-Mantive o desenvolvimento focado em atingir os requisitos obrigatórios, com testes de integração e validações, em uma estrutura simples de duas camadas, pois o problema não parecia exigir mais do que isso.
+Mantive o desenvolvimento focado em atingir os requisitos obrigatórios, com testes de integração e validações, em uma estrutura simples de duas camadas, pois o problema não parecia exigir mais do que isso, embora a ausência de testes unitarios seja sentida.
 
 Validar o conflito de horários de agendamento me pareceu o ponto central da API. Adotei, por padrão, o timezone America/Sao_Paulo para evitar conflitos (facilitando o desenvolvimento). Uma solução mais robusta pode ser implementada caso seja necessário lidar com diferentes fusos horários.
 
