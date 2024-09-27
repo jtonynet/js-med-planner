@@ -6,6 +6,16 @@ on:
   pull_request:
     branches: [ '*' ]
 
+env:
+  JSON_SECRET : ${{ secrets.JSON_SECRET }}
+  DB_TEST_NAME : med_planner_db
+  DB_TEST_USER : api_user
+  DB_TEST_PWD : api_pass
+  DB_TEST_HOST : postgres-med-planner
+  DP_TEST_PORT : 5432
+  DB_TEST_DIALECT : postgres
+  DB_TEST_TIMEZONE : America/Sao_Paulo
+
 jobs:
   test:
     runs-on: ubuntu-latest
