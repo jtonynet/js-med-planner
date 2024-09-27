@@ -27,6 +27,14 @@ jobs:
       working-directory: ./backend-rest
       run: |
         echo "JSON_SECRET=${{ secrets.JSON_SECRET }}" >> .env
+        echo "DB_TEST_NAME=med_planner_db_test" >> .env
+        echo "DB_TEST_USER=api_user_test" >> .env
+        echo "DB_TEST_PWD=api_pass_test" >> .env
+        echo "DB_TEST_HOST=test-postgres-med-planner" >> .env
+        echo "DB_TEST_PORT=5432" >> .env
+        echo "DB_TEST_DIALECT=postgres" >> .env
+        echo "DB_TEST_TIMEZONE=America/Sao_Paulo" >> .env
+        echo "TZ=America/Sao_Paulo" >> .env
 
     - name: Build Database Container
       run: docker compose build test-postgres-med-planner
