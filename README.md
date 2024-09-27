@@ -422,7 +422,7 @@ Mantive o desenvolvimento focado em atingir os requisitos obrigatórios, com tes
 
 Validar o conflito de horários de agendamento me pareceu o ponto central da API. Adotei, por padrão, o timezone America/Sao_Paulo para evitar conflitos (facilitando o desenvolvimento). Uma solução mais robusta pode ser implementada caso seja necessário lidar com diferentes fusos horários.
 
-O requisito desejável da LGPD, "Deletar os dados do paciente", é desafiador por si só, devido a peculiaridades como o banco de backup. Parti para a solução mais simples, utilizando soft delete (paranoid) e criptografia dos dados sensíveis.
+Deletar os dados do paciente, adotei soft delete (paranoid) e criptografia simples por simplicidade e tempo. A abordagem correta é utilizar uma estratégia de Crypto-Shredding, que "remove" também dos backups.
 
 Embora exista uma branch com o rascunho inicial do front-end que consumiria a API, resolvi focar esforços na própria API, buscando aderência à posição e aos demais desafios propostos, visando produtividade.
 
