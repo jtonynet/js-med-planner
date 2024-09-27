@@ -70,12 +70,6 @@ jobs:
     - name: Wait for Database to Start
       run: sleep 8
 
-    - name: Check PostgreSQL connectivity
-      working-directory: ./backend-rest
-      run: |
-        apt-get update && apt-get install -y netcat
-        nc -zv test-postgres-med-planner 5432
-
     - name: Install dependencies in backend-rest
       working-directory: ./backend-rest
       run: npm install
