@@ -125,7 +125,7 @@ JSON_SECRET=ASK_TO_TEAM_FOR_ENV_LOCAL_SECRET # ATTENTION: Local dev purpose
 ```
 
 <details>
-  <summary>Clique aqui para obter o valor adequado a ser utilizado no lugar de <i>ASK_TO_TEAM_FOR_ENV_LOCAL_SECRET</i> (clicar aqui é o mesmo que perguntar ao time, isso não é um vazamento 🤓).<summary>
+  <summary>Clique aqui para obter o valor adequado a ser utilizado no lugar de <i>ASK_TO_TEAM_FOR_ENV_LOCAL_SECRET</i> (clicar aqui é o mesmo que perguntar ao time, isso não é um vazamento 🤓).</summary>
   <b>c940b61c49f2a0a1bf3de506ca33a605</b>
 </details>
 
