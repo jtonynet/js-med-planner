@@ -18,7 +18,9 @@
 [<img src="./docs/assets/images/icons/amazonaws.svg" width="25px" height="25px" alt="Amazon AWS Logo" title="Amazon AWS">](https://aws.amazon.com/pt/) [<img src="./docs/assets/images/icons/passport.svg" width="25px" height="25px" alt="Passport Logo" title="Passport">](https://www.passportjs.org/) [<img src="./docs/assets/images/icons/prometheus.svg" width="25px" height="25px" alt="Prometheus Logo" title="Prometheus">](https://prometheus.io/) [<img src="./docs/assets/images/icons/grafana.svg" width="25px" height="25px" alt="Grafana Logo" title="Grafana">](https://grafana.com/)
 -->
 
-[![Badge Status](https://img.shields.io/badge/STATUS-EM_DESENVOLVIMENTO-green)](#header) [![Github Project](https://img.shields.io/badge/PROJECT%20VIEW%20KANBAM-GITHUB-green?logo=github&logoColor=white)](https://github.com/users/jtonynet/projects/6)  ![Badge GitHubActions](https://github.com/jtonynet/js-med-planner/actions/workflows/main.yml/badge.svg?branch=main)
+[![Badge Status](https://img.shields.io/badge/STATUS-AGUARDANDO-blue)](#header) [![Github Project](https://img.shields.io/badge/PROJECT%20VIEW%20KANBAM-GITHUB-green?logo=github&logoColor=white)](https://github.com/users/jtonynet/projects/6)  ![Badge GitHubActions](https://github.com/jtonynet/js-med-planner/actions/workflows/main.yml/badge.svg?branch=main)
+
+_*Novos merges não deverão ser feitos nessa branch_
 
 ---
 
@@ -422,7 +424,7 @@ Mantive o desenvolvimento focado em atingir os requisitos obrigatórios, com tes
 
 Validar o conflito de horários de agendamento me pareceu o ponto central da API. Adotei, por padrão, o timezone America/Sao_Paulo para evitar conflitos (facilitando o desenvolvimento). Uma solução mais robusta pode ser implementada caso seja necessário lidar com diferentes fusos horários.
 
-Deletar os dados do paciente, adotei soft delete (paranoid) e criptografia simples por simplicidade e tempo. A abordagem correta é utilizar uma estratégia de Crypto-Shredding, que "remove" também dos backups.
+Deletar os dados do paciente, adotei soft delete (paranoid) e criptografia por simplicidade e tempo. A abordagem mais indicada seria utilizar uma estratégia de Crypto-Shredding, que "remove" também dos backups.
 
 Embora exista uma branch com o rascunho inicial do front-end que consumiria a API, resolvi focar esforços na própria API, buscando aderência à posição e aos demais desafios propostos, visando produtividade.
 
