@@ -305,7 +305,7 @@ ou então vá para o diretório da API e execute o comando de testes:
 /js-med-planner/backend-rest$ npm run test
 ```
 
-Cada vez que o comando for executado, a database de testes será recriada no test-postgres-med-planner assegurando uma execução limpa
+Cada vez que o comando for executado, a database de testes será recriada no test-postgres-med-planner assegurando uma execução limpa.
 Saída esperada pelo comando:
 <img src="./docs/assets/images/screen_captures/integration_tests_run.jpeg">
 
