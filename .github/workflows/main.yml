@@ -19,6 +19,9 @@ jobs:
       with:
         node-version: 20.17.0
 
+    - name: Create .env
+      run: touch ./backend-rest/.env
+
     - name: Build Database Container
       run: docker compose build test-postgres-med-planner
 
