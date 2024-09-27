@@ -5,3 +5,4 @@ tmp
 
 # dependencies
 /backend-rest/node_modules
+.env

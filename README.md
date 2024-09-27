@@ -114,24 +114,60 @@ Faz sentido utilizar __Arquitetura de Duas Camadas__. Caso a complexidade aument
 <a id="run"></a>
 ### 💻 Rodando o Projeto
 
-<a id="run-containerized"></a>
-#### 🐋 [QUEBRADO NO MOMENTO] Conteinerizado 
+<a id="environment"></a>
+#### 🌐 Ambiente
+Docker e Docker Compose são necessários para rodar a aplicação de forma containerizada, e é fortemente recomendado utilizá-los para rodar o banco de dados localmente.
 
-Rode os comandos `docker compose` (de acordo com sua versão do docker compose) no diretório raiz do projeto:
+Crie uma copia do arquivo `./backend-rest/.env.SAMPLE` e renomeie para `./backend-rest/.env`. Acesse o arquivo e procure a seguinte linha:
+
 ```bash
-/js-med-planner$ docker compose build
-/js-med-planner$ docker compose up postgres-med-planner backend-rest
+JSON_SECRET=ASK_TO_TEAM_FOR_ENV_LOCAL_SECRET # ATTENTION: Local dev purpose
 ```
 
-<!-- Acesse a rota: `http://localhost:8080/patients` -->
+<details>
+  <summary>Clique aqui para obter o valor adequado a ser utilizado no lugar de <i>ASK_TO_TEAM_FOR_ENV_LOCAL_SECRET</i> (clicar aqui é o mesmo que perguntar ao time, isso não é um vazamento 🤓).<summary>
+  <b>c940b61c49f2a0a1bf3de506ca33a605</b>
+</details>
+
+<br/>
+
+<a id="run-containerized"></a>
+#### 🐋 Conteinerizado 
+
+Com a `.env` editada, rode os comandos `docker compose` (de acordo com sua versão do docker compose) no diretório raiz do projeto:
+```bash
+/js-med-planner$ docker compose build
+/js-med-planner$ docker compose up postgres-med-planner -d
+/js-med-planner$ docker compose up backend-rest
+```
+Caso seja a primeira vez que o projeto esteja sendo iniciado, será necessário rodar as migrations do banco de dados. O seguinte comando pode ser utilizado sempre que for necessário criar ou resetar o banco de dados de desenvolvimento local:
+```bash
+/js-med-planner$ docker compose exec backend-rest npm run db:clean
+```
+Após a base ser (re)construída, a API esta pronta e a rota da [documentação swagger](#api-docs) estará disponível, assim como a [suite de testes](#tests) poderá ser executada.
+
+<!-- 
+  docker compose exec backend-rest npm run db:clean
+
+  /js-med-planner$ docker compose up postgres-med-planner backend-rest 
+  /js-med-planner$ docker compose up postgres-med-planner test-postgres-med-planner 
+-->
 
 <br/>
 
 <a id="run-locally"></a>
 #### 🏠 Local
 
-API:
-Com o node 20.17.0 instalado, suba apenas a base de dados com o comando:
+Com o Node 20.17.0 instalado e após seguir os comandos de edição do arquivo `./backend-rest/.env`, serão necessárias outras alterações para que a aplicação funcione corretamente no seu localhost. Observe que há linhas com comentários semelhantes ao seguinte:
+```bash
+# local: 127.0.0.1 || conteinerized: postgres-med-planner
+```
+Substitua os valores das `envs` com esses comentarios para o valor sugerido na primeira opcao `local`
+```bash
+DB_HOST=127.0.0.1 # local: 127.0.0.1 || conteinerized: postgres-med-planner
+```
+
+Após editar o arquivo, suba apenas o banco de dados com o comando:
 
 ```
 /js-med-planner$ docker compose up postgres-med-planner
@@ -142,15 +178,9 @@ ou se conecte a uma database válida, então vá para o diretório `backend-rest
 /js-med-planner/backend-rest$ npm install
 /js-med-planner/backend-rest$ npm run dev
 ```
+Use `npm run db:clean` para (re)construir o DB de desenvolvimento se necessario
 <br/>
 
-#### ⏳ Migrations e seeds
-
-No ambiente local e dentro da pasta `backend-rest`, rode o comando.
-
-```bash
-/js-med-planner/backend-rest$  npm run db:clean
-```
 
 <br/>
 
@@ -255,27 +285,27 @@ erDiagram
 
 <a id="tests"></a>
 ### ✅ Testes
-_*TDD inicialmente com teste de integração pois trata-se de um CRUD. Verificado sucesso do fluxo no "caminho feliz", implementarei os corner cases (validações) com seus respectivos testes_
 
-Com o projeto da backend-rest [adequadamente instalado](#run-locally) em seu ambiente local, levante o banco de testes com
+Com o projeto da backend-rest [adequadamente instalado](#run) em seu ambiente local ou conteinerizado, levante o banco de testes com
 
 ```bash
-/js-med-planner$ docker compose up test-postgres-med-planner
+/js-med-planner$ docker compose up test-postgres-med-planner -d
 ```
 
-então vá para o diretório do mesmo e execute o comando de testes:
+e execute o comando:
+```bash
+/js-med-planner$ docker compose exec backend-rest npm run test
+```
+ou então vá para o diretório da API e execute o comando de testes:
 
 ```bash
 /js-med-planner/backend-rest$ npm run test
 ```
 
-<img src="./docs/assets/images/screen_captures/integration_tests_db.jpeg">
-
 Cada vez que o comando for executado, a database de testes será recriada no test-postgres-med-planner assegurando uma execução limpa
-
+Saída esperada pelo comando:
 <img src="./docs/assets/images/screen_captures/integration_tests_run.jpeg">
 
-Saída esperada pelo comando
 
 <br/>
 
@@ -341,20 +371,18 @@ Para obter mais informações, consulte o [Histórico de Versões](./CHANGELOG.m
   - [Express 4.21.0](https://expressjs.com/)
   - [Jest](https://jestjs.io/pt-BR/)
   - [Sequelize 6.37.3](https://sequelize.org/)
-  - [.env](https://www.npmjs.com/package/dotenv)
 
 - Infra & Technologias
   - [Docker v24.0.6](https://www.docker.com/)
   - [Docker compose v2.21.0](https://www.docker.com/)
   - [MySQL](https://www.postgresql.org/)
-<!--
-  - [Prometheus](https://prometheus.io/docs/guides/go-application)
-  - [Grafana](https://grafana.com/)
--->
 
 - GUIs:
   - [VsCode](https://code.visualstudio.com/)
+
+  <!--
   - [Postman](https://blog.postman.com/introducing-the-postman-vs-code-extension/)
+  --> 
 
 <br/>
 

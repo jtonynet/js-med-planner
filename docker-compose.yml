@@ -33,7 +33,7 @@ services:
   test-postgres-med-planner:
     image: postgres:16.0-alpine
     container_name: test-postgres-med-planner
-    hostname: postgres-med-planner
+    hostname: test-postgres-med-planner
     environment:
       POSTGRES_USER: api_user_test
       POSTGRES_PASSWORD: api_pass_test
@@ -57,7 +57,9 @@ services:
     container_name: backend-rest
     hostname: backend-rest
     ports:
-      - "8080:3000"
+      - "3000:3000"
     tty: true
     networks:
       - med-planner-network
+    env_file:
+      - ./backend-rest/.env

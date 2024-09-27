@@ -8,7 +8,7 @@ let server;
 let bearerToken;
 
 beforeAll(async () => {
-  const port = 3000;
+  const port = 3001;
   server = app.listen(port);
 
   const response = await request(app)

@@ -35,7 +35,7 @@ async function seed() {
 }
 
 beforeAll(async () => {
-  const port = 3000;
+  const port = 3001;
   server = app.listen(port);
 
   await seed();
@@ -97,7 +97,7 @@ let fieldsToValidate = [
   ['message', { message: 'a' }],
 ];
 
-describe('POST Authenticated return error on validate in /appointments/uuid/observations DOIS', () => {
+describe('POST Authenticated return error on validate in /appointments/uuid/observations', () => {
   test.each(fieldsToValidate)
     (`Should return error with incorrect field %s by appointment UUID ${appointmentToCreate.uuid}`,
       async (key, param) => {

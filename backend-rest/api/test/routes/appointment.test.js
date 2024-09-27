@@ -139,7 +139,7 @@ function findByUUID(list, uuid) {
 }
 
 beforeAll(async () => {
-  const port = 3000;
+  const port = 3001;
   server = app.listen(port);
 
   await seed();
