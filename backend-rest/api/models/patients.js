@@ -156,9 +156,9 @@ module.exports = (sequelize, DataTypes) => {
       Plan to study and implement this in the future for enhanced data protection.
     */
     const hashField = async (field) => {
-      const salt = await bcrypt.genSalt(10); // Gera o salt aleatoriamente
-      const hashedField = await bcrypt.hash(field, salt); // Cria o hash do campo
-      return hashedField; // Retorna apenas o hash, já que o salt está embutido
+      const salt = await bcrypt.genSalt(10);
+      const hashedField = await bcrypt.hash(field, salt);
+      return hashedField;
     };
 
     const decimalMinimun = '00.01';
