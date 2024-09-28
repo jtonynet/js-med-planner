@@ -376,7 +376,7 @@ Para obter mais informações, consulte o [Histórico de Versões](./CHANGELOG.m
 - Infra & Technologias
   - [Docker v24.0.6](https://www.docker.com/)
   - [Docker compose v2.21.0](https://www.docker.com/)
-  - [MySQL](https://www.postgresql.org/)
+  - [PostgreSQL](https://www.postgresql.org/)
 
 - GUIs:
   - [VsCode](https://code.visualstudio.com/)
