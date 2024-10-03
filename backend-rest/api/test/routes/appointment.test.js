@@ -422,8 +422,8 @@ describe('DELETE Authenticated with incorrect uuid /appointments/uuid', () => {
   });
 });
 
-describe('GET Authenticated Dont retrieve appointment deleted /patients/uuid', () => {
-  it('Should return retry appointments by deleted patient UUID', async () => {
+describe('GET Authenticated dont retrieve appointment deleted /patients/uuid', () => {
+  it('Should not return appointments for deleted patient', async () => {
     const indexToRemove = 0;
 
     await request(app)
@@ -437,7 +437,6 @@ describe('GET Authenticated Dont retrieve appointment deleted /patients/uuid', (
     });
 
     expect(deletedPatient.deletedAt).not.toBeNull();
-
 
     const response = await request(app)
       .get(`/appointments`)
