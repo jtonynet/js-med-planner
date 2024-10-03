@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
           SELECT uuid, "startTime", "endTime" 
           FROM appointments 
           WHERE "doctorId" = :doctorId ${dontCheckItself}
+            AND "deletedAt" IS NULL
             AND(
               ("startTime" BETWEEN :startTime AND :endTime)
               OR("endTime" BETWEEN :startTime AND :endTime)
