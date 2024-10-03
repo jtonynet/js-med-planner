@@ -423,7 +423,7 @@ describe('DELETE Authenticated with incorrect uuid /appointments/uuid', () => {
 });
 
 describe('GET Authenticated Dont retrieve appointment deleted /patients/uuid', () => {
-  it('Should return error validate patient by incorrect UUID', async () => {
+  it('Should return retry appointments by deleted patient UUID', async () => {
     const indexToRemove = 0;
 
     await request(app)

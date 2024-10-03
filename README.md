@@ -20,7 +20,7 @@
 
 [![Badge Status](https://img.shields.io/badge/STATUS-AGUARDANDO-blue)](#header) [![Github Project](https://img.shields.io/badge/PROJECT%20VIEW%20KANBAM-GITHUB-green?logo=github&logoColor=white)](https://github.com/users/jtonynet/projects/6)  ![Badge GitHubActions](https://github.com/jtonynet/js-med-planner/actions/workflows/main.yml/badge.svg?branch=main)
 
-_*Novos merges não deverão ser feitos nessa branch_
+_*Branch com bugfixes, so deve ser levada em consideração caso os avaliadores desejarem_
 
 ---
 
