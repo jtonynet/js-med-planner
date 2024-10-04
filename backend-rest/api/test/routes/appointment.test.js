@@ -400,10 +400,10 @@ describe('GET Authenticated with incorrect uuid patients/uuid/appointments', () 
   });
 });
 
-describe('PATCH Authenticated with incorrect uuid patients/uuid/appointments', () => {
+describe('PATCH Authenticated with incorrect uuid appointments/uuid/appointments', () => {
   it('Should return error validate patient by incorrect UUID', async () => {
     const response = await request(app)
-      .patch('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+      .patch('/appointments/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
       .set('Authorization', `Bearer ${bearerToken}`)
       .expect(StatusCodes.BAD_REQUEST);
 
@@ -411,13 +411,44 @@ describe('PATCH Authenticated with incorrect uuid patients/uuid/appointments', (
   });
 });
 
-describe('DELETE Authenticated with incorrect uuid /patients/uuid', () => {
+describe('DELETE Authenticated with incorrect uuid /appointments/uuid', () => {
   it('Should return error validate patient by incorrect UUID', async () => {
     const response = await request(app)
-      .delete('/patients/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
+      .delete('/appointments/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx')
       .set('Authorization', `Bearer ${bearerToken}`)
       .expect(StatusCodes.BAD_REQUEST);
 
     expect(response.body.message).toEqual('Request error invalid uuid');
   });
 });
+
+describe('GET Authenticated dont retrieve appointment deleted /patients/uuid', () => {
+  it('Should not return appointments for deleted patient', async () => {
+    const indexToRemove = 0;
+
+    await request(app)
+      .delete(`/patients/${patientsToCreate[indexToRemove].uuid}`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .expect(StatusCodes.NO_CONTENT);
+
+    const deletedPatient = await patients.findOne({
+      where: { uuid: patientsToCreate[indexToRemove].uuid },
+      paranoid: false,
+    });
+
+    expect(deletedPatient.deletedAt).not.toBeNull();
+
+    const response = await request(app)
+      .get(`/appointments`)
+      .set('Authorization', `Bearer ${bearerToken}`)
+      .set('Accept', 'application.json')
+      .expect('content-type', /json/)
+      .expect(StatusCodes.OK);
+
+
+    appointmentToTest = findByUUID(response.body, appointmentsToCreate[indexToRemove].uuid)
+    expect(appointmentToTest).toBeUndefined();
+
+  });
+});
+

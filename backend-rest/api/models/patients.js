@@ -12,7 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       patients.hasMany(models.appointments, {
         foreignKey: 'patientId',
-        as: 'appointments'
+        as: 'appointments',
+        onDelete: 'CASCADE',
+        hooks: true
       });
     }
 
@@ -164,8 +166,8 @@ module.exports = (sequelize, DataTypes) => {
     const decimalMinimun = '00.01';
     const dateOfBrazilianDiscovery = '1500-04-22';
 
-    patient.name = hashField(patient.name + patient.id);
-    patient.email = hashField((patient.email + patient.id));
+    patient.name = await hashField(patient.name);
+    patient.email = await hashField(patient.email);
     patient.phone = '000000000000000';
     patient.gender = 'unspecified';
     patient.birthDate = dateOfBrazilianDiscovery;
@@ -173,6 +175,12 @@ module.exports = (sequelize, DataTypes) => {
     patient.weight = decimalMinimun;
 
     await patient.save({ transaction: options.transaction, validate: false });
+
+    await sequelize.models.appointments.destroy({
+      where: { patientId: patient.id },
+      transaction: options.transaction,
+      individualHooks: true
+    });
   });
 
   return patients;
